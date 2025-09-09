@@ -1,0 +1,3 @@
+com\portfolio\portfoliomanger\resources\JakartaEE10Resource.class
+com\portfolio\manager\controllers\HomeServlet.class
+com\portfolio\portfoliomanger\JakartaRestConfiguration.class

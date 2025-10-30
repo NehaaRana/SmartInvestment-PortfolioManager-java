@@ -12,10 +12,13 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Size;
 import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
+import java.util.Collection;
 
 /**
  *
@@ -28,18 +31,21 @@ import java.io.Serializable;
     @NamedQuery(name = "GroupMaster.findAll", query = "SELECT g FROM GroupMaster g")})
 public class GroupMaster implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "id")
-    private Integer id;
     @Size(max = 200)
     @Column(name = "group_name")
     private String groupName;
     @Size(max = 200)
     @Column(name = "user_name")
     private String userName;
+    @OneToMany(mappedBy = "gid")
+    private Collection<Users> usersCollection;
+
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id")
+    private Integer id;
 
     public GroupMaster() {
     }
@@ -96,5 +102,46 @@ public class GroupMaster implements Serializable {
     public String toString() {
         return "Entity.GroupMaster[ id=" + id + " ]";
     }
+
+//    public String getGroupName() {
+//        return groupName;
+//    }
+//
+//    public void setGroupName(String groupName) {
+//        this.groupName = groupName;
+//    }
+
+//    public String getUserName() {
+//        return userName;
+//    }
+//
+//    public void setUserName(String userName) {
+//        this.userName = userName;
+//    }
+
+    @XmlTransient
+    public Collection<Users> getUsersCollection() {
+        return usersCollection;
+    }
+
+    public void setUsersCollection(Collection<Users> usersCollection) {
+        this.usersCollection = usersCollection;
+    }
+
+//    public String getGroupName() {
+//        return groupName;
+//    }
+//
+//    public void setGroupName(String groupName) {
+//        this.groupName = groupName;
+//    }
+//
+//    public String getUserName() {
+//        return userName;
+//    }
+//
+//    public void setUserName(String userName) {
+//        this.userName = userName;
+//    }
     
 }

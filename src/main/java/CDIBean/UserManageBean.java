@@ -57,6 +57,15 @@ public class UserManageBean {
     }
     
     
+    public void reset(){
+        this.fullName="";
+        this.email="";
+        this.password="";
+        this.phone="";
+        this.msg="";
+    }
+    
+    
     public String getFullName() {
         return fullName;
     }

@@ -6,6 +6,7 @@ package client;
 
 import jakarta.ws.rs.ClientErrorException;
 import jakarta.ws.rs.client.Client;
+import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.client.WebTarget;
 
 /**
@@ -46,7 +47,9 @@ public class AssetClient {
     }
 
     public void updateAsset(String aid, String symbol, String name, String type, String current_price, String status, String risk) throws ClientErrorException {
-        webTarget.path(java.text.MessageFormat.format("updateAsset/{0}/{1}/{2}/{3}/{4}/{5}/{6}", new Object[]{aid, symbol, name, type, current_price, status, risk})).request().put(null);
+//        webTarget.path(java.text.MessageFormat.format("updateAsset/{0}/{1}/{2}/{3}/{4}/{5}/{6}", new Object[]{aid, symbol, name, type, current_price, status, risk})).request().put(null);
+        webTarget.path(java.text.MessageFormat.format("updateAsset/{0}/{1}/{2}/{3}/{4}/{5}/{6}", new Object[]{aid, symbol, name, type, current_price, status, risk})).request().put(Entity.text(""));
+
     }
 
     public <T> T getAllAssets(Class<T> responseType) throws ClientErrorException {

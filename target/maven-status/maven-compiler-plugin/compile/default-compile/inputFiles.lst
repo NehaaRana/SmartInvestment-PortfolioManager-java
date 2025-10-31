@@ -2,6 +2,7 @@ D:\java-ENTERPRISE\ICT-1-Project\PortfolioManager\src\main\java\Entity\Payments.
 D:\java-ENTERPRISE\ICT-1-Project\PortfolioManager\src\main\java\Entity\GroupMaster.java
 D:\java-ENTERPRISE\ICT-1-Project\PortfolioManager\src\main\java\Entity\Watchlist.java
 D:\java-ENTERPRISE\ICT-1-Project\PortfolioManager\src\main\java\Entity\Orders.java
+D:\java-ENTERPRISE\ICT-1-Project\PortfolioManager\src\main\java\ejb\UserBean.java
 D:\java-ENTERPRISE\ICT-1-Project\PortfolioManager\src\main\java\Entity\Payouts.java
 D:\java-ENTERPRISE\ICT-1-Project\PortfolioManager\src\main\java\com\portfolio\manager\controllers\HomeServlet.java
 D:\java-ENTERPRISE\ICT-1-Project\PortfolioManager\src\main\java\Entity\Goals.java
@@ -10,6 +11,7 @@ D:\java-ENTERPRISE\ICT-1-Project\PortfolioManager\src\main\java\ejb\AssetsBeanLo
 D:\java-ENTERPRISE\ICT-1-Project\PortfolioManager\src\main\java\client\AssetClient.java
 D:\java-ENTERPRISE\ICT-1-Project\PortfolioManager\src\main\java\Entity\Users.java
 D:\java-ENTERPRISE\ICT-1-Project\PortfolioManager\src\main\java\com\portfolio\portfoliomanger\JakartaRestConfiguration.java
+D:\java-ENTERPRISE\ICT-1-Project\PortfolioManager\src\main\java\ejb\UserBeanLocal.java
 D:\java-ENTERPRISE\ICT-1-Project\PortfolioManager\src\main\java\Entity\Transactions.java
 D:\java-ENTERPRISE\ICT-1-Project\PortfolioManager\src\main\java\ejb\AssetsBean.java
 D:\java-ENTERPRISE\ICT-1-Project\PortfolioManager\src\main\java\Entity\Assets.java
@@ -17,3 +19,4 @@ D:\java-ENTERPRISE\ICT-1-Project\PortfolioManager\src\main\java\com\portfolio\po
 D:\java-ENTERPRISE\ICT-1-Project\PortfolioManager\src\main\java\Entity\Redemptions.java
 D:\java-ENTERPRISE\ICT-1-Project\PortfolioManager\src\main\java\Servlet\AssetsServlet.java
 D:\java-ENTERPRISE\ICT-1-Project\PortfolioManager\src\main\java\Entity\Portfolio.java
+D:\java-ENTERPRISE\ICT-1-Project\PortfolioManager\src\main\java\CDIBean\UserManageBean.java

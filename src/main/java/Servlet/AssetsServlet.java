@@ -65,7 +65,7 @@ public class AssetsServlet extends HttpServlet {
 
 //          Update Assets
 
-         acl.updateAsset("1", "SYMBOL", "ASSET", "TYPE", "60000.0", "SUCCESS", "low");
+//             acl.updateAsset("1" , "SYMBOL", "ASSET", "TYPE", "60000.0", "SUCCESS", "low");
             
 //            out.println("<h2>Add Assets,Update Assets</h2>");
             

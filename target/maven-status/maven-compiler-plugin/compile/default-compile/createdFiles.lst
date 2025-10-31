@@ -6,11 +6,14 @@ Entity\Payments.class
 Entity\Assets.class
 Entity\Transactions.class
 Entity\Payouts.class
+ejb\UserBeanLocal.class
 Entity\Portfolio.class
+ejb\UserBean.class
 Entity\Redemptions.class
 com\portfolio\portfoliomanger\resources\AssetsResource.class
 Entity\Watchlist.class
 Entity\Users.class
+CDIBean\UserManageBean.class
 com\portfolio\portfoliomanger\resources\JakartaEE10Resource.class
 ejb\AssetsBean.class
 Servlet\AssetsServlet.class

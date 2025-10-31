@@ -73,7 +73,7 @@ public class AssetsResource {
             @PathParam("risk") String risk) {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     
-        abl.updateAsset(aid, symbol, name, type, 0, status, risk);
+        abl.updateAsset(aid, symbol, name, type, current_price, status, risk);
     }
 
     @DELETE

@@ -4,6 +4,7 @@
  */
 package ejb;
 
+import Entity.Users;
 import jakarta.ejb.Local;
 
 /**
@@ -14,5 +15,6 @@ import jakarta.ejb.Local;
 public interface UserBeanLocal {
     
     void registerUser(String fullName , String email , String password ,String phone );
-
+  
+    Users findByEmail(String email);
 }

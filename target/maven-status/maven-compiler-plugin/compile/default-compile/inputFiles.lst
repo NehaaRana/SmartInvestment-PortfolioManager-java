@@ -16,6 +16,7 @@ D:\java-ENTERPRISE\ICT-1-Project\PortfolioManager\src\main\java\Entity\Transacti
 D:\java-ENTERPRISE\ICT-1-Project\PortfolioManager\src\main\java\ejb\AssetsBean.java
 D:\java-ENTERPRISE\ICT-1-Project\PortfolioManager\src\main\java\Entity\Assets.java
 D:\java-ENTERPRISE\ICT-1-Project\PortfolioManager\src\main\java\com\portfolio\portfoliomanger\resources\AssetsResource.java
+D:\java-ENTERPRISE\ICT-1-Project\PortfolioManager\src\main\java\CDIBean\AssetManagedBean.java
 D:\java-ENTERPRISE\ICT-1-Project\PortfolioManager\src\main\java\Entity\Redemptions.java
 D:\java-ENTERPRISE\ICT-1-Project\PortfolioManager\src\main\java\Servlet\AssetsServlet.java
 D:\java-ENTERPRISE\ICT-1-Project\PortfolioManager\src\main\java\Entity\Portfolio.java

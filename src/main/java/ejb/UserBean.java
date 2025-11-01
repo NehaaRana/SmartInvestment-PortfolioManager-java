@@ -7,6 +7,7 @@ package ejb;
 import Entity.Users;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 
 /**
@@ -31,4 +32,16 @@ public class UserBean implements UserBeanLocal {
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
+
+    @Override
+    public Users findByEmail(String email) {
+//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+       try{
+           return em.createNamedQuery("Users.findByEmail",Users.class)
+                   .setParameter("email", email)
+                   .getSingleResult();
+       }catch(NoResultException ex){
+            return null;
+       }
+    }
 }

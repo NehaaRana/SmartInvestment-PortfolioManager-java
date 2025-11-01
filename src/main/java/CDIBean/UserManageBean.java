@@ -4,11 +4,13 @@
  */
 package CDIBean;
 
+import Entity.Users;
 import ejb.UserBeanLocal;
 import jakarta.ejb.EJB;
 import jakarta.inject.Named;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.faces.context.FacesContext;
+import jakarta.servlet.http.HttpSession;
 
 /**
  *
@@ -46,7 +48,7 @@ public class UserManageBean {
              //  store username in session
             FacesContext.getCurrentInstance().getExternalContext()
                     .getSessionMap().put("username", fullName);
-            return "index"; //navigate to index.xhtml
+            return "Login"; //navigate to index.xhtml
             
         }catch(Exception ex){
             msg="Error Occur while regsiter. " + ex.getMessage();
@@ -56,6 +58,29 @@ public class UserManageBean {
         return null;
     }
     
+    
+    public String login(){
+        try{
+        
+            Users user=ubl.findByEmail(email);
+           if(user!= null && user.getPassword().equals(password)){
+               HttpSession session  = (HttpSession) FacesContext.getCurrentInstance()
+                       .getExternalContext().getSession(true);
+               session.setAttribute("username",user.getFullName()!= null ? user.getFullName() : email);
+               return "index";
+           }else{
+               msg = "Username and/or password is incorrect";
+               return null; // stay on login page
+           }
+        }catch(Exception ex){
+            msg = "Username and/or password is incorrect";
+            ex.printStackTrace();
+            return null;
+        }
+       
+        
+        
+    }
     
     public void reset(){
         this.fullName="";

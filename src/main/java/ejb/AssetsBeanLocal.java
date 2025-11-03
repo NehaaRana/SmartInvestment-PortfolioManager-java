@@ -22,6 +22,7 @@ public interface AssetsBeanLocal {
     Collection<Assets> findAssetsByName(String name);    
     Collection<Assets> findAssetsBySymbol(String symbol);
     Collection<Assets> findAssetsByType(String type);
+    Assets findAssetsById(Integer aid);
 
 
 }

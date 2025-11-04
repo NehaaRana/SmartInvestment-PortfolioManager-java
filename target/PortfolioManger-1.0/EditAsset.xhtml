@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core">
+    <h:head>
+        <title>Edit Asset</title>
+          <style>
+            .formRow { margin: 8px 0; }
+            label { display:inline-block; width:140px; }
+            input { padding:6px; }
+        </style>
+    </h:head>
+    <h:body>
+          <h2>Edit Asset</h2>
+
+          <h:form>
+        <!-- Show PK like sir shows hidden ID -->
+        <h:panelGrid columns="2" cellpadding="5">
+            <h:outputLabel value="AID:" />
+            <h:outputText value="#{assetManagedBean.aid}" />
+
+            <h:outputLabel value="Symbol:"/>
+            <h:inputText value="#{assetManagedBean.symbol}" required="true"/>
+
+            <h:outputLabel value="Name:"/>
+            <h:inputText value="#{assetManagedBean.name}" required="true"/>
+
+            <h:outputLabel value="Type:"/>
+            <h:inputText value="#{assetManagedBean.type}" required="true"/>
+
+            <h:outputLabel value="Current Price:"/>
+            <h:inputText value="#{assetManagedBean.current_price}" required="true">
+                <f:convertNumber/>
+            </h:inputText>
+
+            <h:outputLabel value="Status:"/>
+            <h:selectOneMenu value="#{assetManagedBean.status}">
+                <f:selectItem itemValue="Active" itemLabel="Active"/>
+                <f:selectItem itemValue="Closed" itemLabel="Closed"/>
+            </h:selectOneMenu>
+
+            <h:outputLabel value="Risk Level:"/>
+            <h:selectOneMenu value="#{assetManagedBean.risk}">
+                <f:selectItem itemValue="Low" itemLabel="Low"/>
+                <f:selectItem itemValue="Medium" itemLabel="Medium"/>
+                <f:selectItem itemValue="High" itemLabel="High"/>
+            </h:selectOneMenu>
+        </h:panelGrid>
+
+        <br/>
+        <!-- Same single action as sir's "Edit" -->
+        <h:commandButton value="Save Changes" action="#{assetManagedBean.update}" />
+        <h:commandButton value="Cancel" immediate="true" action="AllAssets?faces-redirect=true" />
+    </h:form>
+    </h:body>
+</html>

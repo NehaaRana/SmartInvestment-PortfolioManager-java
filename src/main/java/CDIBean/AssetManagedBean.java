@@ -9,6 +9,8 @@ import ejb.AssetsBeanLocal;
 import jakarta.ejb.EJB;
 import jakarta.inject.Named;
 import jakarta.enterprise.context.RequestScoped;
+import jakarta.enterprise.context.SessionScoped;
+import java.io.Serializable;
 import java.util.Collection;
 
 /**
@@ -16,11 +18,11 @@ import java.util.Collection;
  * @author Admin
  */
 @Named(value = "assetManagedBean")
-@RequestScoped
-public class AssetManagedBean {
+@SessionScoped
+public class AssetManagedBean implements Serializable{
     
     @EJB AssetsBeanLocal abl;
-    
+    Integer aid;
     String symbol;
     String name;
     String type;
@@ -38,11 +40,48 @@ public class AssetManagedBean {
         return abl.getAllAssets();
     }
     
+//    Edit
+    public String edit(Integer aid){
+              // Load the entity and copy into bean fields
+        this.aid = aid;
+        Assets a = abl.findAssetsById(aid); // add this helper in the EJB (see section 2)
+        if (a != null) {
+            this.symbol = a.getSymbol();
+            this.name = a.getName();
+            this.type = a.getType();
+            // currentPrice is BigDecimal in entity
+            this.current_price = (a.getCurrentPrice() != null) ? a.getCurrentPrice().doubleValue() : 0.0;
+            this.status = a.getStatus();
+            this.risk = a.getRisk();
+            // go to edit page
+            return "EditAsset?faces-redirect=true";
+        }
+        // fallback: back to list
+        return "AllAssets?faces-redirect=true";
+    }
+    
+      // ------- Update (submit form) -------
+    public String update() {
+        if (this.aid != null) {
+            abl.updateAsset(aid, symbol, name, type, current_price, status, risk);
+        }
+        return "AllAssets?faces-redirect=true";
+    }
+    
     public String deleteAsset(Integer aid){
         abl.removeAsset(aid);
         return "AllAssets";
     }
 
+    public Integer getAid() {
+        return aid;
+    }
+
+    public void setAid(Integer aid) {
+        this.aid = aid;
+    }
+    
+    
     public String getSymbol() {
         return symbol;
     }

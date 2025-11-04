@@ -7,6 +7,7 @@ package ejb;
 import Entity.Assets;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import java.math.BigDecimal;
 import java.util.Collection;
@@ -66,6 +67,8 @@ public class AssetsBean implements AssetsBeanLocal {
            
         
     }
+    
+    
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
@@ -96,6 +99,19 @@ public class AssetsBean implements AssetsBeanLocal {
                                     .setParameter("type", type)
                                     .getResultList();
         return assets;
+    }
+
+    @Override
+    public Assets findAssetsById(Integer aid) {
+//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+         try {
+                return em.createNamedQuery("Assets.findByAid", Assets.class)
+                         .setParameter("aid", aid)
+                         .getSingleResult();
+            }catch (NoResultException ex) {
+                return null; // safely handle when no record found
+            }
+    
     }
     
 }

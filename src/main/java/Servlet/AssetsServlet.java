@@ -6,10 +6,16 @@ package Servlet;
 
 import Entity.Assets;
 import client.AssetClient;
+import ejb.GoalBeanLocal;
 
 import ejb.TransactionBeanLocal;
 
 import ejb.OrderBeanLocal;
+import ejb.PaymentBeanLocal;
+import ejb.PayoutBeanLocal;
+import ejb.PortfolioBeanLocal;
+import ejb.RedemptionBeanLocal;
+import ejb.WatchlistBeanLocal;
 import jakarta.ejb.EJB;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -36,6 +42,13 @@ public class AssetsServlet extends HttpServlet {
     Collection<Assets> assets;
     GenericType<Collection<Assets>> gassets;
     @EJB OrderBeanLocal obl;
+    @EJB TransactionBeanLocal tbl;
+    @EJB PaymentBeanLocal pbl;
+    @EJB PortfolioBeanLocal pobl;
+    @EJB RedemptionBeanLocal rbl;
+    @EJB PayoutBeanLocal pabl;
+    @EJB WatchlistBeanLocal wbl;
+    @EJB GoalBeanLocal gbl;
     
  
     

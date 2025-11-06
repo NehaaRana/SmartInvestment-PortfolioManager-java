@@ -9,6 +9,7 @@ import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
+import java.util.Collection;
 
 /**
  *
@@ -43,5 +44,33 @@ public class UserBean implements UserBeanLocal {
        }catch(NoResultException ex){
             return null;
        }
+    }
+
+    @Override
+    public void updateUser(Integer uid, String fullName, String email, String password, String phone) {
+//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Users u =(Users) em.find(Users.class ,uid);
+        u.setFullName(fullName);
+        u.setEmail(email);
+        u.setPassword(password);
+        u.setPhone(phone);
+        
+        em.merge(u);
+    
+    }
+
+    @Override
+    public void deleteUser(Integer uid) {
+//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Users u = (Users) em.find(Users.class, uid);
+        if (u != null) {
+            em.remove(u);
+        }
+    }
+
+    @Override
+    public Collection<Users> getAllUsers() {
+//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+         return em.createNamedQuery("Users.findAll",Users.class).getResultList();
     }
 }

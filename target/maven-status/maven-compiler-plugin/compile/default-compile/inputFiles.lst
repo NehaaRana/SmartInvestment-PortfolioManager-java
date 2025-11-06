@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 D:\JAVA_PROJECT\PortfolioManager\src\main\java\com\portfolio\portfoliomanger\resources\AssetsResource.java
 D:\JAVA_PROJECT\PortfolioManager\src\main\java\ejb\GoalBeanLocal.java
 D:\JAVA_PROJECT\PortfolioManager\src\main\java\com\portfolio\portfoliomanger\JakartaRestConfiguration.java
@@ -33,3 +34,41 @@ D:\JAVA_PROJECT\PortfolioManager\src\main\java\ejb\RedemptionBeanLocal.java
 D:\JAVA_PROJECT\PortfolioManager\src\main\java\Entity\Assets.java
 D:\JAVA_PROJECT\PortfolioManager\src\main\java\com\portfolio\portfoliomanger\resources\GoalResource.java
 D:\JAVA_PROJECT\PortfolioManager\src\main\java\Entity\Orders.java
+=======
+D:\java-ENTERPRISE\ICT-1-Project\PortfolioManager\src\main\java\ejb\PayoutBeanLocal.java
+D:\java-ENTERPRISE\ICT-1-Project\PortfolioManager\src\main\java\Entity\GroupMaster.java
+D:\java-ENTERPRISE\ICT-1-Project\PortfolioManager\src\main\java\Entity\Watchlist.java
+D:\java-ENTERPRISE\ICT-1-Project\PortfolioManager\src\main\java\Entity\Orders.java
+D:\java-ENTERPRISE\ICT-1-Project\PortfolioManager\src\main\java\Entity\Payouts.java
+D:\java-ENTERPRISE\ICT-1-Project\PortfolioManager\src\main\java\com\portfolio\manager\controllers\HomeServlet.java
+D:\java-ENTERPRISE\ICT-1-Project\PortfolioManager\src\main\java\com\portfolio\portfoliomanger\resources\WatchlistResource.java
+D:\java-ENTERPRISE\ICT-1-Project\PortfolioManager\src\main\java\Entity\Goals.java
+D:\java-ENTERPRISE\ICT-1-Project\PortfolioManager\src\main\java\com\portfolio\portfoliomanger\resources\PayoutResource.java
+D:\java-ENTERPRISE\ICT-1-Project\PortfolioManager\src\main\java\client\AssetClient.java
+D:\java-ENTERPRISE\ICT-1-Project\PortfolioManager\src\main\java\Entity\Users.java
+D:\java-ENTERPRISE\ICT-1-Project\PortfolioManager\src\main\java\ejb\OrderBeanLocal.java
+D:\java-ENTERPRISE\ICT-1-Project\PortfolioManager\src\main\java\ejb\AssetsBean.java
+D:\java-ENTERPRISE\ICT-1-Project\PortfolioManager\src\main\java\Entity\Assets.java
+D:\java-ENTERPRISE\ICT-1-Project\PortfolioManager\src\main\java\com\portfolio\portfoliomanger\resources\AssetsResource.java
+D:\java-ENTERPRISE\ICT-1-Project\PortfolioManager\src\main\java\CDIBean\AssetManagedBean.java
+D:\java-ENTERPRISE\ICT-1-Project\PortfolioManager\src\main\java\Entity\Redemptions.java
+D:\java-ENTERPRISE\ICT-1-Project\PortfolioManager\src\main\java\Servlet\AssetsServlet.java
+D:\java-ENTERPRISE\ICT-1-Project\PortfolioManager\src\main\java\Entity\Payments.java
+D:\java-ENTERPRISE\ICT-1-Project\PortfolioManager\src\main\java\com\portfolio\portfoliomanger\resources\PortfolioResource.java
+D:\java-ENTERPRISE\ICT-1-Project\PortfolioManager\src\main\java\ejb\UserBean.java
+D:\java-ENTERPRISE\ICT-1-Project\PortfolioManager\src\main\java\com\portfolio\portfoliomanger\resources\JakartaEE10Resource.java
+D:\java-ENTERPRISE\ICT-1-Project\PortfolioManager\src\main\java\com\portfolio\portfoliomanger\resources\OrderResource.java
+D:\java-ENTERPRISE\ICT-1-Project\PortfolioManager\src\main\java\ejb\PortfolioBean.java
+D:\java-ENTERPRISE\ICT-1-Project\PortfolioManager\src\main\java\client\OrderClient.java
+D:\java-ENTERPRISE\ICT-1-Project\PortfolioManager\src\main\java\ejb\AssetsBeanLocal.java
+D:\java-ENTERPRISE\ICT-1-Project\PortfolioManager\src\main\java\ejb\WatchlistBean.java
+D:\java-ENTERPRISE\ICT-1-Project\PortfolioManager\src\main\java\ejb\OrderBean.java
+D:\java-ENTERPRISE\ICT-1-Project\PortfolioManager\src\main\java\com\portfolio\portfoliomanger\JakartaRestConfiguration.java
+D:\java-ENTERPRISE\ICT-1-Project\PortfolioManager\src\main\java\ejb\UserBeanLocal.java
+D:\java-ENTERPRISE\ICT-1-Project\PortfolioManager\src\main\java\Entity\Transactions.java
+D:\java-ENTERPRISE\ICT-1-Project\PortfolioManager\src\main\java\ejb\PayoutBean.java
+D:\java-ENTERPRISE\ICT-1-Project\PortfolioManager\src\main\java\Entity\Portfolio.java
+D:\java-ENTERPRISE\ICT-1-Project\PortfolioManager\src\main\java\ejb\PortfolioBeanLocal.java
+D:\java-ENTERPRISE\ICT-1-Project\PortfolioManager\src\main\java\ejb\WatchlistBeanLocal.java
+D:\java-ENTERPRISE\ICT-1-Project\PortfolioManager\src\main\java\CDIBean\UserManageBean.java
+>>>>>>> 8b1dc8cdce932e1741f48b4ecfb38497a7e27f72

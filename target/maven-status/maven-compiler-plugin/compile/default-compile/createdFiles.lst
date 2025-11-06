@@ -1,5 +1,6 @@
 com\portfolio\portfoliomanger\resources\TransactionResource.class
 Servlet\AssetsServlet$1.class
+ejb\WatchlistBean.class
 com\portfolio\manager\controllers\HomeServlet.class
 com\portfolio\portfoliomanger\resources\GoalResource.class
 Entity\GroupMaster.class
@@ -12,6 +13,7 @@ ejb\PaymentBeanLocal.class
 Entity\Portfolio.class
 ejb\TransactionBean.class
 com\portfolio\portfoliomanger\resources\AssetsResource.class
+<<<<<<< HEAD
 ejb\RedemptionBean.class
 com\portfolio\portfoliomanger\resources\JakartaEE10Resource.class
 ejb\AssetsBean.class
@@ -19,17 +21,37 @@ ejb\GoalBeanLocal.class
 com\portfolio\portfoliomanger\resources\RedemptionResource.class
 Entity\Orders.class
 ejb\GoalBean.class
+=======
+ejb\OrderBeanLocal.class
+ejb\PortfolioBean.class
+com\portfolio\portfoliomanger\resources\JakartaEE10Resource.class
+ejb\AssetsBean.class
+com\portfolio\portfoliomanger\resources\OrderResource.class
+ejb\PortfolioBeanLocal.class
+Entity\Orders.class
+ejb\WatchlistBeanLocal.class
+com\portfolio\portfoliomanger\resources\WatchlistResource.class
+>>>>>>> 8b1dc8cdce932e1741f48b4ecfb38497a7e27f72
 Entity\Transactions.class
+com\portfolio\portfoliomanger\resources\PortfolioResource.class
 Entity\Payouts.class
 ejb\UserBeanLocal.class
 ejb\UserBean.class
 Entity\Redemptions.class
+ejb\OrderBean.class
 Entity\Watchlist.class
+ejb\PayoutBean.class
 Entity\Users.class
+client\OrderClient.class
 CDIBean\UserManageBean.class
 Servlet\AssetsServlet.class
 client\AssetClient.class
+<<<<<<< HEAD
 ejb\PaymentBean.class
+=======
+ejb\PayoutBeanLocal.class
+com\portfolio\portfoliomanger\resources\PayoutResource.class
+>>>>>>> 8b1dc8cdce932e1741f48b4ecfb38497a7e27f72
 ejb\AssetsBeanLocal.class
 com\portfolio\portfoliomanger\JakartaRestConfiguration.class
 com\portfolio\portfoliomanger\resources\PaymentResource.class

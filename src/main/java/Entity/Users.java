@@ -65,22 +65,30 @@ public class Users implements Serializable {
     @Column(name = "phone")
     private String phone;
     @OneToMany(mappedBy = "uid")
+    @JsonbTransient
     private Collection<Payouts> payoutsCollection;
     @OneToMany(mappedBy = "uid")
+    @JsonbTransient
     private Collection<Portfolio> portfolioCollection;
     @OneToMany(mappedBy = "uid")
+    @JsonbTransient
     private Collection<Redemptions> redemptionsCollection;
     @OneToMany(mappedBy = "uid")
+    @JsonbTransient
     private Collection<Payments> paymentsCollection;
     @JsonbTransient
     @OneToMany(mappedBy = "uid")
+    @JsonbTransient
     private Collection<Orders> ordersCollection;
     @JsonbTransient
     @OneToMany(mappedBy = "uid")
+    @JsonbTransient
     private Collection<Transactions> transactionsCollection;
     @OneToMany(mappedBy = "uid")
+    @JsonbTransient
     private Collection<Watchlist> watchlistCollection;
     @OneToMany(mappedBy = "uid")
+    @JsonbTransient
     private Collection<Goals> goalsCollection;
 
     private static final long serialVersionUID = 1L;

@@ -35,6 +35,8 @@ import java.util.Date;
     @NamedQuery(name = "Portfolio.findByUnits", query = "SELECT p FROM Portfolio p WHERE p.units = :units"),
     @NamedQuery(name = "Portfolio.findByAvgPrice", query = "SELECT p FROM Portfolio p WHERE p.avgPrice = :avgPrice"),
     @NamedQuery(name = "Portfolio.findByCurrentValue", query = "SELECT p FROM Portfolio p WHERE p.currentValue = :currentValue"),
+    @NamedQuery(name = "Portfolio.findByUser",query = "SELECT p FROM Portfolio p WHERE p.uid.uid = :uid"),
+    @NamedQuery(name = "Portfolio.findByAsset",query = "SELECT p FROM Portfolio p WHERE p.aid.aid = :aid"),
     @NamedQuery(name = "Portfolio.findByUpdatedAt", query = "SELECT p FROM Portfolio p WHERE p.updatedAt = :updatedAt")})
 public class Portfolio implements Serializable {
 

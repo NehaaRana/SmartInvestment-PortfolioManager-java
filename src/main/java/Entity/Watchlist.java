@@ -32,6 +32,8 @@ import java.util.Date;
 @NamedQueries({
     @NamedQuery(name = "Watchlist.findAll", query = "SELECT w FROM Watchlist w"),
     @NamedQuery(name = "Watchlist.findByWid", query = "SELECT w FROM Watchlist w WHERE w.wid = :wid"),
+    @NamedQuery(name = "Watchlist.findByUser", query = "SELECT w FROM Watchlist w WHERE w.uid.uid = :uid"),
+    @NamedQuery(name = "Watchlist.findByAsset", query = "SELECT w FROM Watchlist w WHERE w.aid.aid = :aid"),
     @NamedQuery(name = "Watchlist.findByAddedAt", query = "SELECT w FROM Watchlist w WHERE w.addedAt = :addedAt")})
 public class Watchlist implements Serializable {
 
@@ -41,7 +43,7 @@ public class Watchlist implements Serializable {
     @Basic(optional = false)
     @Column(name = "wid")
     private Integer wid;
-    @Column(name = "added_at")
+    @Column(name = "added_at" ,insertable=false, updatable=false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date addedAt;
     @JsonbTransient

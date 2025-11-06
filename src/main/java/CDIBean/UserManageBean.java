@@ -59,6 +59,29 @@ public class UserManageBean {
     }
     
     
+//    public String login(){
+//        try{
+//        
+//            Users user=ubl.findByEmail(email);
+//           if(user!= null && user.getPassword().equals(password)){
+//               HttpSession session  = (HttpSession) FacesContext.getCurrentInstance()
+//                       .getExternalContext().getSession(true);
+//               session.setAttribute("username",user.getFullName()!= null ? user.getFullName() : email);
+//               return "index";
+//           }else{
+//               msg = "Username and/or password is incorrect";
+//               return null; // stay on login page
+//           }
+//        }catch(Exception ex){
+//            msg = "Username and/or password is incorrect";
+//            ex.printStackTrace();
+//            return null;
+//        }
+//       
+//        
+//        
+//    }
+    
     public String login(){
         try{
         
@@ -67,11 +90,20 @@ public class UserManageBean {
                HttpSession session  = (HttpSession) FacesContext.getCurrentInstance()
                        .getExternalContext().getSession(true);
                session.setAttribute("username",user.getFullName()!= null ? user.getFullName() : email);
-               return "index";
-           }else{
-               msg = "Username and/or password is incorrect";
-               return null; // stay on login page
-           }
+               session.setAttribute("role", user.getGid().getGroupName());
+//               return "index";
+            String role = user.getGid().getGroupName();
+
+                if ("ADMIN".equalsIgnoreCase(role)) {
+                    return "Admin/AdminDashboard?faces-redirect=true";
+                } else {
+                    return "User/UserDashboard?faces-redirect=true";
+                }
+            }else {
+                msg = "Username and/or password is incorrect";
+                return null;
+            }
+           
         }catch(Exception ex){
             msg = "Username and/or password is incorrect";
             ex.printStackTrace();
@@ -81,6 +113,18 @@ public class UserManageBean {
         
         
     }
+    
+    
+    
+    public String logout() {
+        HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
+                .getExternalContext().getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
+        return "Login?faces-redirect=true";
+    }
+
     
     public void reset(){
         this.fullName="";

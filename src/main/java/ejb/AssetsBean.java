@@ -35,6 +35,8 @@ public class AssetsBean implements AssetsBeanLocal {
         a.setStatus(status);
         a.setRisk(risk);
         em.persist(a);
+        em.flush();
+        em.refresh(a);
     }
 
     @Override
@@ -101,7 +103,7 @@ public class AssetsBean implements AssetsBeanLocal {
                 return em.createNamedQuery("Assets.findByAid", Assets.class)
                          .setParameter("aid", aid)
                          .getSingleResult();
-            } catch (NoResultException ex) {
+            }catch (NoResultException ex) {
                 return null; // safely handle when no record found
             }
     

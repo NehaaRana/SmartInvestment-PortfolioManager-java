@@ -36,6 +36,8 @@ import java.util.Date;
     @NamedQuery(name = "Payouts.findByAmount", query = "SELECT p FROM Payouts p WHERE p.amount = :amount"),
     @NamedQuery(name = "Payouts.findByReferenceNo", query = "SELECT p FROM Payouts p WHERE p.referenceNo = :referenceNo"),
     @NamedQuery(name = "Payouts.findByStatus", query = "SELECT p FROM Payouts p WHERE p.status = :status"),
+    @NamedQuery(name = "Payouts.findByUser",query = "SELECT p FROM Payouts p WHERE p.uid.uid = :uid"),
+    @NamedQuery(name = "Payouts.findByRedemption",query = "SELECT p FROM Payouts p WHERE p.rid.rid = :rid"),
     @NamedQuery(name = "Payouts.findByCreatedAt", query = "SELECT p FROM Payouts p WHERE p.createdAt = :createdAt")})
 public class Payouts implements Serializable {
 

@@ -68,6 +68,7 @@ public class OrderResource {
                   @PathParam("status")String status) {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
          obl.updateOrder(oid, uid, aid, order_type, units, amount, status);
+    
     }
 
     @DELETE
@@ -111,7 +112,7 @@ public class OrderResource {
     }
 
     @GET
-    @Path("findOrderByUser/{aid}")
+    @Path("findOrderByAsset/{aid}")
     @Produces("application/json")
     public Collection<Orders> findOrdersByAsset( @PathParam("aid") Integer aid) {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody

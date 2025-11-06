@@ -4,6 +4,7 @@
  */
 package Entity;
 
+import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -72,16 +73,20 @@ public class Assets implements Serializable {
     @Size(max = 20)
     @Column(name = "risk")
     private String risk;
-    @Column(name = "created_at")
+    @Column(name = "created_at",insertable=false,updatable=false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
     @OneToMany(mappedBy = "aid")
+    @JsonbTransient
     private Collection<Portfolio> portfolioCollection;
     @OneToMany(mappedBy = "aid")
+    @JsonbTransient
     private Collection<Redemptions> redemptionsCollection;
     @OneToMany(mappedBy = "aid")
+    @JsonbTransient
     private Collection<Orders> ordersCollection;
     @OneToMany(mappedBy = "aid")
+    @JsonbTransient
     private Collection<Watchlist> watchlistCollection;
 
     public Assets() {

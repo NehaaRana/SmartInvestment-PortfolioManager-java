@@ -6,6 +6,8 @@ package Servlet;
 
 import Entity.Assets;
 import client.AssetClient;
+import ejb.OrderBeanLocal;
+import jakarta.ejb.EJB;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -29,7 +31,9 @@ public class AssetsServlet extends HttpServlet {
     Response rs;
     Collection<Assets> assets;
     GenericType<Collection<Assets>> gassets;
+    @EJB OrderBeanLocal obl;
     
+ 
     
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -58,6 +62,8 @@ public class AssetsServlet extends HttpServlet {
             assets = new ArrayList<>();
             gassets = new GenericType<Collection<Assets>>(){};
             
+            
+//            obl.addOrder(1, 1, "buy", 5, 100,"Completed");
 //            acl.addAsset("Symbole_1",  "Asset_1","type_1" ,"1000.10", "success", "low");
 //            acl.addAsset("Symbole_2",  "Asset_2","type_2" ,"2000.10", "pending", "medium");
 //            acl.addAsset("Symbole_3",  "Asset_3","type_3" ,"4000.10", "success", "high");

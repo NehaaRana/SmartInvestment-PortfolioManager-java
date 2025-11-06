@@ -4,6 +4,7 @@
  */
 package Entity;
 
+import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -41,8 +42,8 @@ import java.util.Date;
     @NamedQuery(name = "Orders.findByUnits", query = "SELECT o FROM Orders o WHERE o.units = :units"),
     @NamedQuery(name = "Orders.findByAmount", query = "SELECT o FROM Orders o WHERE o.amount = :amount"),
     @NamedQuery(name = "Orders.findByStatus", query = "SELECT o FROM Orders o WHERE o.status = :status"),
-    @NamedQuery(name="Orders.findByUid",query="SELECT o from Ordes WHERE o.uid = :uid"),
-    @NamedQuery(name="Orders.findByAid",query="SELECT o from Ordes WHERE o.aid = :aid"),
+    @NamedQuery(name="Orders.findByUid",query="SELECT o from Orders o  WHERE o.uid = :uid"),
+    @NamedQuery(name="Orders.findByAid",query="SELECT o from Orders  o WHERE o.aid = :aid"),
     @NamedQuery(name = "Orders.findByCreatedAt", query = "SELECT o FROM Orders o WHERE o.createdAt = :createdAt")})
 public class Orders implements Serializable {
 

@@ -61,6 +61,7 @@ public class Transactions implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
     @OneToMany(mappedBy = "tid")
+    
     private Collection<Payments> paymentsCollection;
     @JoinColumn(name = "oid", referencedColumnName = "oid")
     @ManyToOne

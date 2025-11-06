@@ -35,6 +35,8 @@ public class AssetsBean implements AssetsBeanLocal {
         a.setStatus(status);
         a.setRisk(risk);
         em.persist(a);
+        em.flush();
+        em.refresh(a);
     }
 
     @Override

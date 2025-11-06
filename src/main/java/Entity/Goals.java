@@ -38,7 +38,9 @@ import java.util.Date;
     @NamedQuery(name = "Goals.findByTargetAmt", query = "SELECT g FROM Goals g WHERE g.targetAmt = :targetAmt"),
     @NamedQuery(name = "Goals.findByCurrentAmt", query = "SELECT g FROM Goals g WHERE g.currentAmt = :currentAmt"),
     @NamedQuery(name = "Goals.findByTargetDate", query = "SELECT g FROM Goals g WHERE g.targetDate = :targetDate"),
-    @NamedQuery(name = "Goals.findByCreatedAt", query = "SELECT g FROM Goals g WHERE g.createdAt = :createdAt")})
+    @NamedQuery(name = "Goals.findByCreatedAt", query = "SELECT g FROM Goals g WHERE g.createdAt = :createdAt"),
+    @NamedQuery(name = "Goals.findByUser", query = "SELECT g FROM Goals g WHERE g.uid.uid = :uid")
+})
 public class Goals implements Serializable {
 
     private static final long serialVersionUID = 1L;

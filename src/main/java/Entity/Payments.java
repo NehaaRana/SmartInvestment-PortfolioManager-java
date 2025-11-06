@@ -36,6 +36,8 @@ import java.util.Date;
     @NamedQuery(name = "Payments.findByReferenceNo", query = "SELECT p FROM Payments p WHERE p.referenceNo = :referenceNo"),
     @NamedQuery(name = "Payments.findByStatus", query = "SELECT p FROM Payments p WHERE p.status = :status"),
     @NamedQuery(name = "Payments.findByCreatedAt", query = "SELECT p FROM Payments p WHERE p.createdAt = :createdAt")})
+    @NamedQuery(name = "Payments.findByUser", query = "SELECT p FROM Payments p WHERE p.uid.uid = :uid")
+
 public class Payments implements Serializable {
 
     private static final long serialVersionUID = 1L;

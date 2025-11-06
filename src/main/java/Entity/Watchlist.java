@@ -4,6 +4,7 @@
  */
 package Entity;
 
+import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -43,9 +44,11 @@ public class Watchlist implements Serializable {
     @Column(name = "added_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date addedAt;
+    @JsonbTransient
     @JoinColumn(name = "aid", referencedColumnName = "aid")
     @ManyToOne
     private Assets aid;
+    @JsonbTransient
     @JoinColumn(name = "uid", referencedColumnName = "uid")
     @ManyToOne
     private Users uid;

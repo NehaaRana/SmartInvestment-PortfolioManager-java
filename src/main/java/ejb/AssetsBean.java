@@ -64,15 +64,8 @@ public class AssetsBean implements AssetsBeanLocal {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
            Collection<Assets> assets = em.createNamedQuery("Assets.findAll").getResultList();
             return assets;
-           
-        
     }
     
-    
-
-    // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method")
-
     @Override
     public Collection<Assets> findAssetsByName(String name) {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody

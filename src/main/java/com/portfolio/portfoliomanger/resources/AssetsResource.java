@@ -8,7 +8,6 @@ import Entity.Assets;
 import ejb.AssetsBeanLocal;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.UriInfo;
-import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.PUT;

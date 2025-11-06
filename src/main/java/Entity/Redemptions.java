@@ -4,6 +4,7 @@
  */
 package Entity;
 
+import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -42,6 +43,7 @@ import java.util.Date;
     @NamedQuery(name = "Redemptions.findByRequestedAt", query = "SELECT r FROM Redemptions r WHERE r.requestedAt = :requestedAt"),
     @NamedQuery(name = "Redemptions.findByApprovedAt", query = "SELECT r FROM Redemptions r WHERE r.approvedAt = :approvedAt"),
     @NamedQuery(name = "Redemptions.findByPaidAt", query = "SELECT r FROM Redemptions r WHERE r.paidAt = :paidAt")})
+    @NamedQuery(name = "Redemptions.findByUser", query = "SELECT r FROM Redemptions r WHERE r.uid.uid = :uid")
 public class Redemptions implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -67,6 +69,7 @@ public class Redemptions implements Serializable {
     @Column(name = "paid_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date paidAt;
+    @JsonbTransient
     @OneToMany(mappedBy = "rid")
     private Collection<Payouts> payoutsCollection;
     @JoinColumn(name = "aid", referencedColumnName = "aid")

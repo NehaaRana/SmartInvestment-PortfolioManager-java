@@ -82,7 +82,6 @@ public class Assets implements Serializable {
     @OneToMany(mappedBy = "aid")
     @JsonbTransient
     private Collection<Redemptions> redemptionsCollection;
-    @JsonbTransient
     @OneToMany(mappedBy = "aid")
     @JsonbTransient
     private Collection<Orders> ordersCollection;

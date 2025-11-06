@@ -6,11 +6,8 @@ package Servlet;
 
 import Entity.Assets;
 import client.AssetClient;
-<<<<<<< HEAD
 import ejb.TransactionBeanLocal;
-=======
 import ejb.OrderBeanLocal;
->>>>>>> 8b1dc8cdce932e1741f48b4ecfb38497a7e27f72
 import jakarta.ejb.EJB;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -67,14 +64,11 @@ public class AssetsServlet extends HttpServlet {
             assets = new ArrayList<>();
             gassets = new GenericType<Collection<Assets>>(){};
             
-<<<<<<< HEAD
             tbl.addTransaction(1, 1, "online",1000,"success");
 //            tbl.updateTransaction(1, 1, 2, 3000, "offline", "Active");
               tbl.deleteTransaction(1);
-=======
             
 //            obl.addOrder(1, 1, "buy", 5, 100,"Completed");
->>>>>>> 8b1dc8cdce932e1741f48b4ecfb38497a7e27f72
 //            acl.addAsset("Symbole_1",  "Asset_1","type_1" ,"1000.10", "success", "low");
 //            acl.addAsset("Symbole_2",  "Asset_2","type_2" ,"2000.10", "pending", "medium");
 //            acl.addAsset("Symbole_3",  "Asset_3","type_3" ,"4000.10", "success", "high");

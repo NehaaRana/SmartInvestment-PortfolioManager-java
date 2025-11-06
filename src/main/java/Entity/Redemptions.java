@@ -60,7 +60,7 @@ public class Redemptions implements Serializable {
     private String status;
     @Column(name = "exit_fee_amt")
     private BigDecimal exitFeeAmt;
-    @Column(name = "requested_at")
+    @Column(name = "requested_at",insertable=false,updatable=false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date requestedAt;
     @Column(name = "approved_at")

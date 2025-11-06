@@ -58,7 +58,7 @@ public class Transactions implements Serializable {
     @Size(max = 20)
     @Column(name = "status")
     private String status;
-    @Column(name = "created_at")
+    @Column(name = "created_at",insertable=false,updatable=false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
     @JsonbTransient

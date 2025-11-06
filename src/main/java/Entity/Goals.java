@@ -62,7 +62,7 @@ public class Goals implements Serializable {
     @Column(name = "target_date")
     @Temporal(TemporalType.DATE)
     private Date targetDate;
-    @Column(name = "created_at")
+    @Column(name = "created_at",insertable=false,updatable=false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
     @JoinColumn(name = "uid", referencedColumnName = "uid")

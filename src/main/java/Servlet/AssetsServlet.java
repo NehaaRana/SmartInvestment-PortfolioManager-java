@@ -42,7 +42,6 @@ public class AssetsServlet extends HttpServlet {
     Collection<Assets> assets;
     GenericType<Collection<Assets>> gassets;
     @EJB OrderBeanLocal obl;
-    @EJB TransactionBeanLocal tbl;
     @EJB PaymentBeanLocal pbl;
     @EJB PortfolioBeanLocal pobl;
     @EJB RedemptionBeanLocal rbl;
@@ -79,9 +78,19 @@ public class AssetsServlet extends HttpServlet {
             assets = new ArrayList<>();
             gassets = new GenericType<Collection<Assets>>(){};
             
-            tbl.addTransaction(1, 1, "online",1000,"success");
+//            tbl.addTransaction(1, 1, "online",1000,"success");
+//            tbl.addTransaction(2, 1, "online",1000,"success");
+//            pbl.addPayment(1, 1,"online","3876589", "active");
+              
+//              rbl.addRedemption(1, 2, 4, "active", 10000);
+              pobl.updatePortfolio(1,1, 200, 3000);
+//               pabl.addPayout(1, 1, 100, "900922","active");
+//                wbl.addWatchlist(1, 1);
+                
+                java.sql.Date d= java.sql.Date.valueOf(java.time.LocalDate.of(2026, 2, 10));
+//                gbl.addGoal(1,"Car", 20000, 1500, d);
 //            tbl.updateTransaction(1, 1, 2, 3000, "offline", "Active");
-              tbl.deleteTransaction(1);
+//              tbl.deleteTransaction(1);
             
 //            obl.addOrder(1, 1, "buy", 5, 100,"Completed");
 //            acl.addAsset("Symbole_1",  "Asset_1","type_1" ,"1000.10", "success", "low");

@@ -4,6 +4,7 @@
  */
 package Entity;
 
+import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -38,6 +39,7 @@ public class GroupMaster implements Serializable {
     @Column(name = "user_name")
     private String userName;
     @OneToMany(mappedBy = "gid")
+    @JsonbTransient
     private Collection<Users> usersCollection;
 
     private static final long serialVersionUID = 1L;

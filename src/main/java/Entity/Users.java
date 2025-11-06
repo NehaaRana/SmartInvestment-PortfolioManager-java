@@ -95,7 +95,7 @@ public class Users implements Serializable {
     @Basic(optional = false)
     @Column(name = "uid")
     private Integer uid;
-    @Column(name = "created_at")
+    @Column(name = "created_at",insertable=false,updatable=false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
     @JoinColumn(name = "gid", referencedColumnName = "id")

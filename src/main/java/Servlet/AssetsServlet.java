@@ -48,7 +48,6 @@ public class AssetsServlet extends HttpServlet {
     @EJB PayoutBeanLocal pabl;
     @EJB WatchlistBeanLocal wbl;
     @EJB GoalBeanLocal gbl;
-    
  
     
     /**
@@ -81,12 +80,12 @@ public class AssetsServlet extends HttpServlet {
 //            tbl.addTransaction(1, 1, "online",1000,"success");
 //            tbl.addTransaction(2, 1, "online",1000,"success");
 //            pbl.addPayment(1, 1,"online","3876589", "active");
-              
+            
 //              rbl.addRedemption(1, 2, 4, "active", 10000);
               pobl.updatePortfolio(1,1, 200, 3000);
 //               pabl.addPayout(1, 1, 100, "900922","active");
 //                wbl.addWatchlist(1, 1);
-                
+            
                 java.sql.Date d= java.sql.Date.valueOf(java.time.LocalDate.of(2026, 2, 10));
 //                gbl.addGoal(1,"Car", 20000, 1500, d);
 //            tbl.updateTransaction(1, 1, 2, 3000, "offline", "Active");

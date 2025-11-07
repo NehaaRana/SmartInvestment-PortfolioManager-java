@@ -76,11 +76,9 @@ public class Users implements Serializable {
     @OneToMany(mappedBy = "uid")
     @JsonbTransient
     private Collection<Payments> paymentsCollection;
-  
     @OneToMany(mappedBy = "uid")
     @JsonbTransient
     private Collection<Orders> ordersCollection;
-  
     @OneToMany(mappedBy = "uid")
     @JsonbTransient
     private Collection<Transactions> transactionsCollection;

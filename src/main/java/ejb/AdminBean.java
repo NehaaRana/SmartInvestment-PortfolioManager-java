@@ -1,0 +1,270 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/J2EE/EJB40/StatelessEjbClass.java to edit this template
+ */
+package ejb;
+
+import Entity.Assets;
+import Entity.GroupMaster;
+import Entity.Orders;
+import Entity.Payments;
+import Entity.Payouts;
+import Entity.Portfolio;
+import Entity.Redemptions;
+import Entity.Transactions;
+import Entity.Users;
+import jakarta.ejb.Stateless;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import java.math.BigDecimal;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+
+/**
+ *
+ * @author User
+ */
+@Stateless
+public class AdminBean implements AdminBeanLocal {
+
+    @PersistenceContext(unitName="my_pu")
+    EntityManager em;
+    
+    @Override
+    public void addUser(String fullName, String email, String password, String phone, int gid) {
+//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Users u = new Users();
+        GroupMaster g = em.find(GroupMaster.class, gid);
+        u.setFullName(fullName);
+        u.setEmail(email);
+        u.setPassword(password);
+        u.setPhone(phone);
+        u.setGid(g);
+        u.setCreatedAt(new Date());
+        em.persist(u);
+    }
+
+    @Override
+    public void updateUser(int uid, String fullName, String phone) {
+//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void deleteUser(int uid) {
+//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Users u = em.find(Users.class, uid);
+        if (u != null) {
+            em.remove(u);
+        }
+    }
+
+    @Override
+    public Collection<Users> getAllUsers() {
+//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+          return em.createNamedQuery("Users.findAll",Users.class).getResultList();
+    }
+
+    @Override
+    public Users findUserById(int uid) {
+//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+          return em.find(Users.class, uid);
+    }
+
+    @Override
+    public void addAsset(String symbol, String name, String type, BigDecimal currentPrice, String status, String risk) {
+//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Assets a = new Assets();
+        a.setSymbol(symbol);
+        a.setName(name);
+        a.setType(type);
+        a.setCurrentPrice(currentPrice);
+        a.setStatus(status);
+        a.setRisk(risk);
+        a.setCreatedAt(new Date());
+        em.persist(a);
+    }
+
+    @Override
+    public void updateAssetPrice(int aid, BigDecimal newPrice) {
+//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Assets a = em.find(Assets.class, aid);
+        if (a != null) {
+            a.setCurrentPrice(newPrice);
+            em.merge(a);
+
+            // Optionally update portfolio current value for users who hold this asset
+            Collection<Portfolio> q = em.createNamedQuery("Portfolio.findByAsset",Portfolio.class).setParameter("aid", aid).getResultList();
+            for (Portfolio p : q) {
+                BigDecimal currentValue = p.getUnits().multiply(newPrice);
+                p.setCurrentValue(currentValue);
+                em.merge(p);
+            }
+        }
+    }
+
+    @Override
+    public void updateAssetStatus(int aid, String status) {
+//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+          Assets a = em.find(Assets.class, aid);
+          if(a != null){
+              a.setStatus(status);
+              em.merge(a);
+          }
+    }
+
+    @Override
+    public Collection<Assets> getAllAssets() {
+//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+          return em.createNamedQuery("Assets.findAll").getResultList();
+    }
+
+    @Override
+    public Assets findAssetById(int aid) {
+//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+          return em.find((Assets.class), aid);
+    }
+
+    @Override
+    public Collection<Orders> getAllOrders() {
+//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+          return em.createNamedQuery("Orders.findAll").getResultList();
+    }
+
+    @Override
+    public Collection<Transactions> getAllTransactions() {
+//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+          return em.createNamedQuery("Transactions.findAll").getResultList();
+    }
+
+    @Override
+    public void updateOrderStatus(int oid, String status) {
+//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Orders o = em.find(Orders.class, oid);
+        if (o != null) {
+            o.setStatus(status);
+            em.merge(o);
+        }
+    }
+
+    @Override
+    public void updateTransactionStatus(int tid, String status) {
+//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Transactions t = em.find(Transactions.class, tid);
+        if (t != null) {
+            t.setStatus(status);
+            em.merge(t);
+        }
+    }
+
+    @Override
+    public Collection<Payments> getAllPayments() {
+//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+          return em.createNamedQuery("Payments.findAll").getResultList();
+    }
+
+    @Override
+    public void updatePaymentStatus(int pid, String status) {
+//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+          Payments p = em.find(Payments.class, pid);
+          if(p != null){
+              p.setStatus(status);
+              em.merge(p);
+          }
+    }
+
+    @Override
+    public Collection<Redemptions> getAllRedemptions() {
+//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+          return em.createNamedQuery("Redemptions.findAll",Redemptions.class).getResultList();
+    }
+
+    @Override
+    public void approveRedemption(int rid) {
+//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Redemptions r = em.find(Redemptions.class, rid);
+        if (r != null && !"APPROVED".equalsIgnoreCase(r.getStatus())) {
+            r.setApprovedAt(new Date());
+            r.setStatus("APPROVED");
+            em.merge(r);
+
+            // When approved, optionally create a payout record (admin can do this manually too)
+            // BigDecimal amount = calculate payout amount (units * asset current price - exit_fee_amt)
+        }
+    }
+
+    @Override
+    public void rejectRedemption(int rid) {
+//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Redemptions r = em.find(Redemptions.class, rid);
+        if (r != null) {
+            r.setStatus("REJECTED");
+            em.merge(r);
+        }
+    }
+
+    @Override
+    public void addPayout(int rid, int uid, BigDecimal amount, String referenceNo, String status) {
+//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Payouts p = new Payouts();
+        Redemptions r =em.find(Redemptions.class, rid);
+        Users u = em.find(Users.class, uid);
+        p.setRid(r);
+        p.setUid(u);
+        p.setAmount(amount);
+        p.setReferenceNo(referenceNo);
+        p.setStatus(status);
+        p.setCreatedAt(new Date());
+        em.persist(p);
+
+        // Mark redemption as paid if appropriate
+//        Redemptions r = em.find(Redemptions.class, rid);
+        if (r != null && "APPROVED".equalsIgnoreCase(r.getStatus())) {
+            r.setPaidAt(new Date());
+            em.merge(r);
+        }
+    }
+
+    @Override
+    public Collection<Payouts> getAllPayouts() {
+//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+          return em.createNamedQuery("Payouts.findAll",Payouts.class).getResultList();
+    }
+
+    @Override
+    public void updatePayoutStatus(int payId, String status) {
+//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+          Payouts p = em.find(Payouts.class, payId);
+          if(p != null){
+              p.setStatus(status);
+              em.merge(p);
+          }
+    }
+
+    @Override
+    public BigDecimal getTotalInvestedAmount() {
+//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+          return em.createNamedQuery("Orders.totalInvested",BigDecimal.class).getSingleResult();
+    }
+
+    @Override
+    public BigDecimal getTotalPayouts() {
+//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+          return em.createNamedQuery("Payouts.totalAmount",BigDecimal.class).getSingleResult();
+    }
+
+    @Override
+    public int getTotalUsers() {
+//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+          return em.createNamedQuery("Users.totalCount",int.class).getSingleResult();
+    }
+
+    @Override
+    public int getTotalAssets() {
+//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+          return em.createNamedQuery("Assets.totalCount",int.class).getSingleResult();
+    }
+
+    // Add business logic below. (Right-click in editor and choose
+    // "Insert Code > Add Business Method")
+}

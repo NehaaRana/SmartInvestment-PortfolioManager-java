@@ -42,7 +42,9 @@ import java.util.Date;
     @NamedQuery(name = "Assets.findByCurrentPrice", query = "SELECT a FROM Assets a WHERE a.currentPrice = :currentPrice"),
     @NamedQuery(name = "Assets.findByStatus", query = "SELECT a FROM Assets a WHERE a.status = :status"),
     @NamedQuery(name = "Assets.findByRisk", query = "SELECT a FROM Assets a WHERE a.risk = :risk"),
-    @NamedQuery(name = "Assets.findByCreatedAt", query = "SELECT a FROM Assets a WHERE a.createdAt = :createdAt")})
+    @NamedQuery(name = "Assets.findByCreatedAt", query = "SELECT a FROM Assets a WHERE a.createdAt = :createdAt"),
+    @NamedQuery(name = "Assets.totalCount",query = "SELECT COUNT(a) FROM Assets a")
+})
 public class Assets implements Serializable {
 
     private static final long serialVersionUID = 1L;

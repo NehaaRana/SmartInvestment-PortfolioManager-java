@@ -38,7 +38,9 @@ import java.util.Date;
     @NamedQuery(name = "Payouts.findByStatus", query = "SELECT p FROM Payouts p WHERE p.status = :status"),
     @NamedQuery(name = "Payouts.findByUser",query = "SELECT p FROM Payouts p WHERE p.uid.uid = :uid"),
     @NamedQuery(name = "Payouts.findByRedemption",query = "SELECT p FROM Payouts p WHERE p.rid.rid = :rid"),
-    @NamedQuery(name = "Payouts.findByCreatedAt", query = "SELECT p FROM Payouts p WHERE p.createdAt = :createdAt")})
+    @NamedQuery(name = "Payouts.findByCreatedAt", query = "SELECT p FROM Payouts p WHERE p.createdAt = :createdAt"),
+    @NamedQuery(name = "Payouts.totalAmount",query = "SELECT COALESCE(SUM(p.amount), 0) FROM Payouts p")
+})
 public class Payouts implements Serializable {
 
     private static final long serialVersionUID = 1L;

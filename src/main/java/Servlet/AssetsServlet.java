@@ -107,12 +107,12 @@ public class AssetsServlet extends HttpServlet {
 //               pabl.addPayout(4, 4, 16800, "REF122","Paid");
 //               pabl.addPayout(5, 5, 16500, "REF121","Pending");
 
-                wbl.addWatchlist(1, 1);
-                wbl.addWatchlist(2, 6);
-                wbl.addWatchlist(3, 7);
-                wbl.addWatchlist(4, 4);
-                wbl.addWatchlist(5, 3);
-                wbl.addWatchlist(6, 1);
+//                wbl.addWatchlist(1, 1);
+//                wbl.addWatchlist(2, 6);
+//                wbl.addWatchlist(3, 7);
+//                wbl.addWatchlist(4, 4);
+//                wbl.addWatchlist(5, 3);
+//                wbl.addWatchlist(6, 1);
 
                 
 //                java.sql.Date d1= java.sql.Date.valueOf(java.time.LocalDate.of(2026, 5, 11));

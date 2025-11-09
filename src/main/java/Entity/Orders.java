@@ -44,7 +44,10 @@ import java.util.Date;
     @NamedQuery(name = "Orders.findByStatus", query = "SELECT o FROM Orders o WHERE o.status = :status"),
     @NamedQuery(name="Orders.findByUid",query="SELECT o from Orders o  WHERE o.uid = :uid"),
     @NamedQuery(name="Orders.findByAid",query="SELECT o from Orders  o WHERE o.aid = :aid"),
-    @NamedQuery(name = "Orders.findByCreatedAt", query = "SELECT o FROM Orders o WHERE o.createdAt = :createdAt")})
+    @NamedQuery(name = "Orders.findByCreatedAt", query = "SELECT o FROM Orders o WHERE o.createdAt = :createdAt"),
+    @NamedQuery(name = "Orders.totalInvested",query = "SELECT COALESCE(SUM(o.amount), 0) FROM Orders o WHERE LOWER(o.orderType) = 'buy' AND LOWER(o.status) = 'completed'")
+
+})
 public class Orders implements Serializable {
 
     private static final long serialVersionUID = 1L;

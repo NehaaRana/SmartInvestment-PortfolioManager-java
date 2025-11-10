@@ -98,16 +98,46 @@ public class UserBean implements UserBeanLocal {
     
     }
 
-    @Override
-    public void removeFromWatchlist(int wid) {
-//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-          Watchlist wl=em.find(Watchlist.class,wid);
-          if(wl !=null){
-              em.remove(wl);
-          }
-          
+//    @Override
+//    public void removeFromWatchlist(int wid) {
+////        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+//          Watchlist wl=em.find(Watchlist.class,wid);
+//          if(wl !=null){
+//              em.remove(wl);
+//          }
+//          
+//    
+//    }
     
+    
+    @Override
+    public void removeFromWatchlist(int  wid) {
+        Watchlist wl = em.find(Watchlist.class, wid);
+
+        if (wl != null) {
+            Users user = wl.getUid();
+            Assets asset = wl.getAid();
+
+            if (user != null) {
+                Collection<Watchlist> userWatchlist = user.getWatchlistCollection();
+                userWatchlist.remove(wl);
+                user.setWatchlistCollection(userWatchlist);
+                em.merge(user);
+            }
+
+            if (asset != null) {
+                Collection<Watchlist> assetWatchlist = asset.getWatchlistCollection();
+                assetWatchlist.remove(wl);
+                asset.setWatchlistCollection(assetWatchlist);
+                em.merge(asset);
+            }
+
+            em.remove(wl);
+        }
     }
+
+    
+    
 
     @Override
     public Collection<Watchlist> getUserWatchlist(int uid) {
@@ -122,10 +152,10 @@ public class UserBean implements UserBeanLocal {
     @Override
     public void placeOrder(int uid, int aid, String orderType, BigDecimal units, BigDecimal amount) {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-          Orders o  = new Orders();
-         Assets asset = em.find(Assets.class, aid);
-         Collection<Orders> orders = asset.getOrdersCollection();
-         Users user = em.find(Users.class,uid);
+        Orders o  = new Orders();
+        Assets asset = em.find(Assets.class, aid);
+        Collection<Orders> orders = asset.getOrdersCollection();
+        Users user = em.find(Users.class,uid);
          o.setUid(user);
          o.setAid(asset);
          o.setOrderType(orderType);

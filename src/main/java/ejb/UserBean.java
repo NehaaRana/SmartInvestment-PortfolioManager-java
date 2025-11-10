@@ -266,12 +266,27 @@ public class UserBean implements UserBeanLocal {
             .setParameter("aid", aid)
             .getResultList();
             Users user = em.find(Users.class,uid);
+            Assets asset = em.find(Assets.class, aid);  
+                    
+            Collection<Portfolio> userUpdatePortfolio = user.getPortfolioCollection();
+            Collection<Portfolio> assetUpdatePortfolio = asset.getPortfolioCollection();
+            
             if (!portfolioList.isEmpty()) {
                 Portfolio p = portfolioList.iterator().next();
                 if (p.getUid().equals(user)) { // ownership check (entity comparison)
                     p.setCurrentValue(currentValue);
                     p.setUpdatedAt(new Date());
+                    
+                    userUpdatePortfolio.add(p);
+                    assetUpdatePortfolio.add(p);
+                    
+                    user.setPortfolioCollection(userUpdatePortfolio);
+                    asset.setPortfolioCollection(assetUpdatePortfolio);
+                    
                     em.merge(p);
+                    
+                    em.merge(user);
+                    em.merge(asset);
                 }
             }
     }

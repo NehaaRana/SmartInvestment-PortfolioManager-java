@@ -78,13 +78,23 @@ public class UserBean implements UserBeanLocal {
         
         Users user = em.find(Users.class,uid);
         Assets asset= em.find(Assets.class,aid);
-        if (user != null && asset != null) {
+         Collection<Watchlist> userWatchlist = user.getWatchlistCollection();
+        Collection<Watchlist> assetsWatchlist = asset.getWatchlistCollection();
+//        if (user != null && asset != null) {
             Watchlist wl = new Watchlist();
             wl.setUid(user);
             wl.setAid(asset);
             wl.setAddedAt(new Date());
+            
+             userWatchlist.add(wl);
+            assetsWatchlist.add(wl);
+            
+            user.setWatchlistCollection(userWatchlist);
+            asset.setWatchlistCollection(assetsWatchlist);
             em.persist(wl);
-        }
+            em.merge(user);
+            em.merge(asset);
+//        }
     
     }
 
@@ -139,6 +149,9 @@ public class UserBean implements UserBeanLocal {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
           Orders o = em.find(Orders.class, oid);
           Users u = em.find(Users.class, uid);
+          Collection<Transactions> orderTransactions = o.getTransactionsCollection();
+          Collection<Transactions> userTransactions = u.getTransactionsCollection();
+          
           Transactions t = new Transactions();
           t.setOid(o);
           t.setUid(u);
@@ -146,7 +159,14 @@ public class UserBean implements UserBeanLocal {
           t.setAmount(amount);
           t.setStatus(status);
           t.setCreatedAt(new Date());
+          orderTransactions.add(t);
+          userTransactions.add(t);
+          
+          o.setTransactionsCollection(orderTransactions);
+          u.setTransactionsCollection(userTransactions);
           em.persist(t);
+          em.merge(o);
+          em.merge(u);
     }
 
     @Override
@@ -165,13 +185,23 @@ public class UserBean implements UserBeanLocal {
         Payments p = new Payments();
         Users u = em.find(Users.class, uid);
         Transactions t = em.find(Transactions.class, tid);
+        Collection<Payments> userPayments = u.getPaymentsCollection();
+        Collection<Payments> transactionPayments =t.getPaymentsCollection();
         p.setUid(u);
         p.setTid(t);
         p.setMethod(method);
         p.setReferenceNo(referenceNo);
         p.setStatus(status);
         p.setCreatedAt(new Date());
+        
+        userPayments.add(p);
+        transactionPayments.add(p);
+        
+        u.setPaymentsCollection(userPayments);
+        t.setPaymentsCollection(transactionPayments);
         em.persist(p);
+        em.merge(u);
+        em.merge(t);
     }
 
     @Override
@@ -216,16 +246,22 @@ public class UserBean implements UserBeanLocal {
     public void createGoal(int uid, String goalName, BigDecimal targetAmt, Date  targetDate) {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
         Users user = em.find(Users.class, uid);
-        if (user != null) {
-            Goals g = new Goals();
+        Collection<Goals> userGoal = user.getGoalsCollection();
+        
+        Goals g = new Goals();
             g.setUid(user);
             g.setGoalName(goalName);
             g.setTargetAmt(targetAmt);
             g.setCurrentAmt(BigDecimal.ZERO);
             g.setTargetDate(targetDate);
             g.setCreatedAt(new Date());
+            
+            userGoal.add(g);
+            
+            user.setGoalsCollection(userGoal);
             em.persist(g);
-        } 
+            
+            em.merge(user); 
     
     }
 
@@ -253,16 +289,23 @@ public class UserBean implements UserBeanLocal {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
         Users u = em.find(Users.class, uid);
         Assets a = em.find(Assets.class, aid);
-
-        if (u != null && a != null) {
+        Collection<Redemptions> userRedemption = u.getRedemptionsCollection();
+        Collection<Redemptions> assetRedemption = a.getRedemptionsCollection();
             Redemptions r = new Redemptions();
             r.setUid(u);
             r.setAid(a);
             r.setUnits(units);
             r.setStatus(status == null ? "PENDING" : status);
+            userRedemption.add(r);
+            assetRedemption.add(r);
+            
+            u.setRedemptionsCollection(userRedemption);
+            a.setRedemptionsCollection(assetRedemption);
 //            r.setExitFeeAmt(BigDecimal.valueOf(exit_fee_amt));
             em.persist(r);
-        }
+            em.merge(u);
+            em.merge(a);
+        
     }
 
     @Override

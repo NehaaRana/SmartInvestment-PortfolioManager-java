@@ -20,7 +20,7 @@ import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.UriInfo;
 import jakarta.ws.rs.Path;
 import jakarta.enterprise.context.RequestScoped;
-import jakarta.persistence.NoResultException;
+import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
@@ -58,6 +58,17 @@ public class UserResource {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
         return ubl.getProfile(uid);
     }
+
+    
+//    @PUT
+//    @Path("updateProfile/{uid}")
+//    @Consumes("application/json")
+//    public void updateProfile(
+//            @PathParam("uid") int uid, Users updatedUser) {
+//            ubl.updateProfile(uid, updatedUser.getFullName(),
+//                               updatedUser.getPhone(),
+//                               updatedUser.getPassword());
+//    }
 
     
     @PUT

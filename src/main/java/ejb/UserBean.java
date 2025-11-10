@@ -114,6 +114,7 @@ public class UserBean implements UserBeanLocal {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
           Orders o  = new Orders();
          Assets asset = em.find(Assets.class, aid);
+         Collection<Orders> orders = asset.getOrdersCollection();
          Users user = em.find(Users.class,uid);
          o.setUid(user);
          o.setAid(asset);
@@ -121,8 +122,11 @@ public class UserBean implements UserBeanLocal {
          o.setUnits(units);
          o.setAmount(amount);
          o.setStatus("PENDING");
+         
+         orders.add(o);
+         asset.setOrdersCollection(orders);
          em.persist(o);
-    
+         em.merge(asset);
     }
 
     @Override

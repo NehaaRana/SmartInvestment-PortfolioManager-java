@@ -57,8 +57,8 @@ public interface AdminBeanLocal {
     //System Insights
     BigDecimal getTotalInvestedAmount();
     BigDecimal getTotalPayouts();
-    int getTotalUsers();
-    int getTotalAssets();
+    long getTotalUsers();
+    long getTotalAssets();
 
     
 }

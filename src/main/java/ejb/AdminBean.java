@@ -254,15 +254,15 @@ public class AdminBean implements AdminBeanLocal {
     }
 
     @Override
-    public int getTotalUsers() {
+    public long getTotalUsers() {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-          return em.createNamedQuery("Users.totalCount",int.class).getSingleResult();
+          return em.createNamedQuery("Users.totalCount",Long.class).getSingleResult();
     }
 
     @Override
-    public int getTotalAssets() {
+    public long getTotalAssets() {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-          return em.createNamedQuery("Assets.totalCount",int.class).getSingleResult();
+          return em.createNamedQuery("Assets.totalCount",Long.class).getSingleResult();
     }
 
     // Add business logic below. (Right-click in editor and choose

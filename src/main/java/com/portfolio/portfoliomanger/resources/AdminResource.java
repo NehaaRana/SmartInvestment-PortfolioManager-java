@@ -223,13 +223,13 @@ public class AdminResource {
 
     @GET
     @Path("getTotalUsers")
-    public int getTotalUsers() {
+    public long getTotalUsers() {
         return abl.getTotalUsers();
     }
 
     @GET
     @Path("getTotalAssets")
-    public int getTotalAssets() {
+    public long getTotalAssets() {
         return abl.getTotalAssets();
     }
 

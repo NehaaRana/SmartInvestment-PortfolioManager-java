@@ -40,6 +40,7 @@ import java.util.Date;
     @NamedQuery(name = "Transactions.findByAmount", query = "SELECT t FROM Transactions t WHERE t.amount = :amount"),
     @NamedQuery(name = "Transactions.findByTxnType", query = "SELECT t FROM Transactions t WHERE t.txnType = :txnType"),
     @NamedQuery(name = "Transactions.findByStatus", query = "SELECT t FROM Transactions t WHERE t.status = :status"),
+    @NamedQuery(name = "Transactions.findByUid", query = "SELECT t FROM Transactions t WHERE t.uid.uid = :uid"),
     @NamedQuery(name = "Transactions.findByCreatedAt", query = "SELECT t FROM Transactions t WHERE t.createdAt = :createdAt")})
 public class Transactions implements Serializable {
 

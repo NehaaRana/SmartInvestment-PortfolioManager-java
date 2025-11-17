@@ -15,12 +15,14 @@ import Entity.Transactions;
 import Entity.Users;
 import Entity.Watchlist;
 import ejb.UserBeanLocal;
+import jakarta.annotation.security.DeclareRoles;
+import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.EJB;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.UriInfo;
 import jakarta.ws.rs.Path;
 import jakarta.enterprise.context.RequestScoped;
-import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
@@ -29,13 +31,13 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import java.math.BigDecimal;
 import java.util.Collection;
-import java.util.Date;
 
 /**
  * REST Web Service
  *
  * @author Admin
  */
+@DeclareRoles({"ADMIN","USER"})
 @Path("User")
 @RequestScoped
 public class UserResource {
@@ -50,15 +52,39 @@ public class UserResource {
     public UserResource() {
     }
     
-    
+//    @RolesAllowed("USER")
     @GET
     @Produces("application/json")
     @Path("getProfile/{uid}")
     public Users getProfile(@PathParam("uid") int uid) {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
         return ubl.getProfile(uid);
+    
     }
-
+    
+//    @RolesAllowed("USER")
+    @PermitAll
+    @POST
+    @Path("register/{fullName}/{email}/{rawPassword}/{phone}")
+    public void register(
+            @PathParam("fullName") String fullName, 
+            @PathParam("email") String email, 
+            @PathParam("rawPassword") String rawPassword, 
+            @PathParam("phone") String phone) {
+            
+        ubl.register(fullName, email, rawPassword, phone);
+        
+    }
+    
+//    @RolesAllowed("USER")
+    @PermitAll
+    @GET
+    @Produces("application/json")
+    @Path("findByEmail/{email}")
+    public Users findByEmail(@PathParam("email") String email) {
+//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return ubl.findByEmail(email);
+    }
     
 //    @PUT
 //    @Path("updateProfile/{uid}")
@@ -71,6 +97,7 @@ public class UserResource {
 //    }
 
     
+    @RolesAllowed("USER")
     @PUT
     @Path("updateProfile/{uid}/{fullName}/{phone}/{password}")
     public void updateProfile(
@@ -84,6 +111,7 @@ public class UserResource {
     }
 
     
+    @RolesAllowed({"ADMIN","USER"})
     @GET
     @Produces("application/json")
     @Path("getAllAssets")
@@ -92,6 +120,7 @@ public class UserResource {
             return ubl.getAllAssets();
     }
 
+    @RolesAllowed("USER")
     @GET
     @Produces("application/json")
     @Path("getAssetById/{aid}")
@@ -100,7 +129,7 @@ public class UserResource {
          return ubl.getAssetById(aid);
     }
 
-    
+    @RolesAllowed("USER")
     @POST
     @Path("addToWatchlist/{uid}/{aid}")
     public void addToWatchlist(@PathParam("uid") int uid,@PathParam("aid") int aid) {
@@ -109,6 +138,7 @@ public class UserResource {
        ubl.addToWatchlist(uid, aid);
     }
 
+    @RolesAllowed("USER")
     @DELETE
     @Path("removeFromWatchlist/{wid}")
     public void removeFromWatchlist(@PathParam("wid") int wid) {
@@ -118,6 +148,7 @@ public class UserResource {
     
     }
 
+    @RolesAllowed("USER")
     @GET
     @Produces("application/json")
     @Path("getUserWatchlist/{uid}")
@@ -126,6 +157,7 @@ public class UserResource {
         return ubl.getUserWatchlist(uid);
     }
 
+    @RolesAllowed("USER")
     @POST
     @Path("placeOrder/{uid}/{aid}/{orderType}/{units}/{amount}")
     public void placeOrder(
@@ -140,6 +172,7 @@ public class UserResource {
     }
 
     
+    @RolesAllowed("USER")
     @GET
     @Produces("application/json")
     @Path("getUserOrders/{uid}")
@@ -148,6 +181,7 @@ public class UserResource {
        return ubl.getUserOrders(uid);
     }
 
+    @RolesAllowed("USER")
     @POST
     @Path("recordTransaction/{oid}/{uid}/{amount}/{txnType}/{status}")
     public void recordTransaction(
@@ -160,6 +194,7 @@ public class UserResource {
          ubl.recordTransaction(oid, uid, amount, txnType, status);
     }
 
+    @RolesAllowed("USER")
     @GET
     @Produces("application/json")
     @Path("getUserTransactions/{uid}")
@@ -169,6 +204,7 @@ public class UserResource {
         return ubl.getUserTransactions(uid);
     }
 
+    @RolesAllowed("USER")
     @POST
     @Path("makePayment/{uid}/{tid}/{method}/{referenceNo}/{status}")
     public void makePayment(
@@ -181,6 +217,7 @@ public class UserResource {
         ubl.makePayment(uid, tid, method, referenceNo, status);
     }
 
+    @RolesAllowed("USER")
     @GET
     @Produces("application/json")
     @Path("getUserPayments/{uid}")
@@ -191,6 +228,7 @@ public class UserResource {
     
     }
 
+    @RolesAllowed("USER")
     @GET
     @Produces("application/json")
     @Path("getUserPortfolio/{uid}")
@@ -200,6 +238,7 @@ public class UserResource {
     }
 
     
+    @RolesAllowed("USER")
     @PUT
     @Path("updatePortfolioValue/{uid}/{aid}/{currentValue}")
     public void updatePortfolioValue(
@@ -211,18 +250,24 @@ public class UserResource {
     }
 
     
+    @RolesAllowed("USER")
     @POST
     @Path("createGoal/{uid}/{goalName}/{targetAmt}/{targetDate}")
     public void createGoal(
             @PathParam("uid") int uid, 
             @PathParam("goalName") String goalName,
             @PathParam("targetAmt") BigDecimal targetAmt, 
-            @PathParam("targetDate") Date  targetDate) {
-//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-        ubl.createGoal(uid, goalName, targetAmt, targetDate);
+            @PathParam("targetDate") String  targetDateStr ) {
+//          throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        
+//            Date targetDate = Date.valueOf(targetDateStr); // yyyy-MM-dd format
+            java.sql.Date targetDate = java.sql.Date.valueOf(targetDateStr); // yyyy-MM-dd format
+
+            ubl.createGoal(uid, goalName, targetAmt, targetDate);
     
     }
     
+    @RolesAllowed("USER")
     @PUT
     @Path("updateGoalProgress/{goalId}/{currentAmt}")
     public void updateGoalProgress(@PathParam("goalId") int goalId,@PathParam("currentAmt") BigDecimal currentAmt) {
@@ -231,6 +276,7 @@ public class UserResource {
     }
 
     
+    @RolesAllowed("USER")
     @GET
     @Produces("application/json")
     @Path("getUserGoals/{uid}")
@@ -239,6 +285,7 @@ public class UserResource {
          return ubl.getUserGoals(uid);
     }
 
+    @RolesAllowed("USER")
     @POST
     @Path("requestRedemption/{uid}/{aid}/{units}/{status}")
     public void requestRedemption(
@@ -251,6 +298,7 @@ public class UserResource {
     }
 
     
+    @RolesAllowed("USER")
     @GET
     @Produces("application/json")
     @Path("getUserRedemptions/{uid}")
@@ -259,6 +307,7 @@ public class UserResource {
        return ubl.getUserRedemptions(uid);
     }
 
+    @RolesAllowed("USER")
     @GET
     @Produces("application/json")
     @Path("getUserPayouts/{uid}")

@@ -11,110 +11,93 @@
                 margin: 0;
                 padding: 0;
             }
-
             .container {
                 width: 400px;
                 margin: 100px auto;
-                background: #ffffff;
+                background: white;
                 padding: 30px;
                 border-radius: 10px;
                 box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             }
-
             h2 {
                 text-align: center;
                 color: #333;
                 margin-bottom: 25px;
             }
-
-            .form-field {
-                margin-bottom: 15px;
-            }
-
             label {
-                display: block;
-                margin-bottom: 5px;
-                color: #444;
                 font-weight: bold;
+                margin-bottom: 5px;
+                display: block;
+                color: #444;
             }
-
-            input[type="text"], input[type="password"] {
+            .field {
+                margin-bottom: 16px;
+            }
+            input {
                 width: 100%;
                 padding: 8px;
                 border: 1px solid #ccc;
                 border-radius: 5px;
                 box-sizing: border-box;
             }
-
-            input[type="submit"] {
+            .btn {
                 width: 100%;
-                background: #007bff;
-                border: none;
-                color: white;
                 padding: 10px;
-                font-size: 16px;
+                background: #007bff;
+                color: white;
+                border: none;
+                margin-top: 10px;
                 border-radius: 5px;
                 cursor: pointer;
-                margin-top: 10px;
             }
-
-            input[type="submit"]:hover {
+            .btn:hover {
                 background: #0056b3;
             }
-
-            .error {
-                color: red;
-                font-size: 13px;
-            }
-
-            .message {
+            .error-msg {
                 text-align: center;
-                color: green;
+                color: red;
                 margin-top: 10px;
                 font-weight: bold;
-            }
-
-            .link {
-                text-align: center;
-                margin-top: 15px;
-            }
-
-            .link a {
-                color: #007bff;
-                text-decoration: none;
-            }
-
-            .link a:hover {
-                text-decoration: underline;
             }
         </style>
     </h:head>
     <h:body>
-        <div class="container">
+      <div class="container">
             <h2>User Login</h2>
+               <form method="POST">
+         <table border="1" cellpadding="8" cellspacing="0">
 
-            <h:form>
-                <div class="form-field">
-                    <label for="email">Email</label>
-                    <h:inputText id="email" value="#{userManageBean.email}" required="true" requiredMessage="Email is required" />
-                    <h:message for="email" styleClass="error" />
-                </div>
+             <tr>
+                <td>Email</td>
+                <td>
+                    <input type="text" name="email" value="" />
+                </td>
+            </tr>
 
-                <div class="form-field">
-                    <label for="pwd">Password</label>
-                    <h:inputSecret id="pwd" value="#{userManageBean.password}" required="true" requiredMessage="Password is required" />
-                    <h:message for="pwd" styleClass="error" />
-                </div>
+            <tr>
+                <td>Password</td>
+                <td>
+                    <input type="password" name="password" value="" />
+                </td>
+            </tr>
 
-                <h:commandButton value="Login" action="#{userManageBean.login}" />
-                <h:outputText value="#{userManageBean.msg}" styleClass="message" />
+            <tr>
+                <td>
+                    <input type="submit" value="Login" />
+                </td>
+                <td>
+                    <input type="reset" value="Reset" />
+                </td>
+            </tr>
 
-                <div class="link">
-                    <p>Don't have an account?
-                        <h:link value="Register here" outcome="register.xhtml" />
-                    </p>
-                </div>
-            </h:form>
+        </table>
+    </form>
+
+    <br/>
+
+    <!-- Show error from SecureAuthentication -->
+   
+
         </div>
     </h:body>
 </html>

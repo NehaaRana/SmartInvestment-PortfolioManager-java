@@ -131,10 +131,20 @@ public class UserClient {
         webTarget.path(java.text.MessageFormat.format("removeFromWatchlist/{0}", new Object[]{wid})).request().delete();
     }
 
+    public <T> T findByEmail(Class<T> responseType, String email) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path(java.text.MessageFormat.format("findByEmail/{0}", new Object[]{email}));
+        return resource.request(jakarta.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+    }
+
     public <T> T getAllAssets(Class<T> responseType) throws ClientErrorException {
         WebTarget resource = webTarget;
         resource = resource.path("getAllAssets");
         return resource.request(jakarta.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+    }
+
+    public void register(String fullName, String email, String rawPassword, String phone) throws ClientErrorException {
+        webTarget.path(java.text.MessageFormat.format("register/{0}/{1}/{2}/{3}", new Object[]{fullName, email, rawPassword, phone})).request().post(null);
     }
 
     public void close() {

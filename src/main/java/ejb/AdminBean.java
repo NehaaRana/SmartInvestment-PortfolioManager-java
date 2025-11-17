@@ -13,25 +13,28 @@ import Entity.Portfolio;
 import Entity.Redemptions;
 import Entity.Transactions;
 import Entity.Users;
+import jakarta.annotation.security.DeclareRoles;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 
 /**
  *
  * @author User
  */
 @Stateless
+@DeclareRoles({"ADMIN","USER"})
 public class AdminBean implements AdminBeanLocal {
 
     @PersistenceContext(unitName="my_pu")
     EntityManager em;
     
     @Override
+    @RolesAllowed("ADMIN")
     public void addUser(String fullName, String email, String password, String phone, int gid) {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
         Users u = new Users();
@@ -45,12 +48,14 @@ public class AdminBean implements AdminBeanLocal {
         em.persist(u);
     }
 
-    @Override
-    public void updateUser(int uid, String fullName, String phone) {
-//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+//    @Override
+//  
+//    public void updateUser(int uid, String fullName, String phone) {
+////        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+//    }
 
     @Override
+    @RolesAllowed("ADMIN")
     public void deleteUser(int uid) {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
         Users u = em.find(Users.class, uid);
@@ -60,18 +65,21 @@ public class AdminBean implements AdminBeanLocal {
     }
 
     @Override
+    @RolesAllowed("ADMIN")
     public Collection<Users> getAllUsers() {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
           return em.createNamedQuery("Users.findAll",Users.class).getResultList();
     }
 
     @Override
+    @RolesAllowed("ADMIN")
     public Users findUserById(int uid) {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
           return em.find(Users.class, uid);
     }
 
     @Override
+    @RolesAllowed("ADMIN")
     public void addAsset(String symbol, String name, String type, BigDecimal currentPrice, String status, String risk) {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
         Assets a = new Assets();
@@ -86,6 +94,7 @@ public class AdminBean implements AdminBeanLocal {
     }
 
     @Override
+    @RolesAllowed("ADMIN")
     public void updateAssetPrice(int aid, BigDecimal newPrice) {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
         Assets a = em.find(Assets.class, aid);
@@ -104,6 +113,7 @@ public class AdminBean implements AdminBeanLocal {
     }
 
     @Override
+    @RolesAllowed("ADMIN")
     public void updateAssetStatus(int aid, String status) {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
           Assets a = em.find(Assets.class, aid);
@@ -114,30 +124,35 @@ public class AdminBean implements AdminBeanLocal {
     }
 
     @Override
+    @RolesAllowed("ADMIN")
     public Collection<Assets> getAllAssets() {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
           return em.createNamedQuery("Assets.findAll").getResultList();
     }
 
     @Override
+    @RolesAllowed("ADMIN")
     public Assets findAssetById(int aid) {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
           return em.find((Assets.class), aid);
     }
 
     @Override
+    @RolesAllowed("ADMIN")
     public Collection<Orders> getAllOrders() {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
           return em.createNamedQuery("Orders.findAll").getResultList();
     }
 
     @Override
+    @RolesAllowed("ADMIN")
     public Collection<Transactions> getAllTransactions() {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
           return em.createNamedQuery("Transactions.findAll").getResultList();
     }
 
     @Override
+    @RolesAllowed("ADMIN")
     public void updateOrderStatus(int oid, String status) {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
         Orders o = em.find(Orders.class, oid);
@@ -148,6 +163,7 @@ public class AdminBean implements AdminBeanLocal {
     }
 
     @Override
+    @RolesAllowed("ADMIN")
     public void updateTransactionStatus(int tid, String status) {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
         Transactions t = em.find(Transactions.class, tid);
@@ -158,12 +174,14 @@ public class AdminBean implements AdminBeanLocal {
     }
 
     @Override
+    @RolesAllowed("ADMIN")
     public Collection<Payments> getAllPayments() {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
           return em.createNamedQuery("Payments.findAll").getResultList();
     }
 
     @Override
+    @RolesAllowed("ADMIN")
     public void updatePaymentStatus(int pid, String status) {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
           Payments p = em.find(Payments.class, pid);
@@ -174,12 +192,14 @@ public class AdminBean implements AdminBeanLocal {
     }
 
     @Override
+    @RolesAllowed("ADMIN")
     public Collection<Redemptions> getAllRedemptions() {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
           return em.createNamedQuery("Redemptions.findAll",Redemptions.class).getResultList();
     }
 
     @Override
+    @RolesAllowed("ADMIN")
     public void approveRedemption(int rid) {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
         Redemptions r = em.find(Redemptions.class, rid);
@@ -194,6 +214,7 @@ public class AdminBean implements AdminBeanLocal {
     }
 
     @Override
+    @RolesAllowed("ADMIN")
     public void rejectRedemption(int rid) {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
         Redemptions r = em.find(Redemptions.class, rid);
@@ -204,6 +225,7 @@ public class AdminBean implements AdminBeanLocal {
     }
 
     @Override
+    @RolesAllowed("ADMIN")
     public void addPayout(int rid, int uid, BigDecimal amount, String referenceNo, String status) {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
         Users u = (Users) em.find(Users.class,uid);
@@ -238,12 +260,14 @@ public class AdminBean implements AdminBeanLocal {
     }
 
     @Override
+    @RolesAllowed("ADMIN")
     public Collection<Payouts> getAllPayouts() {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
           return em.createNamedQuery("Payouts.findAll",Payouts.class).getResultList();
     }
 
     @Override
+    @RolesAllowed("ADMIN")
     public void updatePayoutStatus(int payId, String status) {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
           Payouts p = em.find(Payouts.class, payId);
@@ -254,12 +278,14 @@ public class AdminBean implements AdminBeanLocal {
     }
 
     @Override
+    @RolesAllowed("ADMIN")
     public BigDecimal getTotalInvestedAmount() {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
           return em.createNamedQuery("Orders.totalInvested",BigDecimal.class).getSingleResult();
     }
 
     @Override
+    @RolesAllowed("ADMIN")
     public BigDecimal getTotalPayouts() {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
           return em.createNamedQuery("Payouts.totalAmount",BigDecimal.class).getSingleResult();
@@ -272,6 +298,7 @@ public class AdminBean implements AdminBeanLocal {
     }
 
     @Override
+    @RolesAllowed("ADMIN")
     public long getTotalAssets() {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
           return em.createNamedQuery("Assets.totalCount",Long.class).getSingleResult();

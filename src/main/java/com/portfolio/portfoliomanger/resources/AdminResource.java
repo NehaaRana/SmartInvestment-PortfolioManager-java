@@ -5,19 +5,18 @@
 package com.portfolio.portfoliomanger.resources;
 
 import Entity.Assets;
-import Entity.GroupMaster;
 import Entity.Orders;
 import Entity.Payments;
 import Entity.Payouts;
-import Entity.Portfolio;
 import Entity.Redemptions;
 import Entity.Transactions;
 import Entity.Users;
 import ejb.AdminBeanLocal;
+import jakarta.annotation.security.DeclareRoles;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.EJB;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.UriInfo;
-import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.PUT;
@@ -26,16 +25,15 @@ import jakarta.enterprise.context.RequestScoped;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PathParam;
-import jakarta.ws.rs.core.MediaType;
 import java.math.BigDecimal;
 import java.util.Collection;
-import java.util.Date;
 
 /**
  * REST Web Service
  *
  * @author User
  */
+@DeclareRoles({"ADMIN","USER"})
 @Path("Admin")
 @RequestScoped
 public class AdminResource {
@@ -49,7 +47,8 @@ public class AdminResource {
      */
     public AdminResource() {
     }
-
+    
+    @RolesAllowed("ADMIN")
     @POST
     @Path("addUser/{fullName}/{email}/{password}/{phone}/{gid}")
     public void addUser(@PathParam("fullName") String fullName,
@@ -66,18 +65,21 @@ public class AdminResource {
 ////        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
 //    }
 
+    @RolesAllowed("ADMIN")
     @DELETE
     @Path("deleteUser/{uid}")
     public void deleteUser(@PathParam("uid") int uid) {
         abl.deleteUser(uid);
     }
 
+    @RolesAllowed("ADMIN")
     @GET
     @Produces("application/json")
     public Collection<Users> getAllUsers() {
         return abl.getAllUsers();
     }
 
+    @RolesAllowed("ADMIN")
     @GET
     @Produces("application/json")
     @Path("findUserById/{uid}")
@@ -85,6 +87,7 @@ public class AdminResource {
         return abl.findUserById(uid);
     }
 
+    @RolesAllowed("ADMIN")
     @POST
     @Path("addAsset/{symbol}/{name}/{type}/{currentPrice}/{status}/{risk}")
     public void addAsset(@PathParam("symbol") String symbol,
@@ -96,6 +99,7 @@ public class AdminResource {
         abl.addAsset(symbol, name, type, currentPrice, status, risk);
     }
 
+    @RolesAllowed("ADMIN")
     @PUT
     @Path("updateAssetPrice/{aid}/{newPrice}")
     public void updateAssetPrice(@PathParam("aid") int aid, 
@@ -103,6 +107,7 @@ public class AdminResource {
         abl.updateAssetPrice(aid, newPrice);
     }
     
+    @RolesAllowed("ADMIN")
     @PUT
     @Path("updateAssetStatus/{aid}/{status}")
     public void updateAssetStatus(@PathParam("aid") int aid, 
@@ -110,6 +115,7 @@ public class AdminResource {
         abl.updateAssetStatus(aid, status);
     }
 
+    @RolesAllowed("ADMIN")
     @GET
     @Path("getAllAssets")
     @Produces("application/json")
@@ -117,6 +123,7 @@ public class AdminResource {
         return abl.getAllAssets();
     }
 
+    @RolesAllowed("ADMIN")
     @GET
     @Path("findAssetById/{aid}")
     @Produces("application/json")
@@ -124,6 +131,7 @@ public class AdminResource {
         return abl.findAssetById(aid);
     }
 
+    @RolesAllowed("ADMIN")
     @GET
     @Path("getAllOrders")
     @Produces("application/json")
@@ -131,6 +139,7 @@ public class AdminResource {
         return abl.getAllOrders();
     }
 
+    @RolesAllowed("ADMIN")
     @GET
     @Path("getAllTransactions")
     @Produces("application/json")
@@ -138,6 +147,7 @@ public class AdminResource {
         return abl.getAllTransactions();
     }
 
+    @RolesAllowed("ADMIN")
     @PUT
     @Path("updateOrderStatus/{oid}/{status}")
     public void updateOrderStatus(@PathParam("oid") int oid,
@@ -145,6 +155,7 @@ public class AdminResource {
         abl.updateOrderStatus(oid, status);
     }
 
+    @RolesAllowed("ADMIN")
     @PUT
     @Path("updateTransactionStatus/{tid}/{status}")
     public void updateTransactionStatus(@PathParam("tid") int tid,
@@ -152,6 +163,7 @@ public class AdminResource {
         abl.updateTransactionStatus(tid, status);
     }
 
+    @RolesAllowed("ADMIN")
     @GET
     @Path("getAllPayments")
     @Produces("application/json")
@@ -159,6 +171,7 @@ public class AdminResource {
         return abl.getAllPayments();
     }
 
+    @RolesAllowed("ADMIN")
     @PUT
     @Path("updatePaymentStatus/{pid}/{status}")
     public void updatePaymentStatus(@PathParam("pid") int pid,
@@ -166,6 +179,7 @@ public class AdminResource {
         abl.updatePaymentStatus(pid, status);
     }
 
+    @RolesAllowed("ADMIN")
     @GET
     @Path("getAllRedemptions")
     @Produces("application/json")
@@ -173,18 +187,21 @@ public class AdminResource {
         return abl.getAllRedemptions();
     }
 
+    @RolesAllowed("ADMIN")
     @PUT
     @Path("approveRedemption/{rid}")
     public void approveRedemption(@PathParam("rid") int rid) {
         abl.approveRedemption(rid);
     }
 
+    @RolesAllowed("ADMIN")
     @PUT
     @Path("rejectRedemption/{rid}")
     public void rejectRedemption(@PathParam("rid") int rid) {
         abl.rejectRedemption(rid);
     }
 
+    @RolesAllowed("ADMIN")
     @POST
     @Path("addPayout/{rid}/{uid}/{amount}/{referenceNo}/{status}/")
     public void addPayout(@PathParam("rid") int rid, 
@@ -195,6 +212,7 @@ public class AdminResource {
         abl.addPayout(rid, uid, amount, referenceNo, status);
     }
 
+    @RolesAllowed("ADMIN")
     @GET
     @Path("getAllPayouts")
     @Produces("application/json")
@@ -202,6 +220,7 @@ public class AdminResource {
         return abl.getAllPayouts();
     }
 
+    @RolesAllowed("ADMIN")
     @PUT
     @Path("updatePayoutStatus/{payId}/{status}")
     public void updatePayoutStatus(@PathParam("payId") int payId,
@@ -209,24 +228,28 @@ public class AdminResource {
         abl.updatePayoutStatus(payId, status);
     }
 
+    @RolesAllowed("ADMIN")
     @GET
     @Path("getTotalInvestedAmount")
     public BigDecimal getTotalInvestedAmount() {
         return abl.getTotalInvestedAmount();
     }
 
+    @RolesAllowed("ADMIN")
     @GET
     @Path("getTotalPayouts")
     public BigDecimal getTotalPayouts() {
         return abl.getTotalPayouts();
     }
 
+    @RolesAllowed("ADMIN")
     @GET
     @Path("getTotalUsers")
     public long getTotalUsers() {
         return abl.getTotalUsers();
     }
 
+    @RolesAllowed("ADMIN")
     @GET
     @Path("getTotalAssets")
     public long getTotalAssets() {

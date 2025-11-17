@@ -23,7 +23,7 @@ import java.util.Collection;
 public interface AdminBeanLocal {
     //User Management
     void addUser(String fullName, String email, String password, String phone, int gid);
-    void updateUser(int uid, String fullName, String phone);
+//    void updateUser(int uid, String fullName, String phone);
     void deleteUser(int uid);
     Collection<Users> getAllUsers();
     Users findUserById(int uid);

@@ -27,8 +27,10 @@ import java.util.Date;
 public interface UserBeanLocal {
     
 // User Self-Management
+    void register(String fullName, String email, String rawPassword, String phone);
     Users getProfile(int uid);
     void updateProfile(int uid, String fullName, String phone, String password);
+    Users findByEmail(String email);
 
     
 // Asset & Watchlist

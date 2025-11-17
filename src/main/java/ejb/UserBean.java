@@ -6,6 +6,7 @@ package ejb;
 
 import Entity.Assets;
 import Entity.Goals;
+import Entity.GroupMaster;
 import Entity.Orders;
 import Entity.Payments;
 import Entity.Payouts;
@@ -14,10 +15,14 @@ import Entity.Redemptions;
 import Entity.Transactions;
 import Entity.Users;
 import Entity.Watchlist;
+import jakarta.annotation.security.DeclareRoles;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.Stateless;
+import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
+import jakarta.security.enterprise.identitystore.Pbkdf2PasswordHash;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
@@ -27,11 +32,32 @@ import java.util.Date;
  * @author Admin
  */
 @Stateless
+@DeclareRoles({"ADMIN","USER"})
 public class UserBean implements UserBeanLocal {
     @PersistenceContext(unitName="my_pu")
     EntityManager em;
+    
+    
+    @Inject
+    Pbkdf2PasswordHash passwordHasher;
+    
+    @Override
+//    @RolesAllowed("USER")
+    public void register(String fullName, String email, String rawPassword, String phone) {
+
+        String hashedPassword = passwordHasher.generate(rawPassword.toCharArray());
+        GroupMaster g = em.find(GroupMaster.class, 2);
+        Users u = new Users();
+        u.setFullName(fullName);
+        u.setEmail(email);
+        u.setPassword(hashedPassword);
+        u.setPhone(phone);
+        u.setGid(g);
+        em.persist(u);
+    }
 
     @Override
+    @RolesAllowed("USER")
     public Users getProfile(int uid) {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
         return em.find(Users.class, uid);
@@ -39,6 +65,7 @@ public class UserBean implements UserBeanLocal {
     }
 
     @Override
+    @RolesAllowed("USER")
     public void updateProfile(int uid, String fullName, String phone, String password) {
 //      throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
         Users u = em.find(Users.class, uid);
@@ -52,6 +79,7 @@ public class UserBean implements UserBeanLocal {
     }
 
     @Override
+    @RolesAllowed({"USER","ADMIN"})
     public Collection<Assets> getAllAssets() {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
         Collection<Assets> assets = em.createNamedQuery("Assets.findAll").getResultList();
@@ -59,6 +87,7 @@ public class UserBean implements UserBeanLocal {
     }
 
     @Override
+    @RolesAllowed("USER")
     public Assets getAssetById(int aid) {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
          try {
@@ -73,6 +102,7 @@ public class UserBean implements UserBeanLocal {
     
     
     @Override
+    @RolesAllowed("USER")
     public void addToWatchlist(int uid, int aid) {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
         
@@ -111,6 +141,7 @@ public class UserBean implements UserBeanLocal {
     
     
     @Override
+    @RolesAllowed("USER")
     public void removeFromWatchlist(int  wid) {
         Watchlist wl = em.find(Watchlist.class, wid);
 
@@ -140,6 +171,7 @@ public class UserBean implements UserBeanLocal {
     
 
     @Override
+    @RolesAllowed("USER")
     public Collection<Watchlist> getUserWatchlist(int uid) {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
         Collection<Watchlist> watchlist=em.createNamedQuery("Watchlist.findByUser", Watchlist.class)
@@ -150,6 +182,7 @@ public class UserBean implements UserBeanLocal {
     }
 
     @Override
+    @RolesAllowed("USER")
     public void placeOrder(int uid, int aid, String orderType, BigDecimal units, BigDecimal amount) {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
         Orders o  = new Orders();
@@ -170,6 +203,7 @@ public class UserBean implements UserBeanLocal {
     }
 
     @Override
+    @RolesAllowed("USER")
     public Collection<Orders> getUserOrders(int uid) {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
         Collection<Orders> orders=em.createNamedQuery("Orders.findByUid",Orders.class)
@@ -179,6 +213,7 @@ public class UserBean implements UserBeanLocal {
     }
 
     @Override
+    @RolesAllowed("USER")
     public void recordTransaction(int oid, int uid, BigDecimal amount, String txnType, String status) {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
           Orders o = em.find(Orders.class, oid);
@@ -204,6 +239,7 @@ public class UserBean implements UserBeanLocal {
     }
 
     @Override
+    @RolesAllowed("USER")
     public Collection<Transactions> getUserTransactions(int uid) {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
         Collection<Transactions> transactions=em.createNamedQuery("Transactions.findByUid",Transactions.class)
@@ -214,6 +250,7 @@ public class UserBean implements UserBeanLocal {
     }
 
     @Override
+    @RolesAllowed("USER")
     public void makePayment(int uid, int tid, String method, String referenceNo, String status) {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
         Payments p = new Payments();
@@ -239,6 +276,7 @@ public class UserBean implements UserBeanLocal {
     }
 
     @Override
+    @RolesAllowed("USER")
     public Collection<Payments> getUserPayments(int uid) {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
         Collection<Payments> payments=em.createNamedQuery("Payments.findByUser", Payments.class)
@@ -250,6 +288,7 @@ public class UserBean implements UserBeanLocal {
     }
 
     @Override
+    @RolesAllowed("USER")
     public Collection<Portfolio> getUserPortfolio(int uid) {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
             Collection<Portfolio> portfolio = em.createNamedQuery("Portfolio.findByUser",Portfolio.class)
@@ -259,6 +298,7 @@ public class UserBean implements UserBeanLocal {
     }
 
     @Override
+    @RolesAllowed("USER")
     public void updatePortfolioValue(int uid, int aid, BigDecimal currentValue) {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
             Collection<Portfolio> portfolioList = em.createNamedQuery("Portfolio.findByUserAsset", Portfolio.class)
@@ -292,6 +332,7 @@ public class UserBean implements UserBeanLocal {
     }
 
     @Override
+    @RolesAllowed("USER")
     public void createGoal(int uid, String goalName, BigDecimal targetAmt, Date  targetDate) {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
         Users user = em.find(Users.class, uid);
@@ -315,6 +356,7 @@ public class UserBean implements UserBeanLocal {
     }
 
     @Override
+    @RolesAllowed("USER")
     public void updateGoalProgress(int goalId, BigDecimal currentAmt) {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
         Goals g = em.find(Goals.class, goalId);
@@ -325,6 +367,7 @@ public class UserBean implements UserBeanLocal {
     }
 
     @Override
+    @RolesAllowed("USER")
     public Collection<Goals> getUserGoals(int uid) {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
         Collection<Goals> goals = em.createNamedQuery("Goals.findByUser",Goals.class)
@@ -334,6 +377,7 @@ public class UserBean implements UserBeanLocal {
     }
 
     @Override
+    @RolesAllowed("USER")
     public void requestRedemption(int uid, int aid, BigDecimal units, String status) {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
         Users u = em.find(Users.class, uid);
@@ -358,6 +402,7 @@ public class UserBean implements UserBeanLocal {
     }
 
     @Override
+    @RolesAllowed("USER")
     public Collection<Redemptions> getUserRedemptions(int uid) {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
         return em.createNamedQuery("Redemptions.findByUser",Redemptions.class)
@@ -366,12 +411,26 @@ public class UserBean implements UserBeanLocal {
     }
 
     @Override
+    @RolesAllowed("USER")
     public Collection<Payouts> getUserPayouts(int uid) {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
         return em.createNamedQuery("Payouts.findByUser", Payouts.class)
                  .setParameter("uid", uid)
                  .getResultList();
     
+    }
+
+    @Override
+//    @RolesAllowed("USER")
+    public Users findByEmail(String email) {
+//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try {
+        return em.createNamedQuery("Users.findByEmail", Users.class)
+                 .setParameter("email", email)
+                 .getSingleResult();
+    } catch (NoResultException e) {
+        return null;   // No user found
+    }
     }
     
     

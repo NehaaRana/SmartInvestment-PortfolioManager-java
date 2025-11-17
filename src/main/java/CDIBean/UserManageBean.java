@@ -5,12 +5,10 @@
 package CDIBean;
 
 import Entity.Users;
-import ejb.UserBeanLocal;
-import jakarta.ejb.EJB;
+import client.UserClient;
 import jakarta.inject.Named;
 import jakarta.enterprise.context.RequestScoped;
-import jakarta.faces.context.FacesContext;
-import jakarta.servlet.http.HttpSession;
+import jakarta.inject.Inject;
 
 /**
  *
@@ -24,9 +22,10 @@ public class UserManageBean {
      * Creates a new instance of UserManageBean
      */
     
-    @EJB 
-    private UserBeanLocal ubl;
-    
+//    UserClient ul;
+
+    @Inject
+    private UserClient ul;
     String fullName;
     String email;
     String password;
@@ -39,82 +38,56 @@ public class UserManageBean {
 
     public void setMsg(String msg) {
         this.msg = msg;
-    }
+    }   
     
-//    public String register(){
-//        try{
-//            ubl.registerUser(fullName, email, password, phone);
-//            msg="User Register Successfully";
-//             //  store username in session
-//            FacesContext.getCurrentInstance().getExternalContext()
-//                    .getSessionMap().put("username", fullName);
-//            return "Login"; //navigate to index.xhtml
-//            
-//        }catch(Exception ex){
-//            msg="Error Occur while regsiter. " + ex.getMessage();
-//            ex.printStackTrace();
-//        }
-//        
-//        return null;
-//    }
+    public String register() {
+            try {
+                ul.register(fullName, email, password, phone);
+
+                msg = "Registration successful!";
+                reset();
+                return "Login?faces-redirect=true";
+
+            } catch (Exception ex) {
+                if (ex.getMessage().contains("Email already exists")) {
+                    msg = "Email is already registered!";
+                } else {
+                    msg = "Error occurred: " + ex.getMessage();
+                }
+                return null;
+            }
+        }
+
     
-    
-//    public String login(){
-//        try{
-//        
-//            Users user=ubl.findByEmail(email);
-//           if(user!= null && user.getPassword().equals(password)){
-//               HttpSession session  = (HttpSession) FacesContext.getCurrentInstance()
-//                       .getExternalContext().getSession(true);
-//               session.setAttribute("username",user.getFullName()!= null ? user.getFullName() : email);
-//               return "index";
-//           }else{
-//               msg = "Username and/or password is incorrect";
-//               return null; // stay on login page
-//           }
-//        }catch(Exception ex){
-//            msg = "Username and/or password is incorrect";
-//            ex.printStackTrace();
-//            return null;
-//        }
-//       
-//        
-//        
-//    }
-    
-//    public String login(){
-//        try{
-//        
-////            Users user=ubl.findByEmail(email);
-//           if(user!= null && user.getPassword().equals(password)){
-//               HttpSession session  = (HttpSession) FacesContext.getCurrentInstance()
-//                       .getExternalContext().getSession(true);
-//               session.setAttribute("username",user.getFullName()!= null ? user.getFullName() : email);
-//               session.setAttribute("role", user.getGid().getGroupName());
-////               return "index";
-//            String role = user.getGid().getGroupName();
+//    public String register() {
+//        UserClient ul= new UserClient();
+//        try {
+//            // Check if email already exists
+//                    Users existing = ul.findByEmail(Users.class,email);
+//                    if (existing != null) {
+//                        msg = "Email already registered!";
+//                        return null;
+//                    }
 //
-//                if ("ADMIN".equalsIgnoreCase(role)) {
-//                    return "Admin/AdminDashboard?faces-redirect=true";
-//                } else {
-//                    return "User/UserDashboard?faces-redirect=true";
+//                    // Call EJB to create user (internally hashes password)
+//                    ul.register(fullName, email, password, phone);
+//
+//                    msg = "Registration Successful! Now you can login.";
+//
+//                    // clear form
+//                    reset();
+//
+//                    return "Login?faces-redirect=true";
+//
+//                } catch (Exception ex) {
+//                    msg = "Error occurred during registration: " + ex.getMessage();
+//                    ex.printStackTrace();
+//                    return null;
 //                }
-//            }else {
-//                msg = "Username and/or password is incorrect";
-//                return null;
-//            }
-//           
-//        }catch(Exception ex){
-//            msg = "Username and/or password is incorrect";
-//            ex.printStackTrace();
-//            return null;
 //        }
-//       
-//        
-//        
-//    }
     
     
+
     
 //    public String logout() {
 //        HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
@@ -169,6 +142,7 @@ public class UserManageBean {
     
     
     public UserManageBean() {
+          
     }
     
 }

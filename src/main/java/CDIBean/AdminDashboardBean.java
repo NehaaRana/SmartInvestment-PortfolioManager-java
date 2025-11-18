@@ -6,11 +6,13 @@ package CDIBean;
 
 import Entity.Assets;
 import client.AdminClient;
+import jakarta.annotation.PostConstruct;
 import jakarta.inject.Named;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import java.math.BigDecimal;
 import java.util.Collection;
+import record.keepRecord;
 
 /**
  *
@@ -23,9 +25,12 @@ public class AdminDashboardBean {
     /**
      * Creates a new instance of AdminDashboardBean
      */
-    @Inject
-    private  AdminClient ac;
-    
+    @Inject keepRecord keepRecord;
+    AdminClient ac;
+    @PostConstruct
+    public void init() {
+        ac = new AdminClient(keepRecord.getToken());
+    }
     
     public Collection<Assets> getAllAssets() {
         return ac.getAllAssets();
@@ -48,5 +53,4 @@ public class AdminDashboardBean {
         return ac.getTotalPayouts(BigDecimal.class);
     }
     
-
 }

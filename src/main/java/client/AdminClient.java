@@ -5,14 +5,13 @@
 package client;
 
 import Entity.Assets;
-import jakarta.inject.Inject;
+import Filter.MyFilter;
 import jakarta.ws.rs.ClientErrorException;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.WebTarget;
 import jakarta.ws.rs.core.GenericType;
 import jakarta.ws.rs.core.MediaType;
 import java.util.Collection;
-import record.keepRecord;
 
 /**
  * Jersey REST client generated for REST resource:AdminResource [Admin]<br>
@@ -31,14 +30,18 @@ public class AdminClient {
     private WebTarget webTarget;
     private Client client;
     private static final String BASE_URI = "http://localhost:8080/PortfolioManager/resources";
-    @Inject
-    private keepRecord kr;
 
-    public AdminClient() {
+//    public AdminClient() {
+//        client = jakarta.ws.rs.client.ClientBuilder.newClient();
+//        webTarget = client.target(BASE_URI).path("Admin");
+//    }
+    
+    public AdminClient(String token){
         client = jakarta.ws.rs.client.ClientBuilder.newClient();
+        client.register(new MyFilter(token));
         webTarget = client.target(BASE_URI).path("Admin");
     }
-
+    
     public <T> T getAllTransactions(Class<T> responseType) throws ClientErrorException {
         WebTarget resource = webTarget;
         resource = resource.path("getAllTransactions");
@@ -56,13 +59,8 @@ public class AdminClient {
     public <T> T getTotalAssets(Class<T> responseType) throws ClientErrorException {
         WebTarget resource = webTarget;
         resource = resource.path("getTotalAssets");
-         return webTarget
-        .path("getTotalAssets")
-        .request("application/json")
-        .header("Authorization", "Bearer " + kr.getToken())
-        .get(responseType);
 //        return resource.get(responseType);
-//        return resource.request(jakarta.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+        return resource.request(jakarta.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
     }
 
     public <T> T getAllOrders(Class<T> responseType) throws ClientErrorException {
@@ -135,24 +133,14 @@ public class AdminClient {
     public <T> T getTotalInvestedAmount(Class<T> responseType) throws ClientErrorException {
         WebTarget resource = webTarget;
         resource = resource.path("getTotalInvestedAmount");
-         return webTarget
-        .path("getTotalInvestedAmount")
-        .request("application/json")
-        .header("Authorization", "Bearer " + kr.getToken())
-        .get(responseType);
-//        return resource.request(jakarta.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+        return resource.request(jakarta.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
 //        return resource.get(responseType);
     }
 
     public <T> T getTotalPayouts(Class<T> responseType) throws ClientErrorException {
         WebTarget resource = webTarget;
         resource = resource.path("getTotalPayouts");
-        return webTarget
-        .path("getTotalPayouts")
-        .request("application/json")
-        .header("Authorization", "Bearer " + kr.getToken())
-        .get(responseType);
-//        return resource.request(jakarta.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+        return resource.request(jakarta.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
 //        return resource.get(responseType);
     }
 
@@ -167,12 +155,7 @@ public class AdminClient {
     public <T> T getTotalUsers(Class<T> responseType) throws ClientErrorException {
         WebTarget resource = webTarget;
         resource = resource.path("getTotalUsers");
-        return webTarget
-        .path("getTotalUsers")
-        .request("application/json")
-        .header("Authorization", "Bearer " + kr.getToken())
-        .get(responseType);
-//        return resource.request(jakarta.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+        return resource.request(jakarta.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
 //        return resource.get(responseType);
     }
 
@@ -184,13 +167,8 @@ public class AdminClient {
 
     public Collection<Assets> getAllAssets() {
         WebTarget resource = webTarget.path("getAllAssets");
-//        return resource.request(MediaType.APPLICATION_JSON)
-//                       .get(new GenericType<Collection<Assets>>() {});
-            return webTarget
-            .path("getAllAssets")
-            .request("application/json")
-            .header("Authorization", "Bearer " + kr.getToken())
-            .get(new GenericType<Collection<Assets>>() {});
+        return resource.request(MediaType.APPLICATION_JSON)
+                       .get(new GenericType<Collection<Assets>>() {});
     }
 
     public <T> T findAssetById(Class<T> responseType, String aid) throws ClientErrorException {

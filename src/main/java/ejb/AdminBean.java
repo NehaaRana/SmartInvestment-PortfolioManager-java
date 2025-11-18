@@ -292,6 +292,7 @@ public class AdminBean implements AdminBeanLocal {
     }
 
     @Override
+    @RolesAllowed("ADMIN")
     public long getTotalUsers() {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
           return em.createNamedQuery("Users.totalCount",Long.class).getSingleResult();

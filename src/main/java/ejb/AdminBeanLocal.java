@@ -33,6 +33,7 @@ public interface AdminBeanLocal {
     void addAsset(String symbol, String name, String type, BigDecimal currentPrice, String status, String risk);
     void updateAssetPrice(int aid, BigDecimal newPrice);
     void updateAssetStatus(int aid, String status);
+    void deleteAsset(int aid);
     Collection<Assets> getAllAssets();
     Assets findAssetById(int aid);
     

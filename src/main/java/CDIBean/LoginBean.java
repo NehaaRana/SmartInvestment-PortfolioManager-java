@@ -43,7 +43,8 @@ public class LoginBean {
         keepRecord.setErrorStatus("");
         // return a dummy string
         // actual authentication happens in HttpAuthenticationMechanism
-        return "AllAssets.xhtml?faces-redirect=true";
+//        return "AllAssets.xhtml?faces-redirect=true";
+        return null;
     }
 
     public String getErrorStatus() {

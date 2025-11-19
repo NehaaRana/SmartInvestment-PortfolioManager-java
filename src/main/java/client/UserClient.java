@@ -4,6 +4,7 @@
  */
 package client;
 
+import Filter.MyFilter;
 import jakarta.ws.rs.ClientErrorException;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.WebTarget;
@@ -26,9 +27,19 @@ public class UserClient {
     private Client client;
     private static final String BASE_URI = "http://localhost:8080/PortfolioManager/resources";
 
-    public UserClient() {
+//    public UserClient() {
+//        client = jakarta.ws.rs.client.ClientBuilder.newClient();
+//        webTarget = client.target(BASE_URI).path("User");
+//    }
+    
+    public UserClient(String token) {
         client = jakarta.ws.rs.client.ClientBuilder.newClient();
+//        client.register(new MyRestFilter(token));  // SAFE
+        if(token != null){
+            client.register(new MyFilter(token));
+        }
         webTarget = client.target(BASE_URI).path("User");
+
     }
 
     public void requestRedemption(String uid, String aid, String units, String status) throws ClientErrorException {

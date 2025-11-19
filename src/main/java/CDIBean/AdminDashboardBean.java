@@ -27,6 +27,7 @@ public class AdminDashboardBean {
      */
     @Inject keepRecord keepRecord;
     AdminClient ac;
+    
     @PostConstruct
     public void init() {
         ac = new AdminClient(keepRecord.getToken());

@@ -307,4 +307,12 @@ public class AdminBean implements AdminBeanLocal {
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
+
+    @Override
+    public void deleteAsset(int aid) {
+//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Assets a = (Assets) em.find(Assets.class,aid);
+        em.remove(a);
+    
+    }
 }

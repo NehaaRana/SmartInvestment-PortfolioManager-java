@@ -4,11 +4,13 @@
  */
 package CDIBean;
 
-import Entity.Users;
 import client.UserClient;
 import jakarta.inject.Named;
 import jakarta.enterprise.context.RequestScoped;
-import jakarta.inject.Inject;
+import jakarta.faces.context.FacesContext;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import java.io.IOException;
 
 /**
  *
@@ -24,8 +26,8 @@ public class UserManageBean {
     
 //    UserClient ul;
 
-    @Inject
-    private UserClient ul;
+//    @Inject
+    UserClient ul;
     String fullName;
     String email;
     String password;
@@ -107,6 +109,18 @@ public class UserManageBean {
         this.msg="";
     }
     
+    public String logout() throws IOException, ServletException {
+        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance()
+                .getExternalContext().getRequest();
+
+        request.logout();  // invalidate JASPIC session
+
+        FacesContext.getCurrentInstance()
+                .getExternalContext()
+                .invalidateSession();
+
+        return "/login.xhtml?faces-redirect=true";
+    }
     
     public String getFullName() {
         return fullName;

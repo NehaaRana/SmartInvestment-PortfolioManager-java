@@ -29,6 +29,15 @@ public class keepRecord implements Serializable {
     private  String password;
     private  String errorStatus;
     private  Credential credential;
+    private String uid;
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
 
     public CredentialValidationResult getResult() {
         return result;

@@ -4,7 +4,8 @@
  */
 package auth;
 
-import CDIBean.LoginBean;
+import Entity.Users;
+import client.UserClient;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
@@ -41,8 +42,8 @@ public class SecureAuthentication implements HttpAuthenticationMechanism, Serial
     AuthenticationStatus status;
     @Inject
     TokenProvider tokenProvider;
-    @Inject
-    LoginBean lbean;
+//    @Inject
+//    LoginBean lbean;
     @Inject keepRecord keepRecord;
 
     @Override
@@ -52,10 +53,7 @@ public class SecureAuthentication implements HttpAuthenticationMechanism, Serial
          String uri = request.getRequestURI();
 
 
-         if (uri.contains("Register") || uri.contains("Register.jsf") || uri.contains("registerUser")) {
-            return ctx.doNothing();
-        }
-
+       
         
         try {
             if (request.getRequestURI().contains("Logout")) {
@@ -96,11 +94,28 @@ public class SecureAuthentication implements HttpAuthenticationMechanism, Serial
                     keepRecord.setRoles(result.getCallerGroups());
                     keepRecord.setCredential(credential);
                     keepRecord.setEmail(email);
+                    
                     System.out.println("=== LOGIN SUCCESS ===");
                     System.out.println("Principal: " + keepRecord.getPrincipal());
                     System.out.println("Roles: " + keepRecord.getRoles());
                     System.out.println("Token: " + keepRecord.getToken());
                     System.out.println("Email in session: " + keepRecord.getEmail());
+                    
+                    try {
+                        UserClient uc = new UserClient(keepRecord.getToken());
+                        Users user = uc.findByEmail(Users.class, email);
+
+                        if (user != null) {
+                            keepRecord.setUid(String.valueOf(user.getUid()));
+                            System.out.println("User UID stored in session = " + keepRecord.getUid());
+                        } else {
+                            System.out.println("User not found using UserClient !");
+                        }
+
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                       System.out.println("Could not fetch UID from UserClient");
+                    }
                     
                     if (result.getCallerGroups().contains("ADMIN")) {
                         request.getRequestDispatcher("Admin/AdminDashboard.jsf").forward(request, response);

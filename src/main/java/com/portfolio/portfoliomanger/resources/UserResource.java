@@ -63,7 +63,7 @@ public class UserResource {
     }
     
 //    @RolesAllowed("USER")
-    @PermitAll
+//    @PermitAll
     @POST
     @Path("register/{fullName}/{email}/{rawPassword}/{phone}")
     public void register(
@@ -77,7 +77,7 @@ public class UserResource {
     }
     
 //    @RolesAllowed("USER")
-    @PermitAll
+//    @PermitAll
     @GET
     @Produces("application/json")
     @Path("findByEmail/{email}")

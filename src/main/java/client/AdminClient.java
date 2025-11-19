@@ -89,6 +89,13 @@ public class AdminClient {
         webTarget.path(java.text.MessageFormat.format("addAsset/{0}/{1}/{2}/{3}/{4}/{5}", new Object[]{symbol, name, type, currentPrice, status, risk})).request().post(null);
     }
 
+    public void deleteAsset(int aid) throws ClientErrorException {
+    webTarget
+        .path(java.text.MessageFormat.format("deleteAsset/{0}", new Object[]{aid}))
+        .request()
+        .delete();
+    }
+
     public <T> T getAllUsers(Class<T> responseType) throws ClientErrorException {
         WebTarget resource = webTarget;
         return resource.request(jakarta.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);

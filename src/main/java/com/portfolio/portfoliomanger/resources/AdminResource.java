@@ -122,6 +122,15 @@ public class AdminResource {
     public Collection<Assets> getAllAssets() {
         return abl.getAllAssets();
     }
+    
+    @RolesAllowed("ADMIN")
+    @DELETE
+    @Path("deleteAsset/{aid}")
+    public void deleteAsset(@PathParam("aid") int aid) {
+//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+            abl.deleteAsset(aid);
+    
+    }
 
     @RolesAllowed("ADMIN")
     @GET

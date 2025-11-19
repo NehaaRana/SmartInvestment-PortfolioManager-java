@@ -125,7 +125,7 @@ public class AssetManagedBean implements Serializable {
         this.status = asset.getStatus();
         this.risk = asset.getRisk();
 
-        return "EditAsset?faces-redirect=true";
+        return "EditAsset";
     }
 
     public String update() {

@@ -76,13 +76,13 @@
 
         <!-- Welcome Section -->
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2>Welcome, #{keepRecord.email}</h2>
+            <h2>Welcome, #{profileBean.fullName}</h2>
         </div>
 
         <!-- Dashboard Cards -->
         <div class="row">
 
-            <div class="col-md-4 mb-4">
+<!--            <div class="col-md-4 mb-4">
                 <div class="card shadow-sm">
                     <div class="card-body">
                         <div class="card-title">Profile</div>
@@ -91,7 +91,23 @@
                         </h:panelGroup>
                     </div>
                 </div>
+            </div>-->
+
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <div class="card-title">Profile</div>
+                            <h:panelGroup rendered="#{not empty userDashboardBean.profileBean.fullName}">
+                                <p><strong>Full Name:</strong> #{userDashboardBean.profileBean.fullName}</p>
+                                <p><strong>Email:</strong> #{userDashboardBean.profileBean.email}</p>
+                                <p><strong>Phone:</strong> #{userDashboardBean.profileBean.phone}</p>
+                            </h:panelGroup>
+                        </div>
+                    </div>
+                </div>
             </div>
+
 
             <div class="col-md-4 mb-4">
                 <div class="card shadow-sm">

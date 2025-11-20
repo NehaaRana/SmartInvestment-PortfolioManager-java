@@ -72,12 +72,14 @@ public class ProfileBean {
                 phone,
                 newPassword
             );
-
+            
+             // Redirect to User Dashboard after successful update
+            return "/User/UserDashboard.xhtml?faces-redirect=true";
 //            keepRecord.setFullName(fullName);
 //            keepRecord.setPhone(phone);
 //            keepRecord.setPassword(newPassword);
 
-            return "profile.xhtml?faces-redirect=true";
+//            return "profile.xhtml?faces-redirect=true";
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("PROFILE LOAD ERROR: " + e.getMessage());

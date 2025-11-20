@@ -36,6 +36,18 @@ public class UserDashboardBean implements  Serializable{
     private Object orders;
     private Object payments;
     private Object transactions;
+    
+    @Inject
+    private ProfileBean profileBean;
+
+    public ProfileBean getProfileBean() {
+        return profileBean;
+    }
+
+    public void setProfileBean(ProfileBean profileBean) {
+        this.profileBean = profileBean;
+    }
+
     public UserDashboardBean() {
     }
     

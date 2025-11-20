@@ -57,10 +57,25 @@
                    style="font-size:16px; text-decoration:none; padding:8px; background:#337ab7; color:white; border-radius:5px;" />
 
     <br/><br/>
+    
+    <h:panelGroup layout="block" style="margin-bottom: 20px;">
+    
+    <h:inputText value="#{assetManagedBean.searchKeyword}"
+                 style="padding:8px; width:250px; border-radius:5px; border:1px solid #777;"
+                 >
+        <f:ajax event="keyup"
+                listener="#{assetManagedBean.searchAssetsAjax}"
+                render="assetTable" />
+    </h:inputText>
 
-    <h:dataTable value="#{assetManagedBean.assetsList}" 
-                 var="asset" 
-                 styleClass="assetTable">
+</h:panelGroup>
+
+
+
+    <h:dataTable    id="assetTable"
+                    value="#{assetManagedBean.assetsList}" 
+                    var="asset" 
+                    styleClass="assetTable">
 
         <!-- AID -->
         <h:column>

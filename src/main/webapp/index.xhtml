@@ -1,47 +1,122 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="jakarta.faces.html">
-    <h:head>
-        <title>Index Page</title>
-        <style>
-            body {
-                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                background-color: #f5f7fa;
-                margin: 0;
-                padding: 0;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                height: 100vh;
-            }
+      xmlns:h="jakarta.faces.html"
+      xmlns:p="http://primefaces.org/ui">
 
-            .welcome-box {
-                background-color: #ffffff;
-                padding: 30px 50px;
-                border-radius: 10px;
-                box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-                text-align: center;
-            }
+<h:head>
+    <title>Portfolio  SIP Manager</title>
 
-            h2 {
-                color: #007bff;
-                margin-bottom: 10px;
-            }
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Segoe UI", sans-serif;
+            background: linear-gradient(135deg, #e3f2fd, #f1f8e9);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-            p {
-                color: #444;
-                font-size: 18px;
-            }
-        </style>
-    </h:head>
-    <h:body>
-        <div class="welcome-box">
-            <h2>Welcome</h2>
-            <p>Hello, 
-                <h:outputText 
-                    value="#{sessionScope.username != null ? sessionScope.username : 'Guest'}" />!
-            </p>
+        .container {
+            width: 80%;
+            max-width: 1200px;
+            text-align: center;
+        }
+
+        .title {
+            font-size: 34px;
+            color: #1565c0;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .subtitle {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 40px;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 25px;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.10);
+            transition: 0.3s;
+            cursor: pointer;
+            text-decoration: none;
+            display: block;
+            color: inherit;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 18px rgba(0,0,0,0.15);
+        }
+
+        .icon {
+            font-size: 45px;
+            margin-bottom: 12px;
+            color: #1976d2;
+        }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+
+        .card-desc {
+            font-size: 15px;
+            color: #555;
+        }
+    </style>
+</h:head>
+
+<h:body>
+    <div class="container">
+
+        <div class="title">Welcome to Portfolio SIP Manager</div>
+        <div class="subtitle">Smartly manage your assets, SIP plans, and financial growth</div>
+
+        <div class="card-grid">
+
+            <!-- USER LOGIN -->
+            <h:link outcome="Login.xhtml" styleClass="feature-card">
+                <div class="icon">👤</div>
+                <div class="card-title">User Login</div>
+                <div class="card-desc">Access your investment dashboard</div>
+            </h:link>
+
+            <!-- ADMIN LOGIN -->
+            <h:link outcome="/Admin/Login.xhtml" styleClass="feature-card">
+                <div class="icon">🛠️</div>
+                <div class="card-title">Admin Login</div>
+                <div class="card-desc">Manage assets, SIPs and user accounts</div>
+            </h:link>
+
+            <!-- VIEW SIP PLANS -->
+            <h:link outcome="/User/ViewPlans.xhtml" styleClass="feature-card">
+                <div class="icon">📈</div>
+                <div class="card-title">SIP Plans</div>
+                <div class="card-desc">Explore SIP options and long-term benefits</div>
+            </h:link>
+
+            <!-- ABOUT PROJECT -->
+            <h:link outcome="/About.xhtml" styleClass="feature-card">
+                <div class="icon">📘</div>
+                <div class="card-title">About Project</div>
+                <div class="card-desc">Learn more about portfolio manager</div>
+            </h:link>
+
         </div>
-    </h:body>
+    </div>
+</h:body>
 </html>

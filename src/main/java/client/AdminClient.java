@@ -5,6 +5,8 @@
 package client;
 
 import Entity.Assets;
+import Entity.Orders;
+import Entity.Users;
 import Filter.MyFilter;
 import jakarta.ws.rs.ClientErrorException;
 import jakarta.ws.rs.client.Client;
@@ -64,11 +66,17 @@ public class AdminClient {
         return resource.request(jakarta.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
     }
 
-    public <T> T getAllOrders(Class<T> responseType) throws ClientErrorException {
-        WebTarget resource = webTarget;
-        resource = resource.path("getAllOrders");
-        return resource.request(jakarta.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
-    }
+//    public <T> T getAllOrders(Class<T> responseType) throws ClientErrorException {
+//        WebTarget resource = webTarget;
+//        resource = resource.path("getAllOrders");
+//        return resource.request(jakarta.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+//    }
+    public Collection<Orders> getAllOrders() throws ClientErrorException { 
+    WebTarget resource = webTarget.path("getAllOrders");
+    return resource
+            .request(jakarta.ws.rs.core.MediaType.APPLICATION_JSON)
+            .get(new jakarta.ws.rs.core.GenericType<Collection<Orders>>() {}); 
+}
 
     public void approveRedemption(String rid) throws ClientErrorException {
         webTarget.path(java.text.MessageFormat.format("approveRedemption/{0}", new Object[]{rid})).request().put(null);
@@ -111,10 +119,17 @@ public class AdminClient {
         .delete();
     }
 
-    public <T> T getAllUsers(Class<T> responseType) throws ClientErrorException {
-        WebTarget resource = webTarget;
-        return resource.request(jakarta.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
-    }
+//    public <T> T getAllUsers(Class<T> responseType) throws ClientErrorException {
+//        WebTarget resource = webTarget;
+//        return resource.request(jakarta.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+//    }
+    public Collection<Users> getAllUsers() throws ClientErrorException {
+    WebTarget resource = webTarget;
+    return resource
+            .request(jakarta.ws.rs.core.MediaType.APPLICATION_JSON)
+            .get(new jakarta.ws.rs.core.GenericType<Collection<Users>>() {});
+}
+
 
     public <T> T getAllPayments(Class<T> responseType) throws ClientErrorException {
         WebTarget resource = webTarget;

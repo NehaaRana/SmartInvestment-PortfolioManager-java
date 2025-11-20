@@ -472,6 +472,8 @@ public class UserBean implements UserBeanLocal {
     
     
     
+    
+    
 //    @Override
 //    public void registerUser(String fullName, String email, String password, String phone) {
 ////        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody

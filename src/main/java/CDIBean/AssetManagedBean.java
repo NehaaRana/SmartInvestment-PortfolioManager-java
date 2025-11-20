@@ -233,7 +233,7 @@ public class AssetManagedBean implements Serializable {
                                            .getFileName().toString();
 
                     // FIXED ABSOLUTE PATH TO SRC FOLDER
-                    String uploadDir = "D:/java-ENTERPRISE/ICT-1-Project/PortfolioManager/src/main/webapp/resources/assets/";
+                    String uploadDir = "E:/PortfolioManager/src/main/webapp/resources/assets/";
 
                     System.out.println("UPLOAD FOLDER = " + uploadDir);
 

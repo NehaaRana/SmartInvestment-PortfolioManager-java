@@ -19,8 +19,10 @@ import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.Collection;
-import static javax.swing.UIManager.get;
+import java.util.List;
+import java.util.stream.Collectors;
 import record.keepRecord;
 
 /**
@@ -51,6 +53,17 @@ public class AssetManagedBean implements Serializable {
     private BigDecimal  current_price;
     private String status;
     private String risk;
+    private String searchKeyword;
+    private List<Assets> originalList;
+
+
+    public String getSearchKeyword() {
+        return searchKeyword;
+    }
+
+    public void setSearchKeyword(String searchKeyword) {
+        this.searchKeyword = searchKeyword;
+    }
     
     private Collection<Assets> assetsList;
 
@@ -160,7 +173,8 @@ public class AssetManagedBean implements Serializable {
             AdminClient ac = new AdminClient(keepRecord.getToken());
 
             assetsList = ac.getAllAssets();
-
+            // Backup full list for searching
+            originalList = new ArrayList<>(assetsList);
             System.out.println("Loaded " + assetsList.size() + " assets");
 
         } catch (Exception e) {
@@ -309,25 +323,83 @@ public class AssetManagedBean implements Serializable {
 //    }
     
     
+//    public String update() {
+//
+//        AdminClient ac = new AdminClient(keepRecord.getToken());
+//
+//        ac.updateAsset(
+//                aid,
+//                symbol,
+//                name,
+//                type,
+//                current_price.toString(),
+//                status,
+//                risk
+//        );
+//
+//        loadAssets();
+//
+//        return "AllAssets?faces-redirect=true";
+//    }
+    
+    
     public String update() {
+        try {
+            AdminClient ac = new AdminClient(keepRecord.getToken());
 
-        AdminClient ac = new AdminClient(keepRecord.getToken());
+            // Check if a new file was uploaded
+            if (symbolImage != null && symbolImage.getSize() > 0) {
+                String fileName = Paths.get(symbolImage.getSubmittedFileName()).getFileName().toString();
 
-        ac.updateAsset(
-                aid,
-                symbol,
-                name,
-                type,
-                current_price.toString(),
-                status,
-                risk
-        );
+                // Upload directory
+                String uploadDir = "D:/java-ENTERPRISE/ICT-1-Project/PortfolioManager/src/main/webapp/resources/assets/";
+                File folder = new File(uploadDir);
+                if (!folder.exists()) folder.mkdirs();
 
-        loadAssets();
+                // Copy file
+                Files.copy(
+                    symbolImage.getInputStream(),
+                    Paths.get(uploadDir + fileName),
+                    StandardCopyOption.REPLACE_EXISTING
+                );
 
-        return "AllAssets?faces-redirect=true";
+                this.symbol = fileName;  // update symbol field
+            }
+            
+
+            ac.updateAsset(
+                    aid,
+                    symbol,
+                    name,
+                    type,
+                    current_price.toString(),
+                    status,
+                    risk
+            );
+
+            loadAssets();
+            return "AllAssets?faces-redirect=true";
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
+    public void searchAssetsAjax() {
+    if (searchKeyword == null || searchKeyword.trim().isEmpty()) {
+        loadAssets();   // show all assets when field is empty
+            return;
+        }
+
+        String key = searchKeyword.toLowerCase();
+
+        assetsList = originalList.stream() // keep originalList for full backup
+                .filter(a -> a.getName().toLowerCase().contains(key)
+                          || a.getType().toLowerCase().contains(key)
+                          || String.valueOf(a.getAid()).contains(key))
+                .collect(Collectors.toList());
+    }
     
     public String deleteAsset(int aid) {
         AdminClient ac = new AdminClient(keepRecord.getToken());

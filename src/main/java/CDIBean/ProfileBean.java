@@ -2,22 +2,26 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSF/JSFManagedBean.java to edit this template
  */
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/JSF/JSFManagedBean.java to edit this template
+ */
 package CDIBean;
 
 import Entity.Users;
 import client.UserClient;
 import jakarta.annotation.PostConstruct;
 import jakarta.inject.Named;
-import jakarta.enterprise.context.Dependent;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import record.keepRecord;
 
 /**
  *
- * @author Admin
+ * @author User
  */
 @Named(value = "profileBean")
-@Dependent
+@RequestScoped
 public class ProfileBean {
 
     /**
@@ -59,7 +63,8 @@ public class ProfileBean {
             UserClient uc = new UserClient(keepRecord.getToken());
 
             // if password is empty → keep old password
-            String newPassword = password.isEmpty() ? keepRecord.getPassword() : password;
+//            String newPassword = password.isEmpty() ? keepRecord.getPassword() : password;
+              String newPassword = password.isEmpty() ? null : password;
 
             uc.updateProfile(
                 keepRecord.getUid() + "",
@@ -70,7 +75,7 @@ public class ProfileBean {
 
 //            keepRecord.setFullName(fullName);
 //            keepRecord.setPhone(phone);
-            keepRecord.setPassword(newPassword);
+//            keepRecord.setPassword(newPassword);
 
             return "profile.xhtml?faces-redirect=true";
         } catch (Exception e) {
@@ -119,8 +124,6 @@ public class ProfileBean {
     public void setPassword(String password) {
         this.password = password;
     }
-
-    
     public ProfileBean() {
     }
     

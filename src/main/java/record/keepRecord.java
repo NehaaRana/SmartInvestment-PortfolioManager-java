@@ -114,6 +114,7 @@ public class keepRecord implements Serializable {
        password=null;
        token=null;
        errorStatus="";
+       uid=null;
     }
     /**
      * Creates a new instance of keepRecord

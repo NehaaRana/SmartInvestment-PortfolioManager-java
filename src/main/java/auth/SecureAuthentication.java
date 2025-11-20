@@ -117,13 +117,22 @@ public class SecureAuthentication implements HttpAuthenticationMechanism, Serial
                        System.out.println("Could not fetch UID from UserClient");
                     }
                     
+//                    if (result.getCallerGroups().contains("ADMIN")) {
+//                        request.getRequestDispatcher("Admin/AdminDashboard.jsf").forward(request, response);
+//                        return AuthenticationStatus.SUCCESS; 
+//                    }
                     if (result.getCallerGroups().contains("ADMIN")) {
-                        request.getRequestDispatcher("Admin/AdminDashboard.jsf").forward(request, response);
-                        return AuthenticationStatus.SUCCESS; 
+                          response.sendRedirect(request.getContextPath() + "/Admin/AdminDashboard.jsf");
+                          return AuthenticationStatus.SUCCESS;
                     }
+//                    if (result.getCallerGroups().contains("USER")) {
+//                        request.getRequestDispatcher("User/UserDashboard.jsf").forward(request, response);
+//                        return AuthenticationStatus.SUCCESS; 
+//                    }
+                    
                     if (result.getCallerGroups().contains("USER")) {
-                        request.getRequestDispatcher("User/UserDashboard.jsf").forward(request, response);
-                        return AuthenticationStatus.SUCCESS; 
+                          response.sendRedirect(request.getContextPath() + "/User/UserDashboard.jsf");
+                          return AuthenticationStatus.SUCCESS;
                     }
 //                    response.sendRedirect("AllAssets.jsf");
                     return status;

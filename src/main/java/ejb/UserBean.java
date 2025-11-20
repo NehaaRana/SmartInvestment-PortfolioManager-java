@@ -64,18 +64,45 @@ public class UserBean implements UserBeanLocal {
     
     }
 
+//    @Override
+//    @RolesAllowed("USER")
+//    public void updateProfile(int uid, String fullName, String phone, String password) {
+////      throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+//        Users u = em.find(Users.class, uid);
+//        if (u != null) {
+//            if (fullName != null) u.setFullName(fullName);
+//            if (phone != null) u.setPhone(phone);
+//            if (password != null) u.setPassword(password);
+//            em.merge(u);
+//        }
+//    
+//    }
+    
     @Override
     @RolesAllowed("USER")
     public void updateProfile(int uid, String fullName, String phone, String password) {
 //      throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
         Users u = em.find(Users.class, uid);
         if (u != null) {
-            if (fullName != null) u.setFullName(fullName);
-            if (phone != null) u.setPhone(phone);
-            if (password != null) u.setPassword(password);
+//            if (fullName != null) u.setFullName(fullName);
+//            if (phone != null) u.setPhone(phone);
+//            if (password != null) u.setPassword(password);
+              // Update name
+            if (fullName != null && !fullName.trim().isEmpty()) {
+                u.setFullName(fullName);
+            }
+
+            // Update phone
+            if (phone != null && !phone.trim().isEmpty()) {
+                u.setPhone(phone);
+            }
+
+            if (password != null && !password.trim().isEmpty()) {
+                String hashed = passwordHasher.generate(password.toCharArray());
+                u.setPassword(hashed);
+            }
             em.merge(u);
         }
-    
     }
 
     @Override

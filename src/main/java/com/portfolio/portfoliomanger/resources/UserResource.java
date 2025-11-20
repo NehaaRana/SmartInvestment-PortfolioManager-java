@@ -97,6 +97,20 @@ public class UserResource {
 //    }
 
     
+//    @RolesAllowed("USER")
+//    @PUT
+//    @Path("updateProfile/{uid}/{fullName}/{phone}/{password}")
+//    public void updateProfile(
+//            @PathParam("uid") int uid, 
+//            @PathParam("fullName") String fullName, 
+//            @PathParam("phone") String phone, 
+//            @PathParam("password") String password) {
+////      throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+//        ubl.updateProfile(uid, fullName, phone, password);
+//    
+//    }
+    
+    
     @RolesAllowed("USER")
     @PUT
     @Path("updateProfile/{uid}/{fullName}/{phone}/{password}")
@@ -106,6 +120,12 @@ public class UserResource {
             @PathParam("phone") String phone, 
             @PathParam("password") String password) {
 //      throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        
+        // If password is blank → treat as NO CHANGE
+        if (password == null || password.trim().isEmpty() || password.equals("null")) {
+            password = null; // signal to BL: do not update password
+        }
+
         ubl.updateProfile(uid, fullName, phone, password);
     
     }

@@ -54,8 +54,12 @@ public class UserClient {
         webTarget.path(java.text.MessageFormat.format("updatePortfolioValue/{0}/{1}/{2}", new Object[]{uid, aid, currentValue})).request().put(null);
     }
 
+//    public void updateProfile(String uid, String fullName, String phone, String password) throws ClientErrorException {
+//        webTarget.path(java.text.MessageFormat.format("updateProfile/{0}/{1}/{2}/{3}", new Object[]{uid, fullName, phone, password})).request().put(null);
+//    }
+    
     public void updateProfile(String uid, String fullName, String phone, String password) throws ClientErrorException {
-        webTarget.path(java.text.MessageFormat.format("updateProfile/{0}/{1}/{2}/{3}", new Object[]{uid, fullName, phone, password})).request().put(null);
+        webTarget.path(java.text.MessageFormat.format("updateProfile/{0}/{1}/{2}/{3}", new Object[]{uid, fullName, phone, password})).request().put(jakarta.ws.rs.client.Entity.text(""));
     }
 
     public void placeOrder(String uid, String aid, String orderType, String units, String amount) throws ClientErrorException {

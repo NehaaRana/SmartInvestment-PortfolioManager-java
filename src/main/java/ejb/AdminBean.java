@@ -315,4 +315,36 @@ public class AdminBean implements AdminBeanLocal {
         em.remove(a);
     
     }
+
+    @Override
+    @RolesAllowed("ADMIN")
+    public void updateAsset(int aid, String symbol, String name, String type, BigDecimal currentPrice, String status, String risk) {
+//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+          Assets a = em.find(Assets.class, aid);
+
+        if (a != null) {
+            a.setSymbol(symbol);
+            a.setName(name);
+            a.setType(type);
+            a.setCurrentPrice(currentPrice);
+            a.setStatus(status);
+            a.setRisk(risk);
+
+            em.merge(a);
+            
+            // Update portfolios just like your price update method
+            Collection<Portfolio> q =
+                em.createNamedQuery("Portfolio.findByAsset", Portfolio.class)
+                  .setParameter("aid", aid)
+                  .getResultList();
+
+            for (Portfolio p : q) {
+                BigDecimal newValue = p.getUnits().multiply(currentPrice);
+                p.setCurrentValue(newValue);
+                em.merge(p);
+            }
+        
+        }
+    
+    }
 }

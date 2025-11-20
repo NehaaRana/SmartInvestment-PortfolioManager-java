@@ -8,6 +8,7 @@ import Entity.Assets;
 import Filter.MyFilter;
 import jakarta.ws.rs.ClientErrorException;
 import jakarta.ws.rs.client.Client;
+import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.client.WebTarget;
 import jakarta.ws.rs.core.GenericType;
 import jakarta.ws.rs.core.MediaType;
@@ -88,6 +89,20 @@ public class AdminClient {
     public void addAsset(String symbol, String name, String type, String currentPrice, String status, String risk) throws ClientErrorException {
         webTarget.path(java.text.MessageFormat.format("addAsset/{0}/{1}/{2}/{3}/{4}/{5}", new Object[]{symbol, name, type, currentPrice, status, risk})).request().post(null);
     }
+    
+    public void updateAsset(int aid, String symbol, String name, String type,
+                        String currentPrice, String status, String risk) 
+                        throws ClientErrorException {
+
+        webTarget
+            .path(java.text.MessageFormat.format(
+                "updateAsset/{0}/{1}/{2}/{3}/{4}/{5}/{6}",
+                new Object[]{aid, symbol, name, type, currentPrice, status, risk}
+            ))
+            .request()
+            .put(Entity.json("{}"));
+    }
+
 
     public void deleteAsset(int aid) throws ClientErrorException {
     webTarget

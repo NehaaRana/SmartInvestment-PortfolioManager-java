@@ -31,6 +31,10 @@ public interface AdminBeanLocal {
     
     //Asset Management
     void addAsset(String symbol, String name, String type, BigDecimal currentPrice, String status, String risk);
+    void updateAsset(int aid, String symbol, String name,
+                        String type, BigDecimal currentPrice,
+                        String status, String risk);
+
     void updateAssetPrice(int aid, BigDecimal newPrice);
     void updateAssetStatus(int aid, String status);
     void deleteAsset(int aid);

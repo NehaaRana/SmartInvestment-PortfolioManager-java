@@ -99,13 +99,30 @@ public class AdminResource {
         abl.addAsset(symbol, name, type, currentPrice, status, risk);
     }
 
-//    @RolesAllowed("ADMIN")
+    
+    
+    @RolesAllowed("ADMIN")
     @PUT
     @Path("updateAssetPrice/{aid}/{newPrice}")
     public void updateAssetPrice(@PathParam("aid") int aid, 
             @PathParam("newPrice") BigDecimal newPrice) {
         abl.updateAssetPrice(aid, newPrice);
     }
+    
+    @RolesAllowed("ADMIN")
+    @PUT
+    @Path("updateAsset/{aid}/{symbol}/{name}/{type}/{currentPrice}/{status}/{risk}")
+    public void updateAsset(@PathParam("aid") int aid,
+                            @PathParam("symbol") String symbol,
+                            @PathParam("name") String name,
+                            @PathParam("type") String type,
+                            @PathParam("currentPrice") BigDecimal currentPrice,
+                            @PathParam("status") String status,
+                            @PathParam("risk") String risk) {
+
+        abl.updateAsset(aid, symbol, name, type, currentPrice, status, risk);
+    }
+
     
     @RolesAllowed("ADMIN")
     @PUT

@@ -7,12 +7,20 @@ package CDIBean;
 import Entity.Assets;
 import client.AdminClient;
 import jakarta.annotation.PostConstruct;
+import jakarta.faces.context.FacesContext;
 import jakarta.inject.Named;
+//import jakarta.faces.view.ViewScoped;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
+import jakarta.servlet.http.Part;
+import java.io.File;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.Collection;
+import static javax.swing.UIManager.get;
 import record.keepRecord;
 
 /**
@@ -26,7 +34,16 @@ public class AssetManagedBean implements Serializable {
     
     @Inject
     private keepRecord keepRecord;
-    
+    private Part symbolImage;
+
+    public Part getSymbolImage() {
+        return symbolImage;
+    }
+
+    public void setSymbolImage(Part symbolImage) {
+        this.symbolImage = symbolImage;
+    }
+
     private int aid;
     private String symbol;
     private String name;
@@ -93,27 +110,178 @@ public class AssetManagedBean implements Serializable {
         this.risk = risk;
     }
 
-    
     @PostConstruct
-    public void loadAssets() {
-        AdminClient ac = new AdminClient(keepRecord.getToken());
-        assetsList = ac.getAllAssets();
+    public void init() {
+        // Read aid from URL parameter
+        String aidParam = FacesContext.getCurrentInstance()
+                .getExternalContext()
+                .getRequestParameterMap()
+                .get("aid");
+
+        if (aidParam != null) {
+            System.out.println("=== Editing Asset AID: " + aidParam + " ===");
+
+            AdminClient ac = new AdminClient(keepRecord.getToken());
+            Assets asset = ac.findAssetById(Assets.class, aidParam);
+
+            if (asset != null) {
+                this.aid = asset.getAid();
+                this.symbol = asset.getSymbol();
+                this.name = asset.getName();
+                this.type = asset.getType();
+                this.current_price = asset.getCurrentPrice();
+                this.status = asset.getStatus();
+                this.risk = asset.getRisk();
+            }
+        } else {
+            // No edit parameter → load list
+            loadAssets();
+        }
     }
 
+    
+    
+   // @PostConstruct
+    //public void init() {
+      //  loadAssets();
+    //}
+    
+    
+//    @PostConstruct
+//    public void loadAssets() {
+//        AdminClient ac = new AdminClient(keepRecord.getToken());
+//        assetsList = ac.getAllAssets();
+//    }
+
+    public void loadAssets() {
+        try {
+            System.out.println("=== Loading Assets ===");
+
+            AdminClient ac = new AdminClient(keepRecord.getToken());
+
+            assetsList = ac.getAllAssets();
+
+            System.out.println("Loaded " + assetsList.size() + " assets");
+
+        } catch (Exception e) {
+            System.out.println("Error in loadAssets(): " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    
+    
     public Collection<Assets> getAssetsList() {
         return assetsList;
     }
     
     
-    public String addAsset(){
+//    public String addAsset(){
+//    
+//        AdminClient ac= new AdminClient(keepRecord.getToken());
+//        ac.addAsset(symbol, name, type,  current_price.toString(), status, risk);
+//        loadAssets();
+//        return "AllAssets?faces-redirect=true";
+//    }
     
-        AdminClient ac= new AdminClient(keepRecord.getToken());
-        ac.addAsset(symbol, name, type,  current_price.toString(), status, risk);
-        loadAssets();
-        return "AllAssets?faces-redirect=true";
-    }
+//    public String addAsset() {
+//        try {
+//            AdminClient ac = new AdminClient(keepRecord.getToken());
+//
+//              // --- UPLOAD IMAGE ---
+//            if (symbolImage != null) {
+//                String fileName = Paths.get(symbolImage.getSubmittedFileName())
+//                                       .getFileName().toString();
+//
+//                // choose upload folder (example)
+////                String uploadDir = "D:\\java-ENTERPRISE\\ICT-1-Project\assets";
+////                String uploadDir = "D:\\java-ENTERPRISE\\ICT-1-Project\\assets\\";
+//                
+//                String uploadDir = FacesContext.getCurrentInstance()
+//                                .getExternalContext()
+//                                .getRealPath("") + "/resources/assets/";
+//;
+//
+//                System.out.println("UPLOAD FOLDER = " + uploadDir);
+//
+//                Files.copy(symbolImage.getInputStream(),
+//                           Paths.get(uploadDir + fileName),
+//                           StandardCopyOption.REPLACE_EXISTING);
+//
+//                this.symbol = fileName;  // Save file name in DB
+//            }
+//
+//            // --- CALL REST API ---
+//            ac.addAsset(symbol, name, type, current_price.toString(), status, risk);
+//
+//            loadAssets();
+//            return "AllAssets?faces-redirect=true";
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return null;
+//        }
+//    }
+
+         public String addAsset() {
+            try {
+                AdminClient ac = new AdminClient(keepRecord.getToken());
+
+                if (symbolImage != null) {
+
+                    String fileName = Paths.get(symbolImage.getSubmittedFileName())
+                                           .getFileName().toString();
+
+                    // FIXED ABSOLUTE PATH TO SRC FOLDER
+                    String uploadDir = "D:/java-ENTERPRISE/ICT-1-Project/PortfolioManager/src/main/webapp/resources/assets/";
+
+                    System.out.println("UPLOAD FOLDER = " + uploadDir);
+
+                    File folder = new File(uploadDir);
+                    if (!folder.exists()) {
+                        folder.mkdirs();
+                    }
+
+                    Files.copy(
+                        symbolImage.getInputStream(),
+                        Paths.get(uploadDir + fileName),
+                        StandardCopyOption.REPLACE_EXISTING
+                    );
+
+                    this.symbol = fileName;
+                }
+
+                ac.addAsset(symbol, name, type, current_price.toString(), status, risk);
+
+                loadAssets();
+                return "AllAssets?faces-redirect=true";
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+
     
-     public String edit(int aid) {
+//     public String edit(int aid) {
+//        AdminClient ac = new AdminClient(keepRecord.getToken());
+//        Assets asset = ac.findAssetById(Assets.class, String.valueOf(aid));
+//
+//        this.aid = asset.getAid();
+//        this.symbol = asset.getSymbol();
+//        this.name = asset.getName();
+//        this.type = asset.getType();
+//        this.current_price = asset.getCurrentPrice();
+//        this.status = asset.getStatus();
+//        this.risk = asset.getRisk();
+//
+//        return "EditAsset";
+//    }
+
+
+    public String edit(int aid) {
+
         AdminClient ac = new AdminClient(keepRecord.getToken());
         Assets asset = ac.findAssetById(Assets.class, String.valueOf(aid));
 
@@ -124,18 +292,42 @@ public class AssetManagedBean implements Serializable {
         this.current_price = asset.getCurrentPrice();
         this.status = asset.getStatus();
         this.risk = asset.getRisk();
+        return "/Admin/EditAsset.xhtml?faces-redirect=true&amp;aid=" + aid;
 
-        return "EditAsset";
+//        return "/Admin/EditAsset?faces-redirect=false";
     }
 
+
+//    public String update() {
+//        AdminClient ac = new AdminClient(keepRecord.getToken());
+////        ac.updateAssetPrice(String.valueOf(aid), String.valueOf(current_price));
+////        ac.updateAssetStatus(String.valueOf(aid), status)
+    /// 
+//        ac.up
+//        loadAssets();
+//        return "AllAssets?faces-redirect=true";
+//    }
+    
+    
     public String update() {
+
         AdminClient ac = new AdminClient(keepRecord.getToken());
-        ac.updateAssetPrice(String.valueOf(aid), String.valueOf(current_price));
-        ac.updateAssetStatus(String.valueOf(aid), status);
+
+        ac.updateAsset(
+                aid,
+                symbol,
+                name,
+                type,
+                current_price.toString(),
+                status,
+                risk
+        );
+
         loadAssets();
+
         return "AllAssets?faces-redirect=true";
     }
-    
+
     
     public String deleteAsset(int aid) {
         AdminClient ac = new AdminClient(keepRecord.getToken());

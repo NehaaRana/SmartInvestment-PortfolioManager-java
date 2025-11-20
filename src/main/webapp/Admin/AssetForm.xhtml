@@ -5,53 +5,145 @@
       xmlns:f="jakarta.faces.core">
   <h:head>
     <title>Add New Asset</title>
-</h:head>
+
+    <style>
+        body {
+            background: #f0f2f5;
+            font-family: Arial;
+        }
+
+        .form-container {
+            width: 50%;
+            margin: 40px auto;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 20px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #0f1c3f;
+            margin-bottom: 30px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            column-gap: 35px;
+            row-gap: 25px;
+        }
+
+        label {
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 15px;
+        }
+
+        .btn {
+            margin-top: 30px;
+            width: 100%;
+            background: #0f1c3f;
+            color: white;
+            padding: 12px;
+            font-size: 18px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: #1d2e63;
+        }
+    </style>
+
+    <script>
+        function previewImage(input) {
+            const preview = document.getElementById("previewImg");
+            const file = input.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = e => preview.src = e.target.result;
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
+  </h:head>
 
 <h:body>
 
-<h:form>
+<div class="form-container">
 
-    <h1>Add New Asset</h1>
+    <h:form enctype="multipart/form-data">
 
-    <h:panelGrid columns="2" cellpadding="5">
+        <h1>Add New Asset</h1>
 
-        <h:outputLabel value="Symbol:"/>
-        <h:inputText value="#{assetManagedBean.symbol}" required="true"/>
+        <div class="grid">
 
-        <h:outputLabel value="Name:"/>
-        <h:inputText value="#{assetManagedBean.name}" required="true"/>
+            <!-- SYMBOL IMAGE -->
+            <div>
+                <label>Symbol Image:</label>
+                <h:inputFile value="#{assetManagedBean.symbolImage}" />
+            </div>
 
-        <h:outputLabel value="Type:"/>
-        <h:inputText value="#{assetManagedBean.type}" required="true"/>
+            <!-- ASSET NAME -->
+            <div>
+                <label>Asset Name:</label>
+                <h:inputText value="#{assetManagedBean.name}" required="true" />
+            </div>
 
-        <h:outputLabel value="Current Price:"/>
-        <h:inputText value="#{assetManagedBean.current_price}" required="true"/>
+            <!-- ASSET TYPE -->
+            <div>
+                <label>Asset Type:</label>
+                <h:selectOneMenu value="#{assetManagedBean.type}">
+                    <f:selectItem itemLabel="-- Select Type --" itemValue="" />
+                    <f:selectItem itemLabel="Stock" itemValue="STOCK"/>
+                    <f:selectItem itemLabel="Cryptocurrency" itemValue="CRYPTO"/>
+                    <f:selectItem itemLabel="Mutual Fund" itemValue="MUTUAL"/>
+                    <f:selectItem itemLabel="Commodity" itemValue="COMMODITY"/>
+                </h:selectOneMenu>
+            </div>
 
-        <h:outputLabel value="Status:"/>
-        <h:selectOneMenu value="#{assetManagedBean.status}">
-            <f:selectItem itemValue="ACTIVE" itemLabel="ACTIVE"/>
-            <f:selectItem itemValue="INACTIVE" itemLabel="INACTIVE"/>
-        </h:selectOneMenu>
+            <!-- CURRENT PRICE -->
+            <div>
+                <label>Current Price:</label>
+                <h:inputText value="#{assetManagedBean.current_price}" required="true"/>
+            </div>
 
-        <h:outputLabel value="Risk:"/>
-        <h:selectOneMenu value="#{assetManagedBean.risk}">
-            <f:selectItem itemValue="LOW" itemLabel="LOW"/>
-            <f:selectItem itemValue="MEDIUM" itemLabel="MEDIUM"/>
-            <f:selectItem itemValue="HIGH" itemLabel="HIGH"/>
-        </h:selectOneMenu>
+            <!-- STATUS -->
+            <div>
+                <label>Status:</label>
+                <h:selectOneMenu value="#{assetManagedBean.status}">
+                    <f:selectItem itemValue="ACTIVE" itemLabel="ACTIVE"/>
+                    <f:selectItem itemValue="INACTIVE" itemLabel="INACTIVE"/>
+                </h:selectOneMenu>
+            </div>
 
-    </h:panelGrid>
+            <!-- RISK LEVEL -->
+            <div>
+                <label>Risk Level:</label>
+                <h:selectOneMenu value="#{assetManagedBean.risk}">
+                    <f:selectItem itemValue="LOW" itemLabel="LOW"/>
+                    <f:selectItem itemValue="MEDIUM" itemLabel="MEDIUM"/>
+                    <f:selectItem itemValue="HIGH" itemLabel="HIGH"/>
+                </h:selectOneMenu>
+            </div>
 
-    <br/>
+        </div>
 
-    <!-- SAVE BUTTON -->
-    <h:commandButton value="Add Asset" action="#{assetManagedBean.addAsset}" />
+        <h:commandButton value="Add Asset" action="#{assetManagedBean.addAsset}" styleClass="btn"/>
 
-    <br/><br/>
+    </h:form>
 
-    <h:link value="Back to Asset List" outcome="AllAssets" />
-
-</h:form>
-
+</div>
+    
 </h:body>
 </html>

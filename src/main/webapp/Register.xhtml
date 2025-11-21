@@ -1,77 +1,156 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="jakarta.faces.html">
-    <h:head>
-        <!--<title>Facelet Title</title>-->
-        <title>User Registration</title>
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>Create Account — Portfolio SIP Manager</title>
+
     <style>
-        body { font-family: Arial; background: #f4f4f4; }
-        .card {
-            width: 380px;
-            margin: 40px auto;
-            padding: 25px;
-            background: white;
-            box-shadow: 0 0 10px #bbb;
-            border-radius: 8px;
+        body {
+            margin:0;
+            font-family: "Inter", "Poppins", sans-serif;
+            background: linear-gradient(180deg, #e9f2ff 0%, #f6fbff 60%);
+            color:#05203a;
         }
-        .title { font-size: 22px; font-weight: bold; margin-bottom: 20px; text-align:center; }
-        .btn {
-            width: 100%;
-            padding: 10px;
-            background: #007bff;
-            border: none;
-            color: white;
-            cursor: pointer;
-            margin-top: 15px;
+
+        /* topbar same as index */
+        .topbar {
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            padding:12px 28px;
+            background: linear-gradient(90deg, rgba(255,255,255,0.7), rgba(255,255,255,0.5));
+            box-shadow: 0 6px 20px rgba(6,30,63,0.06);
         }
-        .msg { color: red; margin-bottom: 10px; text-align:center; font-weight:bold; }
+
+        .brand {
+            font-weight:800;
+            font-size:20px;
+            color:#042a52;
+            background: linear-gradient(90deg,#0b69ff,#00a8ff);
+            -webkit-background-clip:text;
+            -webkit-text-fill-color:transparent;
+        }
+
+        /* glass form box */
+        .register-box {
+            max-width: 520px;
+            margin: 60px auto;
+            padding: 32px;
+            border-radius:18px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.82), rgba(255,255,255,0.7));
+            box-shadow: 0 10px 34px rgba(10,50,120,0.08);
+            border: 1px solid rgba(11,105,255,0.12);
+            animation: fadeIn 0.7s ease;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity:0; transform:translateY(-20px); }
+            100% { opacity:1; transform:translateY(0); }
+        }
+
+        .title {
+            text-align:center;
+            font-size:28px;
+            font-weight:800;
+            color:#042a52;
+            margin-bottom:8px;
+        }
+
+        .subtitle {
+            text-align:center;
+            color:#5a7184;
+            margin-bottom:22px;
+            font-size:15px;
+        }
+
+        .label {
+            font-weight:600;
+            color:#042a52;
+        }
+
+        a {
+            color:#0b69ff;
+            font-weight:600;
+            text-decoration:none;
+        }
+        a:hover {
+            text-decoration:underline;
+        }
     </style>
-    </h:head>
-    <h:body>
-        <div class="card">
+</h:head>
 
-            <div class="title">User Registration</div>
+<h:body>
 
-            <!-- Display message -->
-            <h:panelGroup rendered="#{not empty userManageBean.msg}">
-                <div class="msg">#{userManageBean.msg}</div>
-            </h:panelGroup>
+    <!-- NAVBAR -->
+    <div class="topbar">
+        <div class="brand">Portfolio SIP Manager</div>
 
-            <h:form>
+        <div style="display:flex; align-items:center; gap:16px;">
+            <a href="index.xhtml">Home</a>
+            <a href="User/ViewPlans.xhtml">SIP Plans</a>
+            <a href="About.xhtml">About</a>
 
-                <h:panelGrid columns="2" columnClasses="label,value" style="width:100%;">
-
-                    <h:outputLabel value="Full Name:" />
-                    <h:inputText value="#{userManageBean.fullName}" required="true"
-                                 requiredMessage="Full name is required" />
-
-                    <h:outputLabel value="Email:" />
-                    <h:inputText value="#{userManageBean.email}" required="true"
-                                 requiredMessage="Email is required">
-                        <!--<f:validateRegex pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$" />-->
-                        
-                    </h:inputText>
-
-                    <h:outputLabel value="Password:" />
-                    <h:inputSecret value="#{userManageBean.password}" required="true"
-                                   requiredMessage="Password is required" />
-
-                    <h:outputLabel value="Phone:" />
-                    <h:inputText value="#{userManageBean.phone}" />
-                </h:panelGrid>
-
-                <!-- Buttons -->
-                <h:commandButton value="Register" action="#{userManageBean.register}" 
-                                 styleClass="btn"/>
-
-                <br/><br/>
-
-                <h:link value="Already have an account? Login" outcome="Login" />
-
-            </h:form>
-
+            <p:button value="Login" outcome="Login.xhtml"
+                      styleClass="p-button-text" icon="pi pi-sign-in"/>
         </div>
-        <!--Hello from Facelets-->
-    </h:body>
+    </div>
+
+    <!-- REGISTER FORM -->
+    <div class="register-box">
+
+        <div class="title">Create Your Account</div>
+        <div class="subtitle">Start managing your SIP portfolio with ease</div>
+
+        <h:form>
+
+            <p:messages closable="true" showDetail="true" />
+
+            <p:panelGrid columns="2" style="width:100%;">
+
+                <p:outputLabel for="name" value="Full Name" styleClass="label"/>
+                <p:inputText id="name" value="#{userManageBean.fullName}" placeholder="your name"
+                             required="true" requiredMessage="Full Name is required."/>
+
+                <p:outputLabel for="email" value="Email" styleClass="label"/>
+                <p:inputText id="email" value="#{userManageBean.email}" placeholder="example@mail.com"
+                             required="true" requiredMessage="Email is required."/>
+
+                <p:outputLabel for="pass" value="Password" styleClass="label"/>
+                <p:password id="pass" value="#{userManageBean.password}" placeholder="Create password"
+                            feedback="false" required="true" requiredMessage="Password is required."/>
+
+                <p:outputLabel for="phone" value="Phone" styleClass="label"/>
+                <p:inputText id="phone" value="#{userManageBean.phone}" placeholder="9876543210"/>
+
+            </p:panelGrid>
+
+
+            <br/>
+
+            <p:commandButton value="Register"
+                             action="#{userManageBean.register}"
+                             update="@form"
+                             styleClass="p-button-rounded p-button-lg p-button-primary"
+                             icon="pi pi-user-plus" />
+
+            <br/><br/>
+
+            <div style="text-align:center;">
+                Already have an account?
+                <a href="Login.jsf">Login here</a>
+            </div>
+
+        </h:form>
+
+    </div>
+
+    <div style="text-align:center; padding:20px 12px; color:#6b7b8a;">
+        © 2025 Portfolio SIP Manager — All Rights Reserved
+    </div>
+
+</h:body>
 </html>

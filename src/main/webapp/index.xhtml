@@ -1,122 +1,183 @@
-<?xml version='1.0' encoding='UTF-8' ?>
+<?xml version='1.0' encoding='UTF-8'?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
       xmlns:p="http://primefaces.org/ui">
 
 <h:head>
-    <title>Portfolio  SIP Manager</title>
+    <title>Portfolio SIP Manager — Premium Blue</title>
 
     <style>
+        /* Base */
         body {
-            margin: 0;
-            padding: 0;
-            font-family: "Segoe UI", sans-serif;
-            background: linear-gradient(135deg, #e3f2fd, #f1f8e9);
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            margin:0;
+            font-family: "Inter", "Poppins", sans-serif;
+            background: linear-gradient(180deg, #e9f2ff 0%, #f6fbff 60%);
+            color:#05203a;
         }
 
-        .container {
-            width: 80%;
-            max-width: 1200px;
-            text-align: center;
+        /* Topbar */
+        .topbar {
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            padding:12px 28px;
+            background: linear-gradient(90deg, rgba(255,255,255,0.7), rgba(255,255,255,0.5));
+            box-shadow: 0 6px 20px rgba(6,30,63,0.06);
+            border-bottom-left-radius: 0;
+        }
+        .brand {
+            font-weight:800;
+            font-size:20px;
+            color:#042a52;
+            background: linear-gradient(90deg,#0b69ff,#00a8ff);
+            -webkit-background-clip:text; -webkit-text-fill-color:transparent;
         }
 
-        .title {
-            font-size: 34px;
-            color: #1565c0;
-            font-weight: bold;
-            margin-bottom: 20px;
+        /* Hero */
+        .hero {
+            text-align:left;
+            padding:64px 6% 40px 6%;
+            display:flex;
+            gap:36px;
+            align-items:center;
+        }
+        .hero-left { flex:1; }
+        .hero-right { flex:1; display:flex; justify-content:center; }
+
+        .hero-title { font-size:44px; margin:0; color:#042a52; font-weight:800; }
+        .hero-sub { margin-top:12px; color:#334e68; font-size:17px; }
+
+        /* Glass card */
+        .glass {
+            width:92%;
+            max-width:980px;
+            margin: 24px auto;
+            border-radius:18px;
+            padding:24px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.75), rgba(255,255,255,0.65));
+            box-shadow: 0 10px 34px rgba(10,50,120,0.08);
+            border: 1px solid rgba(11,105,255,0.12);
+            display:flex;
+            gap:20px;
+            align-items:center;
+            justify-content:space-between;
         }
 
-        .subtitle {
-            font-size: 18px;
-            color: #333;
-            margin-bottom: 40px;
+        .glass .col { flex:1; }
+
+        .card-icon {
+            width:72px; height:72px; border-radius:12px;
+            display:flex; align-items:center; justify-content:center;
+            background:linear-gradient(45deg,#eaf6ff,#e6f8ff);
+            box-shadow: 0 6px 18px rgba(11,105,255,0.06);
+            color:#0b69ff; font-size:28px;
         }
 
-        .card-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 25px;
-        }
+        .cta-row { margin-top:18px; }
 
-        .feature-card {
-            background: white;
-            border-radius: 12px;
-            padding: 25px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.10);
-            transition: 0.3s;
-            cursor: pointer;
-            text-decoration: none;
-            display: block;
-            color: inherit;
-        }
+        /* feature grid */
+        .features { display:grid; grid-template-columns: repeat(auto-fit,minmax(240px,1fr)); gap:20px; padding:26px 6%; }
 
-        .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 18px rgba(0,0,0,0.15);
-        }
+        .p-card { border-radius:14px !important; }
 
-        .icon {
-            font-size: 45px;
-            margin-bottom: 12px;
-            color: #1976d2;
-        }
-
-        .card-title {
-            font-size: 20px;
-            font-weight: bold;
-            margin-bottom: 6px;
-        }
-
-        .card-desc {
-            font-size: 15px;
-            color: #555;
+        /* responsive */
+        @media (max-width:900px){
+            .hero { flex-direction:column; text-align:center; padding:48px 6%;}
+            .hero-right{ order: -1; margin-bottom:18px; }
         }
     </style>
 </h:head>
 
 <h:body>
-    <div class="container">
 
-        <div class="title">Welcome to Portfolio SIP Manager</div>
-        <div class="subtitle">Smartly manage your assets, SIP plans, and financial growth</div>
+    <!-- NAV -->
+    <div class="topbar">
+        <div class="brand">Portfolio SIP Manager</div>
 
-        <div class="card-grid">
+        <div style="display:flex; align-items:center; gap:14px;">
+            <a href="index.jsf" style="text-decoration:none; color:#05203a; font-weight:600;">Home</a>
+            <a href="User/ViewPlans.jsf" style="text-decoration:none; color:#05203a; font-weight:600;">SIP Plans</a>
+            <a href="About.jsf" style="text-decoration:none; color:#05203a; font-weight:600;">About</a>
 
-            <!-- USER LOGIN -->
-            <h:link outcome="Login.xhtml" styleClass="feature-card">
-                <div class="icon">👤</div>
-                <div class="card-title">User Login</div>
-                <div class="card-desc">Access your investment dashboard</div>
-            </h:link>
-
-            <!-- ADMIN LOGIN -->
-            <h:link outcome="/Admin/Login.xhtml" styleClass="feature-card">
-                <div class="icon">🛠️</div>
-                <div class="card-title">Admin Login</div>
-                <div class="card-desc">Manage assets, SIPs and user accounts</div>
-            </h:link>
-
-            <!-- VIEW SIP PLANS -->
-            <h:link outcome="/User/ViewPlans.xhtml" styleClass="feature-card">
-                <div class="icon">📈</div>
-                <div class="card-title">SIP Plans</div>
-                <div class="card-desc">Explore SIP options and long-term benefits</div>
-            </h:link>
-
-            <!-- ABOUT PROJECT -->
-            <h:link outcome="/About.xhtml" styleClass="feature-card">
-                <div class="icon">📘</div>
-                <div class="card-title">About Project</div>
-                <div class="card-desc">Learn more about portfolio manager</div>
-            </h:link>
-
+            <p:button value="Login" outcome="Login.jsf" icon="pi pi-sign-in"
+                      styleClass="p-button-text" />
+            <p:button value="Register" outcome="Register.jsf" icon="pi pi-user-plus"
+                      styleClass="p-button-outlined p-button-rounded" />
         </div>
     </div>
+
+    <!-- HERO + CARD -->
+    <section class="hero">
+        <div class="hero-left">
+            <h1 class="hero-title">Premium SIP  Portfolio Manager</h1>
+            <div class="hero-sub">Beautiful dashboards, accurate SIP projections and secure account controls for serious investors.</div>
+
+            <div class="cta-row">
+                <p:commandButton value="Get Started" action="Login.xhtml" icon="pi pi-arrow-right"
+                                 styleClass="p-button-lg p-button-rounded p-button-primary" />
+                <p:button value="View Plans" outcome="User/ViewPlans.jsf"
+                          styleClass="p-button-rounded p-button-secondary p-ml-3" icon="pi pi-chart-line" />
+            </div>
+        </div>
+
+        <div class="hero-right">
+            <div class="glass" role="region" aria-label="summary">
+                <div class="col">
+                    <div style="display:flex; gap:12px; align-items:center;">
+                        <div class="card-icon"><span class="pi pi-wallet"></span></div>
+                        <div>
+                            <div style="font-weight:700; color:#042a52;">Total SIPs</div>
+                            <div style="color:#49708e; margin-top:4px;">Track active SIPs  history</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div style="display:flex; gap:12px; align-items:center;">
+                        <div class="card-icon"><span class="pi pi-chart-line"></span></div>
+                        <div>
+                            <div style="font-weight:700; color:#042a52;">Portfolio Value</div>
+                            <div style="color:#49708e; margin-top:4px;">See real-time valuations</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col" style="text-align:right;">
+                    <div style="font-weight:700; color:#042a52;">Secure</div>
+                    <div style="color:#49708e; margin-top:6px;">Encrypted sessions  role access</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FEATURES GRID -->
+    <div class="features">
+        <p:card styleClass="p-card">
+            <f:facet name="title">SIP Calculator</f:facet>
+            <p>Quickly model SIP returns with ease — monthly/quarterly/yearly options.</p>
+        </p:card>
+
+        <p:card styleClass="p-card">
+            <f:facet name="title">Analytics</f:facet>
+            <p>Charts and breakdowns that make portfolio decisions simple and clear.</p>
+        </p:card>
+
+        <p:card styleClass="p-card">
+            <f:facet name="title">Secure Access</f:facet>
+            <p>JWT-based sessions, encrypted storage and admin controls.</p>
+        </p:card>
+
+        <p:card styleClass="p-card">
+            <f:facet name="title">Export Reports</f:facet>
+            <p>Download investment summaries and statements as PDF/CSV.</p>
+        </p:card>
+    </div>
+
+    <p:divider />
+
+    <div style="text-align:center; padding:20px 12px; color:#6b7b8a;">© 2025 Portfolio SIP Manager — All Rights Reserved</div>
+
 </h:body>
 </html>

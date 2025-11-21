@@ -1,0 +1,172 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>View SIP Plans — Portfolio SIP Manager</title>
+
+    <style>
+        body {
+            margin:0;
+            font-family: "Inter", "Poppins", sans-serif;
+            background: linear-gradient(180deg, #e9f2ff 0%, #f6fbff 60%);
+            color:#05203a;
+        }
+
+        .topbar {
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            padding:12px 28px;
+            background: linear-gradient(90deg, rgba(255,255,255,0.7), rgba(255,255,255,0.5));
+            box-shadow: 0 6px 20px rgba(6,30,63,0.06);
+        }
+        .brand {
+            font-weight:800;
+            font-size:20px;
+            color:#042a52;
+            background: linear-gradient(90deg,#0b69ff,#00a8ff);
+            -webkit-background-clip:text;
+            -webkit-text-fill-color:transparent;
+        }
+
+        .page-title {
+            text-align:center;
+            margin-top:32px;
+            font-size:36px;
+            font-weight:800;
+            color:#042a52;
+        }
+        .page-sub {
+            text-align:center;
+            font-size:16px;
+            color:#345678;
+            margin-bottom:26px;
+        }
+
+        .plan-grid {
+            display:grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap:22px;
+            padding: 20px 6%;
+        }
+
+        .plan-card {
+            border-radius:16px !important;
+            box-shadow:0 8px 22px rgba(10, 50, 120, 0.08);
+            border:1px solid rgba(11,105,255,0.12);
+            padding:20px;
+            background:white;
+        }
+
+        .plan-price {
+            font-size:32px;
+            font-weight:900;
+            margin:0;
+            background: linear-gradient(90deg,#0b69ff,#00a8ff);
+            -webkit-background-clip:text;
+            -webkit-text-fill-color:transparent;
+        }
+
+        .btn-start {
+            margin-top:16px;
+            width:100%;
+        }
+
+    </style>
+</h:head>
+
+<h:body>
+
+    <!-- NAV BAR -->
+    <div class="topbar">
+        <div class="brand">Portfolio SIP Manager</div>
+
+        <div style="display:flex; gap:14px; align-items:center;">
+            <a href="../index.xhtml" style="text-decoration:none; color:#05203a; font-weight:600;">Home</a>
+            <a href="ViewPlans.xhtml" style="text-decoration:none; color:#05203a; font-weight:600;">SIP Plans</a>
+            <a href="../About.xhtml" style="text-decoration:none; color:#05203a; font-weight:600;">About</a>
+
+            <p:button value="Login" outcome="/Login.xhtml" icon="pi pi-sign-in"
+                      styleClass="p-button-text" />
+            <p:button value="Register" outcome="/Register.xhtml" icon="pi pi-user-plus"
+                      styleClass="p-button-outlined p-button-rounded" />
+        </div>
+    </div>
+
+    <!-- PAGE TITLE -->
+    <h2 class="page-title">Our SIP Plans</h2>
+    <div class="page-sub">
+        Choose the plan that matches your investment strategy and future goals.
+    </div>
+
+    <!-- PLAN GRID -->
+    <div class="plan-grid">
+
+        <!-- PLAN 1 -->
+        <div class="plan-card">
+            <h3>Starter SIP</h3>
+            <p class="plan-price">₹1,000 / month</p>
+            <p>Perfect for new investors who want to begin their SIP journey.</p>
+
+            <ul>
+                <li>Low risk</li>
+                <li>Monthly investment</li>
+                <li>Good for beginners</li>
+            </ul>
+
+            <p:commandButton value="Start Now"
+                             icon="pi pi-check"
+                             action="../Login.xhtml"
+                             styleClass="p-button-rounded p-button-primary btn-start"/>
+        </div>
+
+        <!-- PLAN 2 -->
+        <div class="plan-card">
+            <h3>Growth SIP</h3>
+            <p class="plan-price">₹5,000 / month</p>
+            <p>Balanced plan for medium–long term wealth creation.</p>
+
+            <ul>
+                <li>Moderate risk</li>
+                <li>Higher returns</li>
+                <li>Great for professionals</li>
+            </ul>
+
+            <p:commandButton value="Start Now"
+                             icon="pi pi-check"
+                             action="/Login.xhtml"
+                             styleClass="p-button-rounded p-button-primary btn-start"/>
+        </div>
+
+        <!-- PLAN 3 -->
+        <div class="plan-card">
+            <h3>Premium SIP</h3>
+            <p class="plan-price">₹10,000 / month</p>
+            <p>High-return plan for aggressive and long-term investors.</p>
+
+            <ul>
+                <li>High risk</li>
+                <li>Max growth</li>
+                <li>Best for long-term goals</li>
+            </ul>
+
+            <p:commandButton value="Start Now"
+                             icon="pi pi-check"
+                             action="/Login.xhtml"
+                             styleClass="p-button-rounded p-button-primary btn-start"/>
+        </div>
+
+    </div>
+
+    <p:divider />
+
+    <div style="text-align:center; padding:20px; color:#6b7b8a;">
+        © 2025 Portfolio SIP Manager — All Rights Reserved
+    </div>
+
+</h:body>
+</html>

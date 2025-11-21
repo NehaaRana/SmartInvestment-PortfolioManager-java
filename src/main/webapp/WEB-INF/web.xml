@@ -19,7 +19,7 @@
         </session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>faces/index.xhtml</welcome-file>
+        <welcome-file>index.jsf</welcome-file>
     </welcome-file-list>
     
     <security-constraint>
@@ -36,8 +36,6 @@
         
     </security-constraint>
         
-         
-    
     <error-page>
         <error-code>403</error-code>
         <location>/Forbidden.jsf</location>

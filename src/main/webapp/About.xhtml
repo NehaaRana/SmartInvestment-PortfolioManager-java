@@ -1,0 +1,185 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>About — Portfolio SIP Manager</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: "Inter", "Poppins", sans-serif;
+            background: linear-gradient(180deg, #e9f2ff 0%, #f6fbff 60%);
+            color: #05203a;
+        }
+
+        /* Topbar */
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 28px;
+            background: linear-gradient(90deg, rgba(255,255,255,0.7), rgba(255,255,255,0.5));
+            box-shadow: 0 6px 20px rgba(6,30,63,0.06);
+        }
+
+        .brand {
+            font-weight: 800;
+            font-size: 20px;
+            background: linear-gradient(90deg, #0b69ff, #00a8ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* HERO ABOUT SECTION */
+        .hero-about {
+            padding: 70px 10%;
+            text-align: center;
+        }
+        .hero-title {
+            font-weight: 800;
+            font-size: 40px;
+            color: #042a52;
+        }
+        .hero-sub {
+            color: #334e68;
+            font-size: 18px;
+            max-width: 720px;
+            margin: 12px auto 0 auto;
+        }
+
+        /* Glass Info Card */
+        .about-card {
+            margin: 40px auto;
+            max-width: 880px;
+            padding: 28px;
+            border-radius: 18px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.78), rgba(255,255,255,0.62));
+            box-shadow: 0 12px 34px rgba(10,50,120,0.10);
+            border: 1px solid rgba(11,105,255,0.12);
+        }
+
+        .section-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #042a52;
+            margin-bottom: 16px;
+        }
+
+        .about-text {
+            line-height: 1.6;
+            font-size: 16px;
+            color: #35506b;
+        }
+
+        /* Features Grid */
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 22px;
+            padding: 30px 10%;
+            margin-top: 20px;
+        }
+
+        .feature-box {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid rgba(11,105,255,0.12);
+            box-shadow: 0 6px 20px rgba(10,50,120,0.06);
+            text-align: center;
+        }
+
+        .feature-icon {
+            font-size: 32px;
+            color: #0b69ff;
+            margin-bottom: 10px;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 18px;
+            color: #6b7b8a;
+        }
+    </style>
+
+</h:head>
+
+
+<h:body>
+
+    <!-- NAV -->
+    <div class="topbar">
+        <div class="brand">Portfolio SIP Manager</div>
+
+        <div style="display:flex; gap:14px; align-items:center;">
+            <a href="index.jsf" style="text-decoration:none; color:#05203a; font-weight:600;">Home</a>
+            <a href="User/ViewPlans.jsf" style="text-decoration:none; color:#05203a; font-weight:600;">SIP Plans</a>
+            <a href="About.jsf" style="text-decoration:none; color:#05203a; font-weight:600;">About</a>
+
+            <p:button value="Login" outcome="Login" icon="pi pi-sign-in"
+                      styleClass="p-button-text" />
+            <p:button value="Register" outcome="Register" icon="pi pi-user-plus"
+                      styleClass="p-button-outlined p-button-rounded" />
+        </div>
+    </div>
+
+
+    <!-- HERO SECTION -->
+    <div class="hero-about">
+        <div class="hero-title">About Portfolio SIP Manager</div>
+        <div class="hero-sub">A modern tool built to simplify your SIP investments with clarity, analytics and peace of mind.</div>
+    </div>
+
+
+    <!-- GLASS CARD CONTENT -->
+    <div class="about-card">
+        <div class="section-title">Our Mission</div>
+        <div class="about-text">
+            Portfolio SIP Manager helps investors track, plan and optimize their SIPs.  
+            We provide an intuitive platform with premium-grade UI, secure architecture  
+            and performance-focused analytics.  
+            <br/><br/>
+            Whether you are a student, new investor or long-term portfolio builder,  
+            we give you the tools to make smarter decisions with confidence.
+        </div>
+    </div>
+
+
+    <!-- FEATURES GRID -->
+    <div class="about-grid">
+
+        <div class="feature-box">
+            <div class="feature-icon"><span class="pi pi-shield"></span></div>
+            <h3>Secure and Private</h3>
+            <p>Your investment data is handled with strong encryption and secure session policies.</p>
+        </div>
+
+        <div class="feature-box">
+            <div class="feature-icon"><span class="pi pi-chart-line"></span></div>
+            <h3>Investment Analytics</h3>
+            <p>Track returns, performance trends and future projections easily.</p>
+        </div>
+
+        <div class="feature-box">
+            <div class="feature-icon"><span class="pi pi-wallet"></span></div>
+            <h3>Track SIPs</h3>
+            <p>Simple management interface for checking SIP contributions and valuations.</p>
+        </div>
+
+        <div class="feature-box">
+            <div class="feature-icon"><span class="pi pi-file-export"></span></div>
+            <h3>Export Reports</h3>
+            <p>Download SIP statements, summaries and monthly performance charts.</p>
+        </div>
+
+    </div>
+
+
+    <div class="footer">© 2025 Portfolio SIP Manager — All Rights Reserved</div>
+
+</h:body>
+</html>

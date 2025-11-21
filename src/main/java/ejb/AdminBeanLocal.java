@@ -40,7 +40,7 @@ public interface AdminBeanLocal {
     void deleteAsset(int aid);
     Collection<Assets> getAllAssets();
     Assets findAssetById(int aid);
-    
+    Collection<Assets> getAllAssetsPublic();
     //Order & Transaction Oversight
     Collection<Orders> getAllOrders();
     Collection<Transactions> getAllTransactions();

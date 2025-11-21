@@ -218,6 +218,7 @@ public class AssetManagedBean implements Serializable {
 
             // Load public assets for both guest and logged-in users
             assetsList = ac.getAllAssetsPublic();
+            originalList = new ArrayList<>(assetsList); // <--- Add this line
 
             System.out.println("INFO: Assets loaded: " + (assetsList != null ? assetsList.size() : 0));
 
@@ -225,7 +226,9 @@ public class AssetManagedBean implements Serializable {
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("ERROR: Failed to load assets: " + e.getMessage());
-            assetsList = new ArrayList<>(); // fallback empty list
+//            assetsList = new ArrayList<>(); // fallback empty list
+//            originalList = new ArrayList<>();
+
         }
     }
 
@@ -366,27 +369,55 @@ public class AssetManagedBean implements Serializable {
         }
     }
 
+//    public void searchAssetsAjax() {
+//    if (searchKeyword == null || searchKeyword.trim().isEmpty()) {
+//        loadAssets();   // show all assets when field is empty
+//            return;
+//        }
+//
+//        String key = searchKeyword.toLowerCase();
+//
+//        assetsList = originalList.stream() // keep originalList for full backup
+//                .filter(a -> a.getName().toLowerCase().contains(key)
+//                          || a.getType().toLowerCase().contains(key)
+//                          || String.valueOf(a.getAid()).contains(key))
+//                .collect(Collectors.toList());
+//    }
+//    
+//    public String deleteAsset(int aid) {
+//        AdminClient ac = new AdminClient(keepRecord.getToken());
+//        ac.deleteAsset(aid);   // calling REST delete
+//        loadAssets();
+//        return "AllAssets?faces-redirect=true";
+//    }
+    
+    
     public void searchAssetsAjax() {
-    if (searchKeyword == null || searchKeyword.trim().isEmpty()) {
-        loadAssets();   // show all assets when field is empty
+
+        // If empty → reload original full dataset
+        if (searchKeyword == null || searchKeyword.trim().isEmpty()) {
+
+            FacesContext fc = FacesContext.getCurrentInstance();
+            String page = fc.getViewRoot().getViewId();
+
+            if (page.contains("AllAssets")) {
+                loadAssets();  // Admin Page
+            } else {
+                // ViewPlans page uses original public list
+                assetsList = new ArrayList<>(originalList);
+            }
             return;
         }
 
         String key = searchKeyword.toLowerCase();
 
-        assetsList = originalList.stream() // keep originalList for full backup
+        assetsList = originalList.stream()
                 .filter(a -> a.getName().toLowerCase().contains(key)
                           || a.getType().toLowerCase().contains(key)
                           || String.valueOf(a.getAid()).contains(key))
                 .collect(Collectors.toList());
     }
-    
-    public String deleteAsset(int aid) {
-        AdminClient ac = new AdminClient(keepRecord.getToken());
-        ac.deleteAsset(aid);   // calling REST delete
-        loadAssets();
-        return "AllAssets?faces-redirect=true";
-    }
+
 
 ////    ViewPlans
 //    public void loadAssetsForPlans() {

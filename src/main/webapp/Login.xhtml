@@ -1,7 +1,8 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="jakarta.faces.html">
+      xmlns:h="jakarta.faces.html"
+      xmlns:p="http://primefaces.org/ui">
 
 <h:head>
     <title>Login — Portfolio SIP Manager</title>
@@ -125,14 +126,19 @@
 
 <h:body>
 
-    <!-- TOP BAR -->
+   <!-- NAV -->
     <div class="topbar">
         <div class="brand">Portfolio SIP Manager</div>
 
-        <div class="menu">
-            <a href="index.jsf">Home</a>
-            <a href="User/ViewPlans.jsf">SIP Plans</a>
-            <a href="About.jsf">About</a>
+        <div style="display:flex; gap:14px; align-items:center;">
+            <a href="index.jsf" style="text-decoration:none; color:#05203a; font-weight:600;">Home</a>
+            <a href="User/ViewPlans.jsf" style="text-decoration:none; color:#05203a; font-weight:600;">SIP Plans</a>
+            <a href="About.jsf" style="text-decoration:none; color:#05203a; font-weight:600;">About</a>
+
+            <p:button value="Login" outcome="Login" icon="pi pi-sign-in"
+                      styleClass="p-button-text" />
+            <p:button value="Register" outcome="Register" icon="pi pi-user-plus"
+                      styleClass="p-button-outlined p-button-rounded" />
         </div>
     </div>
 

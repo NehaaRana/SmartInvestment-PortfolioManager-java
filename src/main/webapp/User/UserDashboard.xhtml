@@ -42,6 +42,7 @@
             font-size: 20px;
             font-weight: bold;
         }
+        
         pre {
             background: #eef1f5;
             padding: 15px;
@@ -84,8 +85,7 @@
             <h:link value="Home" outcome="/index" style="text-decoration:none; color:#05203a; font-weight:600;" />
             <h:link value="SIP Plans" outcome="/User/ViewPlans" style="text-decoration:none; color:#05203a; font-weight:600;" />
             <h:link value="About" outcome="/About" style="text-decoration:none; color:#05203a; font-weight:600;" />
-            <p:button value="Login" outcome="/Login.xhtml" icon="pi pi-sign-in" styleClass="p-button-text" />
-            <p:button value="Register" outcome="/Register.xhtml" icon="pi pi-user-plus" styleClass="p-button-outlined p-button-rounded" />
+       
         </div>
     </div>
     
@@ -127,7 +127,7 @@
             </div>
 
 
-            <div class="col-md-4 mb-4">
+<!--            <div class="col-md-4 mb-4">
                 <div class="card shadow-sm">
                     <div class="card-body">
                         <div class="card-title">Portfolio</div>
@@ -136,8 +136,51 @@
                         </h:panelGroup>
                     </div>
                 </div>
-            </div>
+            </div>-->
+<div>
+            <div class="col-md-4 mb-4">
+            <div class="card-lg">
+                <div class="card-body">
+                    <div class="card-title">Portfolio</div>
 
+                    <h:panelGroup rendered="#{not empty portfolioBean.portfolioList}">
+                        <h:dataTable value="#{portfolioBean.portfolioList}" var="p" styleClass="table table-striped">
+
+                            <h:column>
+                                <f:facet name="header">Asset</f:facet>
+                                #{p.aid.name} (#{p.aid.type})
+                            </h:column>
+
+                            <h:column>
+                                <f:facet name="header">Units</f:facet>
+                                #{p.units}
+                            </h:column>
+
+                            <h:column>
+                                <f:facet name="header">Avg Price</f:facet>
+                                #{p.avgPrice}
+                            </h:column>
+
+                            <h:column>
+                                <f:facet name="header">Current Value</f:facet>
+                                #{p.currentValue}
+                            </h:column>
+
+                            <h:column>
+                                <f:facet name="header">Updated</f:facet>
+                                <h:outputText value="#{p.updatedAt}">
+                                    <f:convertDateTime pattern="dd-MM-yyyy HH:mm"/>
+                                </h:outputText>
+                            </h:column>
+
+                        </h:dataTable>
+                    </h:panelGroup>
+
+                </div>
+            </div>
+        </div>
+
+</div>
             <div class="col-md-4 mb-4">
                 <div class="card shadow-sm">
                     <div class="card-body">

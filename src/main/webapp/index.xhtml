@@ -97,10 +97,17 @@
         <div class="brand">Portfolio SIP Manager</div>
 
         <div style="display:flex; align-items:center; gap:14px;">
-            <a href="index.jsf" style="text-decoration:none; color:#05203a; font-weight:600;">Home</a>
+<!--            <a href="index.jsf" style="text-decoration:none; color:#05203a; font-weight:600;">Home</a>
             <a href="User/ViewPlans.jsf" style="text-decoration:none; color:#05203a; font-weight:600;">SIP Plans</a>
-            <a href="About.jsf" style="text-decoration:none; color:#05203a; font-weight:600;">About</a>
+            <a href="About.jsf" style="text-decoration:none; color:#05203a; font-weight:600;">About</a>-->
+             <h:link value="Home" outcome="/index" 
+                     style="text-decoration:none; color:#05203a; font-weight:600;" />
 
+             <h:link value="SIP Plans" outcome="/User/ViewPlans"
+                     style="text-decoration:none; color:#05203a; font-weight:600;" />
+
+             <h:link value="About" outcome="/About"
+                     style="text-decoration:none; color:#05203a; font-weight:600;" />
             <p:button value="Login" outcome="Login.jsf" icon="pi pi-sign-in"
                       styleClass="p-button-text" />
             <p:button value="Register" outcome="Register.jsf" icon="pi pi-user-plus"

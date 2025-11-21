@@ -7,6 +7,7 @@ package CDIBean;
 import Entity.Assets;
 import client.AdminClient;
 import jakarta.annotation.PostConstruct;
+import jakarta.faces.context.ExternalContext;
 import jakarta.faces.context.FacesContext;
 import jakarta.inject.Named;
 //import jakarta.faces.view.ViewScoped;
@@ -123,48 +124,116 @@ public class AssetManagedBean implements Serializable {
         this.risk = risk;
     }
 
-    @PostConstruct
-    public void init() {
-        // Read aid from URL parameter
-        String aidParam = FacesContext.getCurrentInstance()
-                .getExternalContext()
-                .getRequestParameterMap()
-                .get("aid");
-
-        if (aidParam != null) {
-            System.out.println("=== Editing Asset AID: " + aidParam + " ===");
-
-            AdminClient ac = new AdminClient(keepRecord.getToken());
-            Assets asset = ac.findAssetById(Assets.class, aidParam);
-
-            if (asset != null) {
-                this.aid = asset.getAid();
-                this.symbol = asset.getSymbol();
-                this.name = asset.getName();
-                this.type = asset.getType();
-                this.current_price = asset.getCurrentPrice();
-                this.status = asset.getStatus();
-                this.risk = asset.getRisk();
-            }
-        } else {
-            // No edit parameter → load list
-            loadAssets();
-        }
-    }
-
-    
-    
-   // @PostConstruct
-    //public void init() {
-      //  loadAssets();
-    //}
+//    @PostConstruct
+//    public void init() {
+//        // Read aid from URL parameter
+//        String aidParam = FacesContext.getCurrentInstance()
+//                .getExternalContext()
+//                .getRequestParameterMap()
+//                .get("aid");
+//
+//        if (aidParam != null) {
+//            System.out.println("=== Editing Asset AID: " + aidParam + " ===");
+//
+//            AdminClient ac = new AdminClient(keepRecord.getToken());
+//            Assets asset = ac.findAssetById(Assets.class, aidParam);
+//
+//            if (asset != null) {
+//                this.aid = asset.getAid();
+//                this.symbol = asset.getSymbol();
+//                this.name = asset.getName();
+//                this.type = asset.getType();
+//                this.current_price = asset.getCurrentPrice();
+//                this.status = asset.getStatus();
+//                this.risk = asset.getRisk();
+//            }
+//        } else {
+//            // No edit parameter → load list
+//            loadAssets();
+//        }
+//    }
     
     
 //    @PostConstruct
-//    public void loadAssets() {
-//        AdminClient ac = new AdminClient(keepRecord.getToken());
-//        assetsList = ac.getAllAssets();
+//    public void init() {
+//        try {
+//            String page = FacesContext.getCurrentInstance()
+//                            .getViewRoot()
+//                            .getViewId();   // e.g. /User/ViewPlans.xhtml
+//
+//            System.out.println("Current Page: " + page);
+//
+//            // If user is on ViewPlans.xhtml → always load plans LIST
+//            if (page.contains("ViewPlans")) {
+//                loadAssetsForPlans();
+//                return;
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        // For all admin pages — normal logic
+//        String aidParam = FacesContext.getCurrentInstance()
+//                .getExternalContext()
+//                .getRequestParameterMap()
+//                .get("aid");
+//
+//        if (aidParam != null) {
+//            AdminClient ac = new AdminClient(keepRecord.getToken());
+//            Assets asset = ac.findAssetById(Assets.class, aidParam);
+//
+//            if (asset != null) {
+//                this.aid = asset.getAid();
+//                this.symbol = asset.getSymbol();
+//                this.name = asset.getName();
+//                this.type = asset.getType();
+//                this.current_price = asset.getCurrentPrice();
+//                this.status = asset.getStatus();
+//                this.risk = asset.getRisk();
+//            }
+//        } else {
+//            loadAssets();   // Admin list only
+//        }
 //    }
+    
+    @PostConstruct
+    public void init() {
+        try {
+            FacesContext fc = FacesContext.getCurrentInstance();
+            ExternalContext ec = fc.getExternalContext();
+
+            // Get token from session (if user is logged in)
+            String token = (String) ec.getSessionMap().get("token");
+            AdminClient ac;
+
+            if (token != null && !token.isEmpty()) {
+                // Logged-in user: use token if needed for other authenticated calls
+                ac = new AdminClient(token);
+                System.out.println("INFO: Logged-in user token: " + token);
+            } else {
+                // Guest user: no token
+                ac = new AdminClient();
+                System.out.println("INFO: Guest user loading public assets");
+            }
+
+            // Load public assets for both guest and logged-in users
+            assetsList = ac.getAllAssetsPublic();
+
+            System.out.println("INFO: Assets loaded: " + (assetsList != null ? assetsList.size() : 0));
+
+            ac.close(); // Always close the client
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("ERROR: Failed to load assets: " + e.getMessage());
+            assetsList = new ArrayList<>(); // fallback empty list
+        }
+    }
+
+
+
+    
+    
+   
 
     public void loadAssets() {
         try {
@@ -189,53 +258,6 @@ public class AssetManagedBean implements Serializable {
         return assetsList;
     }
     
-    
-//    public String addAsset(){
-//    
-//        AdminClient ac= new AdminClient(keepRecord.getToken());
-//        ac.addAsset(symbol, name, type,  current_price.toString(), status, risk);
-//        loadAssets();
-//        return "AllAssets?faces-redirect=true";
-//    }
-    
-//    public String addAsset() {
-//        try {
-//            AdminClient ac = new AdminClient(keepRecord.getToken());
-//
-//              // --- UPLOAD IMAGE ---
-//            if (symbolImage != null) {
-//                String fileName = Paths.get(symbolImage.getSubmittedFileName())
-//                                       .getFileName().toString();
-//
-//                // choose upload folder (example)
-////                String uploadDir = "D:\\java-ENTERPRISE\\ICT-1-Project\assets";
-////                String uploadDir = "D:\\java-ENTERPRISE\\ICT-1-Project\\assets\\";
-//                
-//                String uploadDir = FacesContext.getCurrentInstance()
-//                                .getExternalContext()
-//                                .getRealPath("") + "/resources/assets/";
-//;
-//
-//                System.out.println("UPLOAD FOLDER = " + uploadDir);
-//
-//                Files.copy(symbolImage.getInputStream(),
-//                           Paths.get(uploadDir + fileName),
-//                           StandardCopyOption.REPLACE_EXISTING);
-//
-//                this.symbol = fileName;  // Save file name in DB
-//            }
-//
-//            // --- CALL REST API ---
-//            ac.addAsset(symbol, name, type, current_price.toString(), status, risk);
-//
-//            loadAssets();
-//            return "AllAssets?faces-redirect=true";
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return null;
-//        }
-//    }
 
          public String addAsset() {
             try {
@@ -277,21 +299,7 @@ public class AssetManagedBean implements Serializable {
         }
 
 
-    
-//     public String edit(int aid) {
-//        AdminClient ac = new AdminClient(keepRecord.getToken());
-//        Assets asset = ac.findAssetById(Assets.class, String.valueOf(aid));
-//
-//        this.aid = asset.getAid();
-//        this.symbol = asset.getSymbol();
-//        this.name = asset.getName();
-//        this.type = asset.getType();
-//        this.current_price = asset.getCurrentPrice();
-//        this.status = asset.getStatus();
-//        this.risk = asset.getRisk();
-//
-//        return "EditAsset";
-//    }
+ 
 
 
     public String edit(int aid) {
@@ -312,35 +320,7 @@ public class AssetManagedBean implements Serializable {
     }
 
 
-//    public String update() {
-//        AdminClient ac = new AdminClient(keepRecord.getToken());
-////        ac.updateAssetPrice(String.valueOf(aid), String.valueOf(current_price));
-////        ac.updateAssetStatus(String.valueOf(aid), status)
-    /// 
-//        ac.up
-//        loadAssets();
-//        return "AllAssets?faces-redirect=true";
-//    }
-    
-    
-//    public String update() {
-//
-//        AdminClient ac = new AdminClient(keepRecord.getToken());
-//
-//        ac.updateAsset(
-//                aid,
-//                symbol,
-//                name,
-//                type,
-//                current_price.toString(),
-//                status,
-//                risk
-//        );
-//
-//        loadAssets();
-//
-//        return "AllAssets?faces-redirect=true";
-//    }
+
     
     
     public String update() {
@@ -408,7 +388,57 @@ public class AssetManagedBean implements Serializable {
         return "AllAssets?faces-redirect=true";
     }
 
+////    ViewPlans
+//    public void loadAssetsForPlans() {
+//        try {
+//            System.out.println("=== Loading Assets for Public SIP Plans ===");
+//
+//            AdminClient ac;
+//
+//            // If user logged in → use token
+//            if (keepRecord.getToken() != null && !keepRecord.getToken().isEmpty()) {
+//                ac = new AdminClient(keepRecord.getToken());
+//            } else {
+//                // Public access → no token
+//                ac = new AdminClient();   // Make sure you have no-token constructor
+//            }
+//
+//            assetsList = ac.getAllAssets();
+//            originalList = new ArrayList<>(assetsList);
+//
+//            System.out.println("Loaded " + assetsList.size() + " assets for SIP Plans");
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+
     
+    public void loadAssetsForPlans() {
+        try {
+            System.out.println("=== Loading Assets for SIP Plans ===");
+
+            AdminClient ac;
+            if (keepRecord.getToken() != null && !keepRecord.getToken().isEmpty()) {
+                // Logged-in user → use token
+                ac = new AdminClient(keepRecord.getToken());
+                assetsList = ac.getAllAssets();  // secured endpoint
+            } else {
+                // Guest → public access
+                ac = new AdminClient();
+                assetsList = ac.getAllAssetsPublic();  // public endpoint
+            }
+
+            originalList = new ArrayList<>(assetsList);
+            System.out.println("Loaded " + assetsList.size() + " assets for SIP Plans");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
     
     /**
      * Creates a new instance of AssetManagedBean

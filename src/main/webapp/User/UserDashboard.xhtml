@@ -2,7 +2,8 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
 
 <h:head>
     <title>User Dashboard</title>
@@ -72,6 +73,19 @@
         </h:form>
     </div>
 
+    
+      <!-- TOPBAR -->
+    <div class="topbar" style="margin-left: 230px; padding: 10px 20px; background:#eef1f5; display:flex; justify-content:space-between; align-items:center;">
+        <div style="font-weight:bold; font-size:18px;">Portfolio SIP Manager</div>
+        <div style="display:flex; gap:14px; align-items:center;">
+            <h:link value="Home" outcome="/index" style="text-decoration:none; color:#05203a; font-weight:600;" />
+            <h:link value="SIP Plans" outcome="/User/ViewPlans" style="text-decoration:none; color:#05203a; font-weight:600;" />
+            <h:link value="About" outcome="/About" style="text-decoration:none; color:#05203a; font-weight:600;" />
+            <p:button value="Login" outcome="/Login.xhtml" icon="pi pi-sign-in" styleClass="p-button-text" />
+            <p:button value="Register" outcome="/Register.xhtml" icon="pi pi-user-plus" styleClass="p-button-outlined p-button-rounded" />
+        </div>
+    </div>
+    
     <!-- MAIN CONTENT -->
     <div class="dashboard-content">
 

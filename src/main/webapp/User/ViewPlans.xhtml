@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="jakarta.faces.html"
       xmlns:f="jakarta.faces.core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="jakarta.faces.facelets">
 
 <h:head>
     <title>View SIP Plans — Portfolio SIP Manager</title>
@@ -80,33 +81,95 @@
 </h:head>
 
 <h:body>
-
+ 
     <!-- NAV BAR -->
     <div class="topbar">
+
+    <div style="display:flex; align-items:center; gap:14px;">
         <div class="brand">Portfolio SIP Manager</div>
-
-        <div style="display:flex; gap:14px; align-items:center;">
-            <a href="../index.xhtml" style="text-decoration:none; color:#05203a; font-weight:600;">Home</a>
-            <a href="ViewPlans.xhtml" style="text-decoration:none; color:#05203a; font-weight:600;">SIP Plans</a>
-            <a href="../About.xhtml" style="text-decoration:none; color:#05203a; font-weight:600;">About</a>
-
-            <p:button value="Login" outcome="/Login.xhtml" icon="pi pi-sign-in"
-                      styleClass="p-button-text" />
-            <p:button value="Register" outcome="/Register.xhtml" icon="pi pi-user-plus"
-                      styleClass="p-button-outlined p-button-rounded" />
-        </div>
     </div>
+
+    <div style="display:flex; gap:14px; align-items:center;">
+        <h:link value="Home" outcome="/index"
+                style="text-decoration:none; color:#05203a; font-weight:600;" />
+
+        <h:link value="SIP Plans" outcome="/User/ViewPlans"
+                style="text-decoration:none; color:#05203a; font-weight:600;" />
+
+        <h:link value="About" outcome="/About"
+                style="text-decoration:none; color:#05203a; font-weight:600;" />
+
+        <p:button value="Login" outcome="/Login.xhtml" icon="pi pi-sign-in"
+                  styleClass="p-button-text" />
+
+        <p:button value="Register" outcome="/Register.xhtml" icon="pi pi-user-plus"
+                  styleClass="p-button-outlined p-button-rounded" />
+    </div>
+
+</div>
 
     <!-- PAGE TITLE -->
     <h2 class="page-title">Our SIP Plans</h2>
     <div class="page-sub">
         Choose the plan that matches your investment strategy and future goals.
     </div>
+    
+   <h:form id="viewPlansForm">
+   <!-- SEARCH BAR -->
+    <div style="text-align:center; margin-bottom:20px;">
+        <h:inputText value="#{assetManagedBean.searchKeyword}" 
+                     style="padding:8px; width:300px; border-radius:5px; border:1px solid #777;">
 
-    <!-- PLAN GRID -->
+            <f:ajax event="keyup" 
+                    listener="#{assetManagedBean.searchAssetsAjax}" 
+                    render="planGrid" />
+        </h:inputText>
+    </div>
+   
+<h:panelGroup id="planGrid" layout="block" styleClass="plan-grid">
+
+        <ui:repeat value="#{assetManagedBean.assetsList}" var="asset">
+
+            <div class="plan-card">
+                <!-- Asset Symbol -->
+            <h:graphicImage library="assets" name="#{asset.symbol}" width="60" height="60" style="display:block; margin-bottom:10px;" />
+
+                <h3>#{asset.name}</h3>
+
+                <p class="plan-price">
+                    ₹#{asset.currentPrice} / month
+                </p>
+
+                <p>Type: #{asset.type}</p>
+                <p>Risk: #{asset.risk}</p>
+
+                <ul>
+                    <li>Status: #{asset.status}</li>
+                    <li>Created:
+                        <h:outputText value="#{asset.createdAt}">
+                            <f:convertDateTime pattern="yyyy-MM-dd" />
+                        </h:outputText>
+                    </li>
+                </ul>
+
+                <p:commandButton value="Start Now"
+                                 icon="pi pi-check"
+                                 action="/Login.xhtml"
+                                 styleClass="p-button-rounded p-button-primary btn-start"/>
+            </div>
+
+        </ui:repeat>
+
+</h:panelGroup>
+
+</h:form>
+
+
+
+<!--     PLAN GRID 
     <div class="plan-grid">
 
-        <!-- PLAN 1 -->
+         PLAN 1 
         <div class="plan-card">
             <h3>Starter SIP</h3>
             <p class="plan-price">₹1,000 / month</p>
@@ -124,7 +187,7 @@
                              styleClass="p-button-rounded p-button-primary btn-start"/>
         </div>
 
-        <!-- PLAN 2 -->
+         PLAN 2 
         <div class="plan-card">
             <h3>Growth SIP</h3>
             <p class="plan-price">₹5,000 / month</p>
@@ -142,7 +205,7 @@
                              styleClass="p-button-rounded p-button-primary btn-start"/>
         </div>
 
-        <!-- PLAN 3 -->
+         PLAN 3 
         <div class="plan-card">
             <h3>Premium SIP</h3>
             <p class="plan-price">₹10,000 / month</p>
@@ -160,7 +223,7 @@
                              styleClass="p-button-rounded p-button-primary btn-start"/>
         </div>
 
-    </div>
+    </div>-->
 
     <p:divider />
 

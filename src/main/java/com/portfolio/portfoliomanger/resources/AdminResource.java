@@ -140,6 +140,13 @@ public class AdminResource {
         return abl.getAllAssets();
     }
     
+    
+    @GET
+    @Path("getAllAssetsPublic")
+    @Produces("application/json")
+    public Collection<Assets> getAllAssetsPublic() {
+        return abl.getAllAssetsPublic();
+    }
     @RolesAllowed("ADMIN")
     @DELETE
     @Path("deleteAsset/{aid}")

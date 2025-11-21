@@ -55,7 +55,16 @@
     <h2>User List</h2>
 
     <h:form>
-
+         <!-- SEARCH BAR -->
+        <div style="margin-bottom:15px;">
+            <h:inputText value="#{userManagedBean.searchKeyword}" 
+                         style="padding:6px; width:250px; border-radius:4px; border:1px solid #777;">
+                <f:ajax event="keyup" 
+                        listener="#{userManagedBean.searchUsersAjax}" 
+                        render="userTableWrapper" />
+            </h:inputText>
+        </div>
+  <h:panelGroup id="userTableWrapper">
         <h:dataTable value="#{userManagedBean.userList}" 
                      var="u" 
                      styleClass="userTable">
@@ -93,6 +102,7 @@
             </h:column>
 
         </h:dataTable>
+    </h:panelGroup>
 
     </h:form>
 

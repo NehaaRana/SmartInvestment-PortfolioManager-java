@@ -34,10 +34,10 @@ public class AdminClient {
     private Client client;
     private static final String BASE_URI = "http://localhost:8080/PortfolioManager/resources";
 
-//    public AdminClient() {
-//        client = jakarta.ws.rs.client.ClientBuilder.newClient();
-//        webTarget = client.target(BASE_URI).path("Admin");
-//    }
+    public AdminClient() {
+        client = jakarta.ws.rs.client.ClientBuilder.newClient();
+        webTarget = client.target(BASE_URI).path("Admin");
+    }
     
     public AdminClient(String token){
         client = jakarta.ws.rs.client.ClientBuilder.newClient();
@@ -77,6 +77,14 @@ public class AdminClient {
             .request(jakarta.ws.rs.core.MediaType.APPLICATION_JSON)
             .get(new jakarta.ws.rs.core.GenericType<Collection<Orders>>() {}); 
 }
+
+    public Collection<Assets> getAllAssetsPublic() throws ClientErrorException {
+        WebTarget resource = webTarget.path("getAllAssetsPublic");
+
+        return resource
+                .request(jakarta.ws.rs.core.MediaType.APPLICATION_JSON)
+                .get(new jakarta.ws.rs.core.GenericType<Collection<Assets>>() {});
+    }
 
     public void approveRedemption(String rid) throws ClientErrorException {
         webTarget.path(java.text.MessageFormat.format("approveRedemption/{0}", new Object[]{rid})).request().put(null);

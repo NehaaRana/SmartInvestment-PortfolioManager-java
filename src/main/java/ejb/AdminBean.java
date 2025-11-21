@@ -347,4 +347,11 @@ public class AdminBean implements AdminBeanLocal {
         }
     
     }
+
+    @Override
+    public Collection<Assets> getAllAssetsPublic() {
+//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+           return em.createNamedQuery("Assets.findAll").getResultList();
+
+    }
 }

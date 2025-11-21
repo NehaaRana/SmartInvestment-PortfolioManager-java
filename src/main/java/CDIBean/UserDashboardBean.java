@@ -9,7 +9,9 @@ import client.UserClient;
 import jakarta.annotation.PostConstruct;
 import jakarta.inject.Named;
 import jakarta.enterprise.context.SessionScoped;
+import jakarta.faces.context.FacesContext;
 import jakarta.inject.Inject;
+import jakarta.servlet.http.HttpSession;
 import java.io.Serializable;
 import record.keepRecord;
 
@@ -125,8 +127,58 @@ public class UserDashboardBean implements  Serializable{
     public Object getTransactions() {
         return transactions;
     }
+//    public String logout() {
+//    try {
+//        // Reset keepRecord
+//        if (keepRecord != null) {
+//            keepRecord.reset();
+//        }
+//        // Invalidate session
+//        FacesContext facesContext = FacesContext.getCurrentInstance();
+//        HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(false);
+//        if (session != null) {
+//            session.invalidate();
+//        }
+//
+//        // Redirect to login page
+//        return "login.xhtml?faces-redirect=true";
+//
+//    } catch (Exception e) {
+//        e.printStackTrace();
+//        return null; // stay on current page if something goes wrong
+//    }
+//}
 
-    public String logout() {
-        return "/login.xhtml?faces-redirect=true";
+
+   public void logout() {
+    try {
+        // Reset keepRecord
+        if (keepRecord != null) {
+            keepRecord.reset();
+        }
+
+        // Invalidate session
+        HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
+            .getExternalContext().getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
+
+        // Redirect to Login.jsf at root
+        FacesContext.getCurrentInstance().getExternalContext().redirect(
+            FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/Login.jsf"
+        );
+
+    } catch (Exception e) {
+        e.printStackTrace();
     }
+}
+
+
+
+
+
+//    public String logout() {
+//        return "/login.xhtml?faces-redirect=true";
+//    }
 }

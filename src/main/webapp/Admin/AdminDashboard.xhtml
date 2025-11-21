@@ -156,8 +156,11 @@
             <h1>Welcome, Admin</h1>
 
             <h:form>
-                <h:commandButton value="Logout" styleClass="logout-btn"
-                                 action="#{userBean.logout}" />
+
+                    <h:commandButton value="Logout" styleClass="logout-btn"
+                             action="#{userDashboardBean.logout}"
+                             immediate="true"
+                             />
             </h:form>
         </div>
 

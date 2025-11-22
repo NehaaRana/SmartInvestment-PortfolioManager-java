@@ -85,17 +85,19 @@
 
 <h:body>
 
-    <!-- NAVBAR -->
+     <!-- NAV -->
     <div class="topbar">
         <div class="brand">Portfolio SIP Manager</div>
 
-        <div style="display:flex; align-items:center; gap:16px;">
-            <a href="index.xhtml">Home</a>
-            <a href="User/ViewPlans.xhtml">SIP Plans</a>
-            <a href="About.xhtml">About</a>
+        <div style="display:flex; gap:14px; align-items:center;">
+            <a href="index.jsf" style="text-decoration:none; color:#05203a; font-weight:600;">Home</a>
+            <a href="User/ViewPlans.jsf" style="text-decoration:none; color:#05203a; font-weight:600;">SIP Plans</a>
+            <a href="About.jsf" style="text-decoration:none; color:#05203a; font-weight:600;">About</a>
 
-            <p:button value="Login" outcome="Login.xhtml"
-                      styleClass="p-button-text" icon="pi pi-sign-in"/>
+            <p:button value="Login" outcome="Login" icon="pi pi-sign-in"
+                      styleClass="p-button-text" />
+            <p:button value="Register" outcome="Register" icon="pi pi-user-plus"
+                      styleClass="p-button-outlined p-button-rounded" />
         </div>
     </div>
 

@@ -32,7 +32,7 @@ public class AdminClient {
 
     private WebTarget webTarget;
     private Client client;
-    private static final String BASE_URI = "http://localhost:8080/PortfolioManager/resources";
+    private static final String BASE_URI = "https://localhost:8181/PortfolioManager/resources";
 
     public AdminClient() {
         client = jakarta.ws.rs.client.ClientBuilder.newClient();
@@ -43,6 +43,20 @@ public class AdminClient {
         client = jakarta.ws.rs.client.ClientBuilder.newClient();
         client.register(new MyFilter(token));
         webTarget = client.target(BASE_URI).path("Admin");
+    }
+    static {
+        //for localhost testing only
+        javax.net.ssl.HttpsURLConnection.setDefaultHostnameVerifier(
+                new javax.net.ssl.HostnameVerifier() {
+
+            public boolean verify(String hostname,
+                    javax.net.ssl.SSLSession sslSession) {
+                if (hostname.equals("localhost")) {
+                    return true;
+                }
+                return false;
+            }
+        });
     }
     
     public <T> T getAllTransactions(Class<T> responseType) throws ClientErrorException {

@@ -109,7 +109,6 @@ public class AdminClient {
     public void updateAsset(int aid, String symbol, String name, String type,
                         String currentPrice, String status, String risk) 
                         throws ClientErrorException {
-
         webTarget
             .path(java.text.MessageFormat.format(
                 "updateAsset/{0}/{1}/{2}/{3}/{4}/{5}/{6}",

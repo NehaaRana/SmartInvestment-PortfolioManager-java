@@ -45,6 +45,7 @@ public class UserManageBean {
     
     public String register() {
             try {
+                ul = new UserClient();
                 ul.register(fullName, email, password, phone);
 
                 msg = "Registration successful!";

@@ -25,12 +25,12 @@ public class UserClient {
 
     private WebTarget webTarget;
     private Client client;
-    private static final String BASE_URI = "http://localhost:8080/PortfolioManager/resources";
+    private static final String BASE_URI = "https://localhost:8181/PortfolioManager/resources";
 
-//    public UserClient() {
-//        client = jakarta.ws.rs.client.ClientBuilder.newClient();
-//        webTarget = client.target(BASE_URI).path("User");
-//    }
+    public UserClient() {
+        client = jakarta.ws.rs.client.ClientBuilder.newClient();
+        webTarget = client.target(BASE_URI).path("User");
+    }
     
     public UserClient(String token) {
         client = jakarta.ws.rs.client.ClientBuilder.newClient();
@@ -42,6 +42,21 @@ public class UserClient {
 
     }
 
+    static {
+        //for localhost testing only
+        javax.net.ssl.HttpsURLConnection.setDefaultHostnameVerifier(
+                new javax.net.ssl.HostnameVerifier() {
+
+            public boolean verify(String hostname,
+                    javax.net.ssl.SSLSession sslSession) {
+                if (hostname.equals("localhost")) {
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
+    
     public void requestRedemption(String uid, String aid, String units, String status) throws ClientErrorException {
         webTarget.path(java.text.MessageFormat.format("requestRedemption/{0}/{1}/{2}/{3}", new Object[]{uid, aid, units, status})).request().post(null);
     }

@@ -421,24 +421,25 @@ public class AssetManagedBean implements Serializable {
     }
 
 
-////    ViewPlans
+
+
+    
 //    public void loadAssetsForPlans() {
 //        try {
-//            System.out.println("=== Loading Assets for Public SIP Plans ===");
+//            System.out.println("=== Loading Assets for SIP Plans ===");
 //
 //            AdminClient ac;
-//
-//            // If user logged in → use token
 //            if (keepRecord.getToken() != null && !keepRecord.getToken().isEmpty()) {
+//                // Logged-in user → use token
 //                ac = new AdminClient(keepRecord.getToken());
+//                assetsList = ac.getAllAssets();  // secured endpoint
 //            } else {
-//                // Public access → no token
-//                ac = new AdminClient();   // Make sure you have no-token constructor
+//                // Guest → public access
+//                ac = new AdminClient();
+//                assetsList = ac.getAllAssetsPublic();  // public endpoint
 //            }
 //
-//            assetsList = ac.getAllAssets();
 //            originalList = new ArrayList<>(assetsList);
-//
 //            System.out.println("Loaded " + assetsList.size() + " assets for SIP Plans");
 //
 //        } catch (Exception e) {
@@ -451,26 +452,21 @@ public class AssetManagedBean implements Serializable {
         try {
             System.out.println("=== Loading Assets for SIP Plans ===");
 
-            AdminClient ac;
-            if (keepRecord.getToken() != null && !keepRecord.getToken().isEmpty()) {
-                // Logged-in user → use token
-                ac = new AdminClient(keepRecord.getToken());
-                assetsList = ac.getAllAssets();  // secured endpoint
-            } else {
-                // Guest → public access
-                ac = new AdminClient();
-                assetsList = ac.getAllAssetsPublic();  // public endpoint
-            }
+            AdminClient ac = new AdminClient();  
+            // Always use PUBLIC endpoint for user-facing SIP plans
+            assetsList = ac.getAllAssetsPublic();
 
             originalList = new ArrayList<>(assetsList);
-            System.out.println("Loaded " + assetsList.size() + " assets for SIP Plans");
 
-        } catch (Exception e) {
+            System.out.println("Loaded " + assetsList.size() + " assets for SIP Plans");
+        }
+        catch(Exception e) {
             e.printStackTrace();
         }
     }
 
-
+    
+    
 
     
     /**

@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="jakarta.faces.facelets">
 
 <h:head>
     <title>User Dashboard</title>
@@ -52,6 +53,7 @@
 </h:head>
 
 <h:body>
+<ui:include src="/Navbar.xhtml"/>
 
     <!-- SIDEBAR -->
     <div class="sidebar">
@@ -78,7 +80,7 @@
     </div>
 
     
-      <!-- TOPBAR -->
+<!--       TOPBAR 
     <div class="topbar" style="margin-left: 230px; padding: 10px 20px; background:#eef1f5; display:flex; justify-content:space-between; align-items:center;">
         <div style="font-weight:bold; font-size:18px;">Portfolio SIP Manager</div>
         <div style="display:flex; gap:14px; align-items:center;">
@@ -87,8 +89,7 @@
             <h:link value="About" outcome="/About" style="text-decoration:none; color:#05203a; font-weight:600;" />
        
         </div>
-    </div>
-    
+    </div>-->
     <!-- MAIN CONTENT -->
     <div class="dashboard-content">
 

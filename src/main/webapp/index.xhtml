@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="jakarta.faces.html"
       xmlns:f="jakarta.faces.core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="jakarta.faces.facelets">
 
 <h:head>
     <title>Portfolio SIP Manager</title>
@@ -91,15 +92,16 @@
 </h:head>
 
 <h:body>
+    <ui:include src="/Navbar.xhtml"/>
 
-    <!-- NAV -->
+<!--     NAV 
     <div class="topbar">
         <div class="brand">Portfolio SIP Manager</div>
 
         <div style="display:flex; align-items:center; gap:14px;">
-<!--            <a href="index.jsf" style="text-decoration:none; color:#05203a; font-weight:600;">Home</a>
+            <a href="index.jsf" style="text-decoration:none; color:#05203a; font-weight:600;">Home</a>
             <a href="User/ViewPlans.jsf" style="text-decoration:none; color:#05203a; font-weight:600;">SIP Plans</a>
-            <a href="About.jsf" style="text-decoration:none; color:#05203a; font-weight:600;">About</a>-->
+            <a href="About.jsf" style="text-decoration:none; color:#05203a; font-weight:600;">About</a>
              <h:link value="Home" outcome="/index" 
                      style="text-decoration:none; color:#05203a; font-weight:600;" />
 
@@ -113,7 +115,7 @@
             <p:button value="Register" outcome="Register.jsf" icon="pi pi-user-plus"
                       styleClass="p-button-outlined p-button-rounded" />
         </div>
-    </div>
+    </div>-->
 
     <!-- HERO + CARD -->
     <section class="hero">

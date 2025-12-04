@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="jakarta.faces.html"
       xmlns:f="jakarta.faces.core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="jakarta.faces.facelets">
 
 <h:head>
     <title>About — Portfolio SIP Manager</title>
@@ -112,7 +113,8 @@
 <h:body>
 
     <!-- NAV -->
-    <div class="topbar">
+<ui:include src="/Navbar.xhtml"/>
+<!--    <div class="topbar">
         <div class="brand">Portfolio SIP Manager</div>
 
         <div style="display:flex; gap:14px; align-items:center;">
@@ -125,7 +127,7 @@
             <p:button value="Register" outcome="Register" icon="pi pi-user-plus"
                       styleClass="p-button-outlined p-button-rounded" />
         </div>
-    </div>
+    </div>-->
 
 
     <!-- HERO SECTION -->

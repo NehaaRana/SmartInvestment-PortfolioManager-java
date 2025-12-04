@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <style>
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 35px;
+            background: rgba(255,255,255,0.7);
+            box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+            backdrop-filter: blur(8px);
+            font-family: "Inter","Poppins",sans-serif;
+        }
+
+        .brand {
+            font-size: 22px;
+            font-weight: 800;
+            background: linear-gradient(90deg,#0b69ff,#00a8ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .menu a {
+            text-decoration: none;
+            padding: 8px 14px;
+            color: #083560;
+            font-weight: 600;
+        }
+
+        .menu a:hover {
+            color: #0b69ff;
+        }
+
+        .user-email {
+            font-weight: 700;
+            color:#083560;
+            margin-right: 10px;
+        }
+    </style>
+</h:head>
+
+<h:body>
+
+<!-- ================= NAVBAR ================= -->
+<div class="topbar">
+
+    <!-- BRAND -->
+    <div class="brand">Portfolio SIP Manager</div>
+
+    <!-- MENU ITEMS -->
+    <div class="menu" style="display:flex; gap:15px; align-items:center;">
+
+        <h:link value="Home" outcome="/index" />
+        <h:link value="SIP Plans" outcome="/User/ViewPlans" />
+        <h:link value="About" outcome="/About" />
+
+        <!-- LOGGED-IN VIEW -->
+        <h:panelGroup rendered="#{not empty keepRecord.email}" layout="inline">
+
+            <!-- Avatar + Email -->
+            <p:avatar label="#{keepRecord.email.substring(0,1).toUpperCase()}"
+                      size="large"
+                      style="background:#0b69ff; color:white;" />
+
+            <span class="user-email">#{keepRecord.email}</span>
+
+            <h:form>
+                <p:commandButton value="Logout"
+                                 action="#{userDashboardBean.logout}"
+                                 icon="pi pi-sign-out"
+                                 styleClass="p-button-danger p-button-sm" />
+            </h:form>
+        </h:panelGroup>
+
+        <!-- LOGGED-OUT VIEW -->
+        <h:panelGroup rendered="#{empty keepRecord.email}" layout="inline">
+            <p:button value="Login" outcome="/Login"
+                      icon="pi pi-sign-in"
+                      styleClass="p-button-text" />
+
+            <p:button value="Register" outcome="/Register"
+                      icon="pi pi-user-plus"
+                      styleClass="p-button-outlined p-button-rounded" />
+        </h:panelGroup>
+
+    </div>
+</div>
+
+</h:body>
+</html>

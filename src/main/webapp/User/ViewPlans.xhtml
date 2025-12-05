@@ -212,7 +212,7 @@
 
         <p:commandButton value="Place Order"
                          action="#{orderBean.placeOrder}"
-                         update="@form"
+                         update="@form :viewPlansForm:planGrid"
                          oncomplete="PF('orderModal').hide()"/>
     </h:form>
 </p:dialog>

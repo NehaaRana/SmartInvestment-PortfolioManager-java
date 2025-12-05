@@ -6,11 +6,15 @@ package CDIBean;
 
 import Entity.Orders;
 import client.UserClient;
+import jakarta.annotation.PostConstruct;
 import jakarta.inject.Named;
 import jakarta.enterprise.context.SessionScoped;
+import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.inject.Inject;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import record.keepRecord;
 
 /**
@@ -24,7 +28,9 @@ public class OrderBean implements Serializable {
     @Inject
     private keepRecord keepRecord;
     
-    UserClient userclient;
+    private UserClient userclient;
+    
+    private List<Orders> ordersList;
     /**
      * Creates a new instance of OrderBean
      */
@@ -33,8 +39,37 @@ public class OrderBean implements Serializable {
     private int assetId;
     private String orderType = "buy";
 
+    @PostConstruct
+    public void init() {
+        userclient = new UserClient(keepRecord.getToken());
+        ordersList = new ArrayList<>();
+        loadUserOrders();
+    }
+
     public void openOrderDialog(int aid) {
         this.assetId = aid;
+        this.units=0;
+        this.amount=0;
+    }
+
+    // Load user orders
+    public void loadUserOrders() {
+        try {
+            String uid = keepRecord.getUid();
+            System.out.println("Fetching orders for UID: " + uid);
+                    
+            if (uid != null && !uid.isEmpty()) {
+                Orders[] orderArray = userclient.getUserOrders(Orders[].class, uid);
+                ordersList = new ArrayList<>();
+                if (orderArray != null) {
+                    for (Orders o : orderArray) {
+                        ordersList.add(o);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void placeOrder() {
@@ -51,10 +86,17 @@ public class OrderBean implements Serializable {
                     orderType,
                     String.valueOf(units),
                     String.valueOf(amount)
+//                    keepRecord.getToken()
             );
-
+            FacesContext.getCurrentInstance().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Order placed successfully ✔"));
+            
+            loadUserOrders();
+            
             System.out.println("Order placed successfully!");
         } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Failed to place order ❌"));
             System.out.println("Error placing order: " + e.getMessage());
         }
     }
@@ -81,6 +123,15 @@ public class OrderBean implements Serializable {
     public void setAssetId(int assetId) {
         this.assetId = assetId;
     }
+
+    public List<Orders> getOrdersList() {
+        return ordersList;
+    }
+
+    public void setOrdersList(List<Orders> ordersList) {
+        this.ordersList = ordersList;
+    }
+    
     
    
     public OrderBean() {

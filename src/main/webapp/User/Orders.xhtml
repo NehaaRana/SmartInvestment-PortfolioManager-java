@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="jakarta.faces.core">
+
+<h:head>
+    <title>My Orders — Portfolio SIP Manager</title>
+</h:head>
+
+<h:body>
+
+<h2 style="text-align:center">My Orders</h2>
+<p:messages  />
+
+<p:dataTable value="#{orderBean.ordersList}" var="o"
+             paginator="true" rows="8" 
+             emptyMessage="No Orders Found">
+
+    <p:column headerText="Order ID">
+        <h:outputText value="#{o.oid}" />
+    </p:column>
+
+    <p:column headerText="Asset Name">
+        <h:outputText value="#{o.aid.name}" />
+    </p:column>
+
+    <p:column headerText="Order Type">
+        <h:outputText value="#{o.orderType}" />
+    </p:column>
+
+    <p:column headerText="Units">
+        <h:outputText value="#{o.units}" />
+    </p:column>
+
+    <p:column headerText="Amount">
+        <h:outputText value="#{o.amount}" />
+    </p:column>
+
+    <p:column headerText="Date">
+        <h:outputText value="#{o.createdAt}" />
+    </p:column>
+
+</p:dataTable>
+
+</h:body>
+</html>

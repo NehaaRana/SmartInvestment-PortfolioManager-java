@@ -191,7 +191,6 @@ public class UserResource {
             ubl.placeOrder(uid, aid, orderType, units, amount);
     }
 
-    
     @RolesAllowed("USER")
     @GET
     @Produces("application/json")

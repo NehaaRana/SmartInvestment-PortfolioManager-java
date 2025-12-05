@@ -27,7 +27,7 @@ public class UserDashboardBean implements  Serializable{
      * Creates a new instance of UserDashboardBean
      */
     
-     @Inject
+    @Inject
     private keepRecord keepRecord;
     
     UserClient userClient;

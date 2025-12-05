@@ -184,9 +184,13 @@
                     </ul>
 
                     <p:commandButton value="Start Now"
-                                     icon="pi pi-check"
-                                     action="/Login.xhtml"
-                                     styleClass="p-button-rounded p-button-primary btn-start"/>
+    icon="pi pi-check"
+    actionListener="#{orderBean.openOrderDialog(asset.aid)}"
+    rendered="#{not empty keepRecord.uid}"
+    oncomplete="PF('orderModal').show()"
+    update="orderForm"
+    styleClass="p-button-rounded p-button-primary btn-start"/>
+
             </div>
 
         </ui:repeat>
@@ -194,6 +198,25 @@
     </h:panelGroup>
 
 </h:form>
+<p:dialog id="orderDialog" widgetVar="orderModal" header="Purchase Plan"
+          modal="true" closable="true" width="400">
+
+    <h:form id="orderForm">
+        <p:panelGrid columns="2" columnClasses="label,value">
+            <p:outputLabel value="Units:"/>
+            <p:inputText value="#{orderBean.units}" required="true"/>
+
+            <p:outputLabel value="Amount:"/>
+            <p:inputText value="#{orderBean.amount}" required="true"/>
+        </p:panelGrid>
+
+        <p:commandButton value="Place Order"
+                         action="#{orderBean.placeOrder}"
+                         update="@form"
+                         oncomplete="PF('orderModal').hide()"/>
+    </h:form>
+</p:dialog>
+
 
 
 

@@ -136,99 +136,66 @@
         <ui:repeat value="#{assetManagedBean.assetsList}" var="asset">
 
             <div class="plan-card">
+<!--                   ❤️ HEART ICON (Add to Watchlist) 
+                <div style="text-align:right;">
+                    <p:commandLink action="#{watchlistBean.addToWatchlist(asset.aid)}" update="@form">
+                          <i class="pi pi-heart" style="font-size:22px; color:red; cursor:pointer;"></i>
+                    </p:commandLink>
+
+                </div>-->
+                <div style="text-align:right;">
+<!--                    <p:commandLink action="#{watchListBean.toggleWatchlist(asset.aid)}"
+                                    update=":viewPlansForm:planGrid">
+
+                         <i class="pi #{watchListBean.isInWatchlist(asset.aid) ? 'pi-heart-fill' : 'pi-heart'}"
+                            style="font-size:22px; cursor:pointer; color: #{watchListBean.isInWatchlist(asset.aid) ? 'red' : 'grey'};">
+                         </i>
+
+                     </p:commandLink>-->
+                    <p:commandButton value="#{watchListBean.isInWatchlist(asset.aid) ? 'Remove' : 'Add'}" 
+                        icon="#{watchListBean.isInWatchlist(asset.aid) ? 'pi pi-heart-fill' : 'pi pi-heart'}"
+                        action="#{watchListBean.toggleWatchlist(asset.aid)}" 
+                        update="@this" />
+
+
+                </div>
+
+                
+                
                 <!-- Asset Symbol -->
-            <h:graphicImage library="assets" name="#{asset.symbol}" width="60" height="60" style="display:block; margin-bottom:10px;" />
+                <h:graphicImage library="assets" name="#{asset.symbol}" width="60" height="60" style="display:block; margin-bottom:10px;" />
 
-                <h3>#{asset.name}</h3>
+                    <h3>#{asset.name}</h3>
 
-                <p class="plan-price">
-                    ₹#{asset.currentPrice} / month
-                </p>
+                    <p class="plan-price">
+                        ₹#{asset.currentPrice} / month
+                    </p>
 
-                <p>Type: #{asset.type}</p>
-                <p>Risk: #{asset.risk}</p>
+                    <p>Type: #{asset.type}</p>
+                    <p>Risk: #{asset.risk}</p>
 
-                <ul>
-                    <li>Status: #{asset.status}</li>
-                    <li>Created:
-                        <h:outputText value="#{asset.createdAt}">
-                            <f:convertDateTime pattern="yyyy-MM-dd" />
-                        </h:outputText>
-                    </li>
-                </ul>
+                    <ul>
+                        <li>Status: #{asset.status}</li>
+                        <li>Created:
+                            <h:outputText value="#{asset.createdAt}">
+                                <f:convertDateTime pattern="yyyy-MM-dd" />
+                            </h:outputText>
+                        </li>
+                    </ul>
 
-                <p:commandButton value="Start Now"
-                                 icon="pi pi-check"
-                                 action="/Login.xhtml"
-                                 styleClass="p-button-rounded p-button-primary btn-start"/>
+                    <p:commandButton value="Start Now"
+                                     icon="pi pi-check"
+                                     action="/Login.xhtml"
+                                     styleClass="p-button-rounded p-button-primary btn-start"/>
             </div>
 
         </ui:repeat>
 
-</h:panelGroup>
+    </h:panelGroup>
 
 </h:form>
 
 
-
-<!--     PLAN GRID 
-    <div class="plan-grid">
-
-         PLAN 1 
-        <div class="plan-card">
-            <h3>Starter SIP</h3>
-            <p class="plan-price">₹1,000 / month</p>
-            <p>Perfect for new investors who want to begin their SIP journey.</p>
-
-            <ul>
-                <li>Low risk</li>
-                <li>Monthly investment</li>
-                <li>Good for beginners</li>
-            </ul>
-
-            <p:commandButton value="Start Now"
-                             icon="pi pi-check"
-                             action="../Login.xhtml"
-                             styleClass="p-button-rounded p-button-primary btn-start"/>
-        </div>
-
-         PLAN 2 
-        <div class="plan-card">
-            <h3>Growth SIP</h3>
-            <p class="plan-price">₹5,000 / month</p>
-            <p>Balanced plan for medium–long term wealth creation.</p>
-
-            <ul>
-                <li>Moderate risk</li>
-                <li>Higher returns</li>
-                <li>Great for professionals</li>
-            </ul>
-
-            <p:commandButton value="Start Now"
-                             icon="pi pi-check"
-                             action="/Login.xhtml"
-                             styleClass="p-button-rounded p-button-primary btn-start"/>
-        </div>
-
-         PLAN 3 
-        <div class="plan-card">
-            <h3>Premium SIP</h3>
-            <p class="plan-price">₹10,000 / month</p>
-            <p>High-return plan for aggressive and long-term investors.</p>
-
-            <ul>
-                <li>High risk</li>
-                <li>Max growth</li>
-                <li>Best for long-term goals</li>
-            </ul>
-
-            <p:commandButton value="Start Now"
-                             icon="pi pi-check"
-                             action="/Login.xhtml"
-                             styleClass="p-button-rounded p-button-primary btn-start"/>
-        </div>
-
-    </div>-->
 
     <p:divider />
 

@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>My Watchlist</title>
+    <style>
+        .watchlist-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .watchlist-table th, .watchlist-table td {
+            padding: 12px;
+            border: 1px solid #ddd;
+        }
+        .watchlist-table th {
+            background-color: #0b69ff;
+            color: white;
+        }
+        .empty-msg {
+            color: #555;
+            margin-top: 20px;
+            font-size: 16px;
+        }
+        .remove-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</h:head>
+<h:body>
+
+    <!-- Include Navbar -->
+    <ui:include src="/Navbar.xhtml" />
+
+    <h2>My Watchlist</h2>
+
+    <!-- Load watchlist before rendering -->
+    <f:metadata>
+        <f:event type="preRenderView" listener="#{watchListBean.loadWatchlist}" />
+    </f:metadata>
+
+    <h:form id="watchlistForm">
+
+        <!-- Watchlist Table -->
+        <h:panelGroup rendered="#{not empty watchListBean.watchlist}">
+            <p:dataTable value="#{watchListBean.watchlist}" var="item" styleClass="watchlist-table">
+                <p:column headerText="Asset Name">
+                    #{item.aid.name}
+                </p:column>
+                <p:column headerText="Symbol">
+                    #{item.aid.symbol}
+                </p:column>
+                <p:column headerText="Current Price">
+                    #{item.aid.currentPrice}
+                </p:column>
+                <p:column headerText="Actions">
+                    <p:commandButton value="Remove"
+                                     action="#{watchListBean.removeFromWatchlist(item.wid)}"
+                                     update="@form"
+                                     styleClass="remove-btn" />
+                </p:column>
+            </p:dataTable>
+        </h:panelGroup>
+
+        <!-- Empty Watchlist Message -->
+        <h:panelGroup rendered="#{empty watchListBean.watchlist}">
+            <div class="empty-msg">Your watchlist is empty.</div>
+        </h:panelGroup>
+
+    </h:form>
+</h:body>
+</html>
+

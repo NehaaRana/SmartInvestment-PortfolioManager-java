@@ -76,38 +76,31 @@
             margin-top:16px;
             width:100%;
         }
+        
+        .heart-btn, .heart-btn-selected {
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 22px;
+        }
+
+        .heart-btn:before {
+            font-family: 'primeicons';
+            content: "\e9da"; /* pi-heart */
+            color: grey;
+        }
+
+        .heart-btn-selected:before {
+            font-family: 'primeicons';
+            content: "\e9d8"; /* pi-heart-fill */
+            color: red;
+        }
 
     </style>
 </h:head>
 
 <h:body>
     <ui:include src="/Navbar.xhtml"/>
-
- 
-    <!-- NAV BAR -->
-<!--    <div class="topbar">
-
-    <div style="display:flex; align-items:center; gap:14px;">
-        <div class="brand">Portfolio SIP Manager</div>
-    </div>
-
-    <div style="display:flex; gap:14px; align-items:center;">
-        <h:link value="Home" outcome="/index"
-                style="text-decoration:none; color:#05203a; font-weight:600;" />
-
-        <h:link value="SIP Plans" outcome="/User/ViewPlans"
-                style="text-decoration:none; color:#05203a; font-weight:600;" />
-
-        <h:link value="About" outcome="/About"
-                style="text-decoration:none; color:#05203a; font-weight:600;" />
-
-        <p:button value="Login" outcome="/Login.xhtml" icon="pi pi-sign-in"
-                  styleClass="p-button-text" />
-
-        <p:button value="Register" outcome="/Register.xhtml" icon="pi pi-user-plus"
-                  styleClass="p-button-outlined p-button-rounded" />
-    </div>
-</div>-->
 
     <!-- PAGE TITLE -->
     <h2 class="page-title">Our SIP Plans</h2>
@@ -121,9 +114,6 @@
         <h:inputText value="#{assetManagedBean.searchKeyword}" 
                      style="padding:8px; width:300px; border-radius:5px; border:1px solid #777;">
 
-<!--            <f:ajax event="keyup" 
-                    listener="#{assetManagedBean.searchAssetsAjax}" 
-                    render="planGrid" />-->
             <f:ajax event="keyup" 
                 listener="#{assetManagedBean.searchAssetsAjax}" 
                 render=":viewPlansForm:planGrid" />
@@ -132,56 +122,65 @@
     </div>
    
     <h:panelGroup id="planGrid" layout="block" styleClass="plan-grid">
-
+        
+        
         <ui:repeat value="#{assetManagedBean.assetsList}" var="asset">
 
-            <div class="plan-card">
-<!--                   ❤️ HEART ICON (Add to Watchlist) 
-                <div style="text-align:right;">
-                    <p:commandLink action="#{watchlistBean.addToWatchlist(asset.aid)}" update="@form">
-                          <i class="pi pi-heart" style="font-size:22px; color:red; cursor:pointer;"></i>
-                    </p:commandLink>
+    <div class="plan-card">
 
-                </div>-->
-                <div style="text-align:right;">
-<!--                    <p:commandLink action="#{watchListBean.toggleWatchlist(asset.aid)}"
-                                    update=":viewPlansForm:planGrid">
+      <!-- Watchlist heart -->
+        <div style="text-align:right;">
 
-                         <i class="pi #{watchListBean.isInWatchlist(asset.aid) ? 'pi-heart-fill' : 'pi-heart'}"
-                            style="font-size:22px; cursor:pointer; color: #{watchListBean.isInWatchlist(asset.aid) ? 'red' : 'grey'};">
-                         </i>
+            <p:commandLink 
+                action="#{watchListBean.toggleWatchlist(asset.aid)}"
+                update=":viewPlansForm:planGrid"
+                style="border:none; background:none;">
 
-                     </p:commandLink>-->
-                    <p:commandButton value="#{watchListBean.isInWatchlist(asset.aid) ? 'Remove' : 'Add'}" 
-                        icon="#{watchListBean.isInWatchlist(asset.aid) ? 'pi pi-heart-fill' : 'pi pi-heart'}"
-                        action="#{watchListBean.toggleWatchlist(asset.aid)}" 
-                        update="@this" />
+                <i class="#{watchListBean.isInWatchlist(asset.aid) 
+                              ? 'pi pi-heart-fill' 
+                              : 'pi pi-heart'}"
+                   style="font-size:20px; 
+                          color:#{watchListBean.isInWatchlist(asset.aid) 
+                                ? 'red' : 'grey'};">
+                </i>
+
+            </p:commandLink>
+
+        </div>
 
 
-                </div>
+        <!-- Asset Image -->
+        <h:graphicImage library="assets" name="#{asset.symbol}" 
+                        width="60" height="60"
+                        style="display:block; margin-bottom:10px;" />
 
-                
-                
-                <!-- Asset Symbol -->
-                <h:graphicImage library="assets" name="#{asset.symbol}" width="60" height="60" style="display:block; margin-bottom:10px;" />
+        <!-- Asset Name -->
+        <h3>#{asset.name}</h3>
 
-                    <h3>#{asset.name}</h3>
+        <!-- Price -->
+        <p class="plan-price">
+            ₹#{asset.currentPrice} / month
+        </p>
 
-                    <p class="plan-price">
-                        ₹#{asset.currentPrice} / month
-                    </p>
+        <!-- Details -->
+        <p>Type: #{asset.type}</p>
+        <p>Risk: #{asset.risk}</p>
 
-                    <p>Type: #{asset.type}</p>
-                    <p>Risk: #{asset.risk}</p>
+        <ul>
+            <li>Status: #{asset.status}</li>
+            <li>Created:
+                <h:outputText value="#{asset.createdAt}">
+                    <f:convertDateTime pattern="yyyy-MM-dd" />
+                </h:outputText>
+            </li>
+        </ul>
 
-                    <ul>
-                        <li>Status: #{asset.status}</li>
-                        <li>Created:
-                            <h:outputText value="#{asset.createdAt}">
-                                <f:convertDateTime pattern="yyyy-MM-dd" />
-                            </h:outputText>
-                        </li>
-                    </ul>
+        <!-- Start Button -->
+        <p:commandButton value="Start Now"
+                         icon="pi pi-check"
+                         action="/Login.xhtml"
+                         styleClass="p-button-rounded p-button-primary btn-start"/>
+    </div>
 
                     <p:commandButton value="Start Now"
     icon="pi pi-check"
@@ -194,6 +193,7 @@
             </div>
 
         </ui:repeat>
+</ui:repeat>
 
     </h:panelGroup>
 

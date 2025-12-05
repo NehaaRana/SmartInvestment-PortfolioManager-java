@@ -52,7 +52,11 @@ public class UserDashboardBean implements  Serializable{
 
     public UserDashboardBean() {
     }
-    
+    public String getUserId() {
+        // Returns the current logged-in user's ID
+        return keepRecord.getUid();
+    }
+
     @PostConstruct
     public void init(){
         try{

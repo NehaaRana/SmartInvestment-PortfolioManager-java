@@ -4,17 +4,17 @@
  */
 package CDIBean;
 
+import Entity.Watchlist;
 import client.UserClient;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.SessionScoped;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import java.io.Serializable;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import org.primefaces.shaded.json.JSONArray;
-import org.primefaces.shaded.json.JSONObject;
 import record.keepRecord;
 
 /**
@@ -23,112 +23,171 @@ import record.keepRecord;
  */
 @Named(value = "watchListBean")
 @SessionScoped
-public class WatchListBean implements Serializable{
+public class WatchListBean implements Serializable {
 
-    /**
-     * Creates a new instance of WatchListBean
-     */
     
-      
+    private static final long serialVersionUID = 1L;
+
+    private UserClient userClient; // REST client
+    private List<Watchlist> watchlist; // User's watchlist
+
     @Inject
-    private keepRecord keepRecord;
-
-    private Set<Integer> assetIds;  // stores all asset IDs in watchlist
-
-    public WatchListBean() {
-        assetIds = new HashSet<>();
-    }
+    private keepRecord keepRecord; // Inject session user info
 
     @PostConstruct
     public void init() {
-        loadWatchlist();
+//        userClient = new UserClient();
+        userClient = new UserClient(keepRecord.getToken());
+
+        watchlist = new ArrayList<>();
+//        loadWatchlist(null);
+            loadWatchlist();
+
     }
 
-    // Load watchlist for current user
+//    // In WatchListBean.java
+//     public void loadWatchlist(ComponentSystemEvent event) {
+//        try {
+//            String uid = keepRecord.getUid(); // Get logged-in user id
+//            if (uid != null && !uid.isEmpty()) {
+//                Watchlist[] wlArray = userClient.getUserWatchlist(Watchlist[].class, uid);
+//                watchlist = new ArrayList<>();
+//                if (wlArray != null) {
+//                    for (Watchlist w : wlArray) {
+//                        watchlist.add(w);
+//                    }
+//                }
+//            } else {
+//                watchlist = new ArrayList<>();
+//            }
+//        } catch (Exception e) {
+//            watchlist = new ArrayList<>();
+//            FacesContext.getCurrentInstance().addMessage(null,
+//                new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Failed to load watchlist."));
+//            e.printStackTrace();
+//        }
+//    }
+
     public void loadWatchlist() {
         try {
-            String uid = keepRecord.getUid() + "";
-            String token = keepRecord.getToken();
-
-            UserClient uc = new UserClient(token);
-            List<Object> rawList = uc.getUserWatchlist(List.class, uid);
-
-            assetIds.clear(); // reset
-
-            // Convert response to JSON Array (safe for Jersey map)
-            JSONArray arr = new JSONArray(rawList);
-
-            for (int i = 0; i < arr.length(); i++) {
-                JSONObject obj = arr.getJSONObject(i);
-
-                if (obj.has("aid")) {
-                    int aid = obj.getInt("aid");
-                    assetIds.add(aid);
+            String uid = keepRecord.getUid();
+            if (uid != null && !uid.isEmpty()) {
+                Watchlist[] wlArray = userClient.getUserWatchlist(Watchlist[].class, uid);
+                watchlist = new ArrayList<>();
+                if (wlArray != null) {
+                    for (Watchlist w : wlArray) {
+                        watchlist.add(w);
+                    }
                 }
+            } else {
+                watchlist = new ArrayList<>();
             }
-
-            System.out.println("WATCHLIST LOADED: " + assetIds);
-
         } catch (Exception e) {
+            watchlist = new ArrayList<>();
+            FacesContext.getCurrentInstance().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Failed to load watchlist."));
             e.printStackTrace();
-            System.out.println("WATCHLIST LOAD ERROR: " + e.getMessage());
         }
     }
+
+
 
     // Add asset to watchlist
-    public void addToWatchlist(int aid) {
+    public void addToWatchlist(int assetId) {
         try {
-            String uid = keepRecord.getUid() + "";
-            String token = keepRecord.getToken();
+            if (keepRecord.getUid() != null) {
+                userClient.addToWatchlist(keepRecord.getUid(), String.valueOf(assetId));
+                FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Asset added to watchlist."));
+//                loadWatchlist(null); // Refresh the list
+                    loadWatchlist();
 
-            UserClient uc = new UserClient(token);
-            uc.addToWatchlist(uid, aid + "");
-
-            assetIds.add(aid); // instant UI update
-
-            System.out.println("ADDED TO WATCHLIST: " + aid);
-
+            }
         } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Failed to add asset to watchlist."));
             e.printStackTrace();
         }
-    }
-
-    // Remove item from watchlist
-    public void removeFromWatchlist(int wid) {
-        try {
-            String token = keepRecord.getToken();
-
-            UserClient uc = new UserClient(token);
-            uc.removeFromWatchlist(wid + "");
-
-            assetIds.remove(wid);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    // Check if asset is in watchlist
-    public boolean isInWatchlist(int aid) {
-        return assetIds.contains(aid);
-    }
-    
-    // Toggle asset in watchlist
-    public void toggleWatchlist(int aid) {
-        if (isInWatchlist(aid)) {
-            removeFromWatchlist(aid);
-        } else {
-            addToWatchlist(aid);
-        }
-    }
-
-    
-    public Set<Integer> getAssetIds() {
-        return assetIds;
-    }
-
-    public void setAssetIds(Set<Integer> assetIds) {
-        this.assetIds = assetIds;
-    }
-    
 }
+
+
+    // Remove asset from watchlist
+    public void removeFromWatchlist(int watchlistId) {
+        try {
+            userClient.removeFromWatchlist(String.valueOf(watchlistId));
+            FacesContext.getCurrentInstance().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Asset removed from watchlist."));
+//            loadWatchlist(null); // Refresh the list
+                loadWatchlist();
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Failed to remove asset from watchlist."));
+            e.printStackTrace();
+        }
+    }
+
+
+    // Check if an asset is already in the watchlist
+//    public boolean isInWatchlist(int assetId) {
+//        if (watchlist == null) return false;
+//        return watchlist.stream().anyMatch(w -> w.getAid().getAid() == assetId);
+//    }
+    
+    public boolean isInWatchlist(int assetId) {
+        if (watchlist == null) return false;
+        return watchlist.stream().anyMatch(w ->
+            w.getAid() != null && w.getAid().getAid() == assetId
+        );
+    }
+
+    
+//    toggleWtchList
+    public void toggleWatchlist(int assetId) {
+         try {
+             String uid = keepRecord.getUid();
+             if (uid == null || uid.isEmpty()) {
+                 FacesContext.getCurrentInstance().addMessage(null,
+                     new FacesMessage("Login required"));
+                 return;
+             }
+
+             // Remove if exists
+             for (Watchlist w : watchlist) {
+//                 if (w.getAid().getAid() == assetId) {
+                if (w.getAid() != null && w.getAid().getAid() == assetId) {
+
+                        userClient.removeFromWatchlist(String.valueOf(w.getWid()));
+//                     loadWatchlist(null);
+                    loadWatchlist();
+                     return;
+                 }
+             }
+
+             // Add new
+             userClient.addToWatchlist(uid, String.valueOf(assetId));
+//             loadWatchlist(null);
+                loadWatchlist();
+
+         } catch (Exception e) {
+             e.printStackTrace();
+         }
+     }
+
+
+
+    // Getters and Setters
+    public List<Watchlist> getWatchlist() {
+        return watchlist;
+    }
+
+    public void setWatchlist(List<Watchlist> watchlist) {
+        this.watchlist = watchlist;
+    }
+}
+
+
+
+
+
+
+

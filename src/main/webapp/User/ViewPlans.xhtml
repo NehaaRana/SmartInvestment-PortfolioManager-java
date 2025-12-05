@@ -184,53 +184,6 @@
 
 </ui:repeat>
 
-<!--        <ui:repeat value="#{assetManagedBean.assetsList}" var="asset">
-
-            <div style="text-align:right;">
-                <button 
-                    class="#{watchListBean.isInWatchlist(asset.aid) 
-                            ? 'heart-btn-selected' 
-                            : 'heart-btn'}">
-                </button>
-
-                <p:ajax 
-                    event="click" 
-                    listener="#{watchListBean.toggleWatchlist(asset.aid)}" 
-                    update=":viewPlansForm:planGrid" />
-                 </div>
-
-
-                
-                
-                 Asset Symbol 
-                <h:graphicImage library="assets" name="#{asset.symbol}" width="60" height="60" style="display:block; margin-bottom:10px;" />
-
-                    <h3>#{asset.name}</h3>
-
-                    <p class="plan-price">
-                        ₹#{asset.currentPrice} / month
-                    </p>
-
-                    <p>Type: #{asset.type}</p>
-                    <p>Risk: #{asset.risk}</p>
-
-                    <ul>
-                        <li>Status: #{asset.status}</li>
-                        <li>Created:
-                            <h:outputText value="#{asset.createdAt}">
-                                <f:convertDateTime pattern="yyyy-MM-dd" />
-                            </h:outputText>
-                        </li>
-                    </ul>
-
-                    <p:commandButton value="Start Now"
-                                     icon="pi pi-check"
-                                     action="/Login.xhtml"
-                                     styleClass="p-button-rounded p-button-primary btn-start"/>
-            </div>
-
-        </ui:repeat>-->
-
     </h:panelGroup>
 
 </h:form>

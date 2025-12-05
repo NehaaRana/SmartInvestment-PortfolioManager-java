@@ -1,0 +1,112 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="jakarta.faces.facelets">
+
+<button id="toggleBtn" class="toggle-btn" onclick="toggleSidebar()">☰</button>
+
+<div id="sidebar" class="sidebar">
+    <div class="sidebar-header">
+        <h3> User Panel </h3>
+    </div>
+
+    <ul class="menu">
+        <li><h:link outcome="UserDashboard" value="Dashboard"/></li>
+        <li><h:link outcome="Portfolio" value="Portfolio"/></li>
+        <li><h:link outcome="Orders" value="Orders"/></li>
+        <li><h:link outcome="Payments" value="Payments"/></li>
+        <li><h:link outcome="Transactions" value="Transactions"/></li>
+        <li><h:link outcome="Goals" value="Goals"/></li>
+        <li><h:link outcome="Profile" value="Profile"/></li>
+    </ul>
+
+    <h:form style="padding:20px;">
+        <h:commandButton value="Logout"
+                         action="#{userDashboardBean.logout}"
+                         styleClass="logout-btn"/>
+    </h:form>
+</div>
+
+
+
+<script>
+function toggleSidebar() {
+    document.getElementById("sidebar").classList.toggle("collapsed");
+}
+
+
+</script>
+
+<style>
+.sidebar {
+    background: #111827;
+    color: white;
+    height: 100vh;
+    width: 230px;
+    position: fixed;
+    top: 70px;
+    left: 0;
+    transform: translateX(0);
+    transition: transform .3s ease-in-out;
+    padding-top: 10px;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.4);
+}
+
+.sidebar.collapsed {
+    transform: translateX(-230px);
+}
+
+.menu {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+}
+
+.menu li {
+    padding: 12px 20px;
+}
+
+.menu li a {
+    color:#cfd3d8;
+    text-decoration:none;
+    font-size:16px;
+    display:block;
+}
+
+.menu li:hover {
+    background:#0b69ff;
+    border-radius:6px;
+}
+
+.logout-btn {
+    width: 100%;
+    background: #ef4444;
+    border: none;
+    padding: 10px;
+    border-radius: 6px;
+    cursor:pointer;
+    font-weight: bold;
+}
+
+#toggleBtn {
+    position: fixed;
+    top: 90px;
+    left: 180px;
+    z-index: 999;
+    background: palevioletred;
+    border: none;
+    font-size: 22px;
+    color: white;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 6px;
+}
+
+.sidebar.collapsed ~ #toggleBtn {
+    left: 10px;
+}
+
+
+</style>
+</html>

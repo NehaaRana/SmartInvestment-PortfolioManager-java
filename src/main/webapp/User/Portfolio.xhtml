@@ -2,7 +2,8 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="jakarta.faces.html"
-      xmlns:f="jakarta.faces.core">
+      xmlns:f="jakarta.faces.core"
+      xmlns:ui="jakarta.faces.facelets">
 
 <h:head>
     <title>My Portfolio</title>
@@ -40,8 +41,10 @@
 </h:head>
 
 <h:body>
+    <ui:include src="/Navbar.xhtml"/>
+
  <!-- FIXED TOP NAVBAR -->
-<div class="topbar"
+<!--<div class="topbar"
      style="width: 100%; padding: 12px 25px; 
             background:#eef1f5; 
             display:flex; justify-content:space-between; 
@@ -64,7 +67,7 @@
         <h:link value="DashBoard" outcome="/User/UserDashboard"
                 style="text-decoration:none; color:#05203a; font-weight:600;" />
     </div>
-</div>
+</div>-->
 
 <div class="container mt-4">
     

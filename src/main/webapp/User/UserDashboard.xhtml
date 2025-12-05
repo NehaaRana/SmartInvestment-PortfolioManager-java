@@ -2,247 +2,123 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="jakarta.faces.facelets">
 
 <h:head>
-    <title>User Dashboard</title>
-
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"/>
+    <title>User Dashboard — Portfolio SIP Manager</title>
 
     <style>
         body {
-            background-color: #f4f6f9;
+            margin:0;
+            background:#f4f6f9;
+            font-family: "Inter","Poppins",sans-serif;
+            overflow-x:hidden;
         }
-        .sidebar {
-            height: 100vh;
-            background: #1a2433;
-            color: white;
-            padding-top: 30px;
-            position: fixed;
-            width: 230px;
+
+        .main-content {
+            margin-left:240px;
+            margin-top:85px;
+            padding:25px;
+            transition:margin-left .3s;
         }
-        .sidebar a {
-            color: #cfd3d8;
-            padding: 12px 20px;
-            display: block;
-            text-decoration: none;
+
+        .collapsed-main {
+            margin-left:80px;
         }
-        .sidebar a:hover {
-            background: #0d6efd;
-            color: white;
+
+        .cards {
+            display:flex;
+            gap:20px;
+            flex-wrap:wrap;
         }
-        .dashboard-content {
-            margin-left: 250px;
-            padding: 30px;
+
+        .card {
+            background:white;
+            padding:20px;
+            border-radius:12px;
+            flex:1;
+            min-width:220px;
+            box-shadow:0 2px 8px rgba(0,0,0,0.15);
         }
-        .card-title {
-            font-size: 20px;
-            font-weight: bold;
-        }
-        
-        pre {
-            background: #eef1f5;
-            padding: 15px;
-            border-radius: 8px;
+
+        .card h3 { margin:0; font-size:18px; color:#0b69ff; }
+        .card h2 { margin-top:10px; font-size:26px; font-weight:800; }
+
+        .chart-box {
+            background:white;
+            padding:25px;
+            margin-top:30px;
+            border-radius:12px;
+            box-shadow:0 2px 8px rgba(0,0,0,0.15);
         }
     </style>
+
+    <script>
+        function adjustContent() {
+            const sidebar = document.getElementById("sidebar");
+            const content = document.getElementById("main-content");
+
+            if (sidebar.classList.contains("collapsed")) {
+                content.classList.add("collapsed-main");
+            } else {
+                content.classList.remove("collapsed-main");
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            setInterval(adjustContent, 200);
+        });
+    </script>
 </h:head>
 
+
+
 <h:body>
-<ui:include src="/Navbar.xhtml"/>
 
-    <!-- SIDEBAR -->
-    <div class="sidebar">
-        <h4 class="text-center mb-4">User Panel</h4>
+    <!-- =============== NAVBAR INCLUDE =============== -->
+    <ui:include src="/Navbar.xhtml"/>
 
-        <a href="#">Dashboard</a>
-        <!--<a href="#">Portfolio</a>-->
-        <h:link value="Portfolio" outcome="/User/Portfolio"
-            style="color: #cfd3d8; padding: 12px 20px; display: block; text-decoration: none;" />
+    <!-- =============== SIDEBAR INCLUDE =============== -->
+    <ui:include src="/Sidebar.xhtml"/>
 
-        <a href="#">Goals</a>
-        <a href="#">Orders</a>
-        <a href="#">Payments</a>
-        <a href="#">Transactions</a>
 
-        <h:link value="Profile" outcome="/User/Profile"
-            style="color: #cfd3d8; padding: 12px 20px; display: block; text-decoration: none;" />
-        <h:form style="padding: 20px;">
-            <h:commandButton value="Logout"
-                             action="#{userDashboardBean.logout}"
-                             immediate="true"
-                             styleClass="btn btn-danger w-100"/>
-        </h:form>
-    </div>
+    <!-- =============== MAIN CONTENT =============== -->
+    <div id="main-content" class="main-content">
 
-    
-<!--       TOPBAR 
-    <div class="topbar" style="margin-left: 230px; padding: 10px 20px; background:#eef1f5; display:flex; justify-content:space-between; align-items:center;">
-        <div style="font-weight:bold; font-size:18px;">Portfolio SIP Manager</div>
-        <div style="display:flex; gap:14px; align-items:center;">
-            <h:link value="Home" outcome="/index" style="text-decoration:none; color:#05203a; font-weight:600;" />
-            <h:link value="SIP Plans" outcome="/User/ViewPlans" style="text-decoration:none; color:#05203a; font-weight:600;" />
-            <h:link value="About" outcome="/About" style="text-decoration:none; color:#05203a; font-weight:600;" />
-       
-        </div>
-    </div>-->
-    <!-- MAIN CONTENT -->
-    <div class="dashboard-content">
+        <h2 style="font-weight:800; color:#083560;">Welcome, #{profileBean.fullName}</h2>
+        <p style="color:#666; margin-bottom:25px;">Track your investments - portfolio progress.</p>
 
-        <!-- Welcome Section -->
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2>Welcome, #{profileBean.fullName}</h2>
-        </div>
-
-        <!-- Dashboard Cards -->
-        <div class="row">
-
-<!--            <div class="col-md-4 mb-4">
-                <div class="card shadow-sm">
-                    <div class="card-body">
-                        <div class="card-title">Profile</div>
-                        <h:panelGroup rendered="#{not empty userDashboardBean.profile}">
-                            <pre>#{userDashboardBean.profile}</pre>
-                        </h:panelGroup>
-                    </div>
-                </div>
-            </div>-->
-
-            <div class="row">
-                <div class="col-md-4 mb-4">
-                    <div class="card shadow-sm">
-                        <div class="card-body">
-                            <div class="card-title">Profile</div>
-                            <h:panelGroup rendered="#{not empty userDashboardBean.profileBean.fullName}">
-                                <p><strong>Full Name:</strong> #{userDashboardBean.profileBean.fullName}</p>
-                                <p><strong>Email:</strong> #{userDashboardBean.profileBean.email}</p>
-                                <p><strong>Phone:</strong> #{userDashboardBean.profileBean.phone}</p>
-                            </h:panelGroup>
-                        </div>
-                    </div>
-                </div>
+        <!-- DASHBOARD CARDS -->
+        <div class="cards">
+            <div class="card">
+                <h3>Total Investment</h3>
+                <h2>₹ 1,20,000</h2>
             </div>
 
+            <div class="card">
+                <h3>Active SIP</h3>
+                <h2>10 Plans</h2>
+            </div>
 
-<!--            <div class="col-md-4 mb-4">
-                <div class="card shadow-sm">
-                    <div class="card-body">
-                        <div class="card-title">Portfolio</div>
-                        <h:panelGroup rendered="#{not empty userDashboardBean.portfolio}">
-                            <pre>#{userDashboardBean.portfolio}</pre>
-                        </h:panelGroup>
-                    </div>
-                </div>
-            </div>-->
-<div>
-            <div class="col-md-4 mb-4">
-            <div class="card-lg">
-                <div class="card-body">
-                    <div class="card-title">Portfolio</div>
+            <div class="card">
+                <h3>Total Returns</h3>
+                <h2>₹ 17,800</h2>
+            </div>
 
-                    <h:panelGroup rendered="#{not empty portfolioBean.portfolioList}">
-                        <h:dataTable value="#{portfolioBean.portfolioList}" var="p" styleClass="table table-striped">
-
-                            <h:column>
-                                <f:facet name="header">Asset</f:facet>
-                                #{p.aid.name} (#{p.aid.type})
-                            </h:column>
-
-                            <h:column>
-                                <f:facet name="header">Units</f:facet>
-                                #{p.units}
-                            </h:column>
-
-                            <h:column>
-                                <f:facet name="header">Avg Price</f:facet>
-                                #{p.avgPrice}
-                            </h:column>
-
-                            <h:column>
-                                <f:facet name="header">Current Value</f:facet>
-                                #{p.currentValue}
-                            </h:column>
-
-                            <h:column>
-                                <f:facet name="header">Updated</f:facet>
-                                <h:outputText value="#{p.updatedAt}">
-                                    <f:convertDateTime pattern="dd-MM-yyyy HH:mm"/>
-                                </h:outputText>
-                            </h:column>
-
-                        </h:dataTable>
-                    </h:panelGroup>
-
-                </div>
+            <div class="card">
+                <h3>Completed Orders</h3>
+                <h2>28</h2>
             </div>
         </div>
 
-</div>
-            <div class="col-md-4 mb-4">
-                <div class="card shadow-sm">
-                    <div class="card-body">
-                        <div class="card-title">Goals</div>
-                        <h:panelGroup rendered="#{not empty userDashboardBean.goals}">
-                            <pre>#{userDashboardBean.goals}</pre>
-                        </h:panelGroup>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-
-        <!-- SECOND ROW -->
-        <div class="row">
-
-            <div class="col-md-6 mb-4">
-                <div class="card shadow-sm">
-                    <div class="card-body">
-                        <div class="card-title">Orders</div>
-                        <h:panelGroup rendered="#{not empty userDashboardBean.orders}">
-                            <pre>#{userDashboardBean.orders}</pre>
-                        </h:panelGroup>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6 mb-4">
-                <div class="card shadow-sm">
-                    <div class="card-body">
-                        <div class="card-title">Payments</div>
-                        <h:panelGroup rendered="#{not empty userDashboardBean.payments}">
-                            <pre>#{userDashboardBean.payments}</pre>
-                        </h:panelGroup>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-        <!-- THIRD ROW -->
-        <div class="row">
-
-            <div class="col-md-12 mb-4">
-                <div class="card shadow-sm">
-                    <div class="card-body">
-                        <div class="card-title">Transactions</div>
-                        <h:panelGroup rendered="#{not empty userDashboardBean.transactions}">
-                            <pre>#{userDashboardBean.transactions}</pre>
-                        </h:panelGroup>
-                    </div>
-                </div>
-            </div>
-
+        <!-- CHART -->
+        <div class="chart-box">
+            <h3 style="margin-bottom:15px;">Portfolio Growth</h3>
+           
         </div>
 
     </div>
-
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </h:body>
 </html>

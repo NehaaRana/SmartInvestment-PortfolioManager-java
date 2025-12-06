@@ -56,7 +56,11 @@
                     #{item.aid.name}
                 </p:column>
                 <p:column headerText="Symbol">
-                    #{item.aid.symbol}
+                    <h:graphicImage value="#{resource['assets/'.concat(item.aid.symbol)]}" 
+                        width="50"
+                        height="50"
+                        style="border-radius:5px;" />
+
                 </p:column>
                 <p:column headerText="Current Price">
                     #{item.aid.currentPrice}

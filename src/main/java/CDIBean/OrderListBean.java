@@ -3,6 +3,8 @@ package CDIBean;
 import Entity.Orders;
 import client.AdminClient;
 import jakarta.annotation.PostConstruct;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -18,7 +20,24 @@ public class OrderListBean implements Serializable {
     private keepRecord keepRecord;
 
     private Collection<Orders> orderList;
+    private int selectedOrderId;
+    private String newStatus;
 
+    public int getSelectedOrderId() {
+        return selectedOrderId;
+    }
+
+    public void setSelectedOrderId(int selectedOrderId) {
+        this.selectedOrderId = selectedOrderId;
+    }
+
+    public String getNewStatus() {
+        return newStatus;
+    }
+
+    public void setNewStatus(String newStatus) {
+        this.newStatus = newStatus;
+    }
     public Collection<Orders> getOrderList() {
         return orderList;
     }
@@ -42,6 +61,46 @@ public class OrderListBean implements Serializable {
             e.printStackTrace();
         }
     }
+    
+    
+    
+    // Change updateStatus to use these properties
+   public String updateStatus() {
+        try {
+            AdminClient ac = new AdminClient(keepRecord.getToken());
+            ac.updateOrderStatus(String.valueOf(selectedOrderId), newStatus);
+            loadOrders();
+            FacesContext.getCurrentInstance().addMessage(null,
+                new FacesMessage("Status Updated to " + newStatus));
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+}
+
+    
+//    public String updateStatus(int oid, String status) {
+//        try {
+//            AdminClient ac = new AdminClient(keepRecord.getToken());
+//
+//            // convert int → string before calling your client
+//            ac.updateOrderStatus(String.valueOf(oid), status);
+//
+//            loadOrders();
+//            FacesContext.getCurrentInstance().addMessage(null,
+//                new FacesMessage("Status Updated to " + status));
+//
+//            return null;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return null;
+//        }
+//    }
+
+
+
+
 
 //    public String deleteOrder(String oid) {
 //        try {

@@ -239,31 +239,54 @@ public class UserBean implements UserBeanLocal {
         return orders;
     }
 
+//    @Override
+//    @RolesAllowed("USER")
+//    public void recordTransaction(int oid, int uid, BigDecimal amount, String txnType, String status) {
+////        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+//          Orders o = em.find(Orders.class, oid);
+//          Users u = em.find(Users.class, uid);
+//          Collection<Transactions> orderTransactions = o.getTransactionsCollection();
+//          Collection<Transactions> userTransactions = u.getTransactionsCollection();
+//          
+//          Transactions t = new Transactions();
+//          t.setOid(o);
+//          t.setUid(u);
+//          t.setTxnType(txnType);
+//          t.setAmount(amount);
+//          t.setStatus(status);
+//          t.setCreatedAt(new Date());
+//          orderTransactions.add(t);
+//          userTransactions.add(t);
+//          
+//          o.setTransactionsCollection(orderTransactions);
+//          u.setTransactionsCollection(userTransactions);
+//          em.persist(t);
+//          em.merge(o);
+//          em.merge(u);
+//    }
+    
+    
     @Override
     @RolesAllowed("USER")
-    public void recordTransaction(int oid, int uid, BigDecimal amount, String txnType, String status) {
-//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-          Orders o = em.find(Orders.class, oid);
-          Users u = em.find(Users.class, uid);
-          Collection<Transactions> orderTransactions = o.getTransactionsCollection();
-          Collection<Transactions> userTransactions = u.getTransactionsCollection();
-          
-          Transactions t = new Transactions();
-          t.setOid(o);
-          t.setUid(u);
-          t.setTxnType(txnType);
-          t.setAmount(amount);
-          t.setStatus(status);
-          t.setCreatedAt(new Date());
-          orderTransactions.add(t);
-          userTransactions.add(t);
-          
-          o.setTransactionsCollection(orderTransactions);
-          u.setTransactionsCollection(userTransactions);
-          em.persist(t);
-          em.merge(o);
-          em.merge(u);
+    public Transactions recordTransaction(int oid, int uid, BigDecimal amount, String txnType, String status) {
+
+        Orders o = em.find(Orders.class, oid);
+        Users u = em.find(Users.class, uid);
+
+        Transactions t = new Transactions();
+        t.setOid(o);
+        t.setUid(u);
+        t.setAmount(amount);
+        t.setTxnType(txnType);
+        t.setStatus(status);
+        t.setCreatedAt(new Date());
+
+        em.persist(t);
+        em.flush();   // ⭐ VERY IMPORTANT → ensures TID is generated
+
+        return t;
     }
+
 
     @Override
     @RolesAllowed("USER")
@@ -301,7 +324,7 @@ public class UserBean implements UserBeanLocal {
         em.merge(u);
         em.merge(t);
     }
-
+    
     @Override
     @RolesAllowed("USER")
     public Collection<Payments> getUserPayments(int uid) {
@@ -313,7 +336,23 @@ public class UserBean implements UserBeanLocal {
         
     
     }
+    
+    
+    @Override
+    @RolesAllowed("USER")
+    public boolean updateOrderStatus(int oid, String status) {
+//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+            Orders order = em.find(Orders.class, oid);
 
+           if (order == null) {
+               return false;
+           }
+
+           order.setStatus(status);
+           em.merge(order);
+           return true;
+    }
+    
     @Override
     @RolesAllowed("USER")
     public Collection<Portfolio> getUserPortfolio(int uid) {
@@ -459,73 +498,8 @@ public class UserBean implements UserBeanLocal {
         return null;   // No user found
     }
     }
+
+   
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-//    @Override
-//    public void registerUser(String fullName, String email, String password, String phone) {
-////        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-//          Users u = new Users();
-//          u.setFullName(fullName);
-//          u.setEmail(email);
-//          u.setPassword(password);
-//          u.setPhone(phone);
-//          em.persist(u);
-//          
-//    }
-//
-//    // Add business logic below. (Right-click in editor and choose
-//    // "Insert Code > Add Business Method")
-//
-//    @Override
-//    public Users findByEmail(String email) {
-////        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-//       try{
-//           return em.createNamedQuery("Users.findByEmail",Users.class)
-//                   .setParameter("email", email)
-//                   .getSingleResult();
-//       }catch(NoResultException ex){
-//            return null;
-//       }
-//    }
-//
-//    @Override
-//    public void updateUser(Integer uid, String fullName, String email, String password, String phone) {
-////        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-//        Users u =(Users) em.find(Users.class ,uid);
-//        u.setFullName(fullName);
-//        u.setEmail(email);
-//        u.setPassword(password);
-//        u.setPhone(phone);
-//        
-//        em.merge(u);
-//    
-//    }
-//
-//    @Override
-//    public void deleteUser(Integer uid) {
-////        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-//        Users u = (Users) em.find(Users.class, uid);
-//        if (u != null) {
-//            em.remove(u);
-//        }
-//    }
-//
-//    @Override
-//    public Collection<Users> getAllUsers() {
-////        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-//         return em.createNamedQuery("Users.findAll",Users.class).getResultList();
-//    }
+   
 }

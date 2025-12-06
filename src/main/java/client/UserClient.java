@@ -8,6 +8,8 @@ import Filter.MyFilter;
 import jakarta.ws.rs.ClientErrorException;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.WebTarget;
+import jakarta.ws.rs.core.MediaType;
+import java.text.MessageFormat;
 
 /**
  * Jersey REST client generated for REST resource:UserResource [User]<br>
@@ -121,10 +123,24 @@ public class UserClient {
         webTarget.path(java.text.MessageFormat.format("addToWatchlist/{0}/{1}", new Object[]{uid, aid})).request().post(null);
     }
 
-    public void recordTransaction(String oid, String uid, String amount, String txnType, String status) throws ClientErrorException {
-        webTarget.path(java.text.MessageFormat.format("recordTransaction/{0}/{1}/{2}/{3}/{4}", new Object[]{oid, uid, amount, txnType, status})).request().post(null);
+//    public void recordTransaction(String oid, String uid, String amount, String txnType, String status) throws ClientErrorException {
+//        webTarget.path(java.text.MessageFormat.format("recordTransaction/{0}/{1}/{2}/{3}/{4}", new Object[]{oid, uid, amount, txnType, status})).request().post(null);
+//    }
+    
+    
+    public <T> T recordTransaction(
+        Class<T> responseType,
+            String oid, String uid, String amount, String txnType, String status) {
+
+        return webTarget.path(MessageFormat.format(
+                "recordTransaction/{0}/{1}/{2}/{3}/{4}",
+                oid, uid, amount, txnType, status
+        ))
+        .request(MediaType.APPLICATION_JSON)
+        .post(null, responseType);
     }
 
+    
     public void updateGoalProgress(String goalId, String currentAmt) throws ClientErrorException {
         webTarget.path(java.text.MessageFormat.format("updateGoalProgress/{0}/{1}", new Object[]{goalId, currentAmt})).request().put(null);
     }
@@ -140,6 +156,19 @@ public class UserClient {
         resource = resource.path(java.text.MessageFormat.format("getUserPayments/{0}", new Object[]{uid}));
         return resource.request(jakarta.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
     }
+    
+    public boolean updateOrderStatus(String oid, String status) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path(MessageFormat.format(
+                "updateOrderStatus/{0}/{1}", 
+                new Object[]{oid, status}
+        ));
+
+        return resource
+                .request(MediaType.APPLICATION_JSON)
+                .get(Boolean.class);
+    }
+
 
     public <T> T getUserRedemptions(Class<T> responseType, String uid) throws ClientErrorException {
         WebTarget resource = webTarget;

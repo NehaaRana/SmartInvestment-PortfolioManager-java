@@ -7,12 +7,25 @@
 
 <h:head>
     <title>My Orders — Portfolio SIP Manager</title>
+    
+     <style>
+        .status-badge {
+            padding: 5px 10px;
+            border-radius: 6px;
+            color: white;
+            font-weight: bold;
+        }
+        .pending { background: orange; }
+        .completed { background: green; }
+        .cancelled { background: red; }
+    </style>
 </h:head>
 
 <h:body>
 
 <h2 style="text-align:center">My Orders</h2>
 <p:messages  />
+<h:form id="ordersForm">
 
 <p:dataTable value="#{orderBean.ordersList}" var="o"
              paginator="true" rows="8" 
@@ -41,8 +54,85 @@
     <p:column headerText="Date">
         <h:outputText value="#{o.createdAt}" />
     </p:column>
+    <p:column headerText="Status">
+        <h:panelGroup styleClass="status-badge 
+            #{o.status eq 'PENDING' ? 'pending' : 
+              o.status eq 'COMPLETED' ? 'completed' : 
+              'cancelled'}">
+            #{o.status}
+        </h:panelGroup>
+    </p:column>
+    
+    
+    <p:column headerText="Action">
+        <h:panelGroup>
+
+            <!-- Show Pay Button only when NOT PAID -->
+            <p:commandButton value="Pay Now"
+                             icon="pi pi-credit-card"
+                             update="paymentDialog ordersForm"
+                             oncomplete="PF('paymentDlg').show()"
+                             rendered="#{o.status ne 'PAID'}"
+                             actionListener="#{orderBean.preparePayment(o)}" />
+
+            <!-- Show Success message when order is PAID -->
+            <h:outputText value="Payment Success"
+                          style="color:green; font-weight:bold;"
+                          rendered="#{o.status eq 'PAID'}" />
+
+        </h:panelGroup>
+    </p:column>
+
+<!--    <p:column headerText="Action">
+        <h:panelGroup>
+            <p:commandButton value="Pay Now" 
+                             icon="pi pi-credit-card" 
+                             update="paymentDialog" 
+                             oncomplete="PF('paymentDlg').show()" 
+                             rendered="#{o.status eq 'COMPLETED'}"
+                             actionListener="#{orderBean.preparePayment(o)}" />
+        </h:panelGroup>
+    </p:column>-->
+
 
 </p:dataTable>
+</h:form>
+
+<!-- Payment Dialog -->
+<!-- Payment Dialog -->
+<p:dialog id="paymentDialog" widgetVar="paymentDlg"
+          header="Make Payment" modal="true" resizable="false">
+
+    <h:form id="paymentForm">
+
+        <p:messages id="msgs" closable="true" />
+
+        <h:panelGrid columns="2" cellpadding="5">
+
+            <h:outputLabel value="Payment Method:" for="method"/>
+            <p:selectOneMenu id="method" value="#{orderBean.paymentMethod}" required="true">
+                <f:selectItem itemLabel="--Select--" itemValue="" />
+                <f:selectItem itemLabel="Credit Card" itemValue="Credit Card" />
+                <f:selectItem itemLabel="Debit Card" itemValue="Debit Card" />
+                <f:selectItem itemLabel="UPI" itemValue="UPI" />
+                <f:selectItem itemLabel="Net Banking" itemValue="Net Banking" />
+            </p:selectOneMenu>
+
+            <h:outputLabel value="Reference No:" for="ref"/>
+            <p:inputText id="ref" value="#{orderBean.referenceNo}" required="true"/>
+        </h:panelGrid>
+
+        <p:commandButton value="Pay Now"
+                         icon="pi pi-credit-card"
+                         actionListener="#{orderBean.makePayment}"
+                         update="paymentForm msgs"
+                         oncomplete="PF('paymentDlg').hide();" />
+    </h:form>
+
+</p:dialog>
+
+
+<p:growl id="msgs" showDetail="true" life="3000" />
 
 </h:body>
 </html>

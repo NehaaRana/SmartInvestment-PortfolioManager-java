@@ -109,28 +109,26 @@
     </div>
     
    <h:form id="viewPlansForm">
-   <!-- SEARCH BAR -->
-    <div style="text-align:center; margin-bottom:20px;">
-        <h:inputText value="#{assetManagedBean.searchKeyword}" 
-                     style="padding:8px; width:300px; border-radius:5px; border:1px solid #777;">
+    <!-- SEARCH BAR -->
+     <div style="text-align:center; margin-bottom:20px;">
+         <h:inputText value="#{assetManagedBean.searchKeyword}" 
+                      style="padding:8px; width:300px; border-radius:5px; border:1px solid #777;">
 
-            <f:ajax event="keyup" 
-                listener="#{assetManagedBean.searchAssetsAjax}" 
-                render=":viewPlansForm:planGrid" />
+             <f:ajax event="keyup" 
+                 listener="#{assetManagedBean.searchAssetsAjax}" 
+                 render=":viewPlansForm:planGrid" />
 
-        </h:inputText>
+         </h:inputText>
     </div>
    
     <h:panelGroup id="planGrid" layout="block" styleClass="plan-grid">
-        
         
         <ui:repeat value="#{assetManagedBean.assetsList}" var="asset">
 
     <div class="plan-card">
 
-      <!-- Watchlist heart -->
+        <!-- Watchlist -->
         <div style="text-align:right;">
-
             <p:commandLink 
                 action="#{watchListBean.toggleWatchlist(asset.aid)}"
                 update=":viewPlansForm:planGrid"
@@ -139,15 +137,12 @@
                 <i class="#{watchListBean.isInWatchlist(asset.aid) 
                               ? 'pi pi-heart-fill' 
                               : 'pi pi-heart'}"
-                   style="font-size:20px; 
-                          color:#{watchListBean.isInWatchlist(asset.aid) 
-                                ? 'red' : 'grey'};">
+                   style="font-size:20px;
+                          color:#{watchListBean.isInWatchlist(asset.aid) ? 'red' : 'grey'};">
                 </i>
 
             </p:commandLink>
-
         </div>
-
 
         <!-- Asset Image -->
         <h:graphicImage library="assets" name="#{asset.symbol}" 
@@ -175,39 +170,41 @@
             </li>
         </ul>
 
-        <!-- Start Button -->
+        <!-- SINGLE Start Button -->
         <p:commandButton value="Start Now"
                          icon="pi pi-check"
+                         rendered="#{empty keepRecord.uid}" 
                          action="/Login.xhtml"
+                         styleClass="p-button-rounded p-button-primary btn-start"/>
+
+        <p:commandButton value="Start Now"
+                         icon="pi pi-check"
+                         rendered="#{not empty keepRecord.uid}"
+                         actionListener="#{orderBean.openOrderDialog(asset.aid)}"
+                         oncomplete="PF('orderModal').show()"
+                         update="orderForm"
                          styleClass="p-button-rounded p-button-primary btn-start"/>
     </div>
 
-                    <p:commandButton value="Start Now"
-    icon="pi pi-check"
-    actionListener="#{orderBean.openOrderDialog(asset.aid)}"
-    rendered="#{not empty keepRecord.uid}"
-    oncomplete="PF('orderModal').show()"
-    update="orderForm"
-    styleClass="p-button-rounded p-button-primary btn-start"/>
-
-            </div>
-
-        </ui:repeat>
 </ui:repeat>
 
     </h:panelGroup>
 
-</h:form>
+</h:form>   
 <p:dialog id="orderDialog" widgetVar="orderModal" header="Purchase Plan"
           modal="true" closable="true" width="400">
 
     <h:form id="orderForm">
         <p:panelGrid columns="2" columnClasses="label,value">
             <p:outputLabel value="Units:"/>
-            <p:inputText value="#{orderBean.units}" required="true"/>
+            <p:inputText value="#{orderBean.units}">
+                <p:ajax event="keyup" listener="#{orderBean.calculateAmount}" update="amountField"/>
+            </p:inputText>
+
 
             <p:outputLabel value="Amount:"/>
-            <p:inputText value="#{orderBean.amount}" required="true"/>
+            <p:inputText id="amountField" value="#{orderBean.amount}" disabled="true"/>
+
         </p:panelGrid>
 
         <p:commandButton value="Place Order"

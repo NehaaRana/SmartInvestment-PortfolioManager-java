@@ -2,168 +2,187 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="jakarta.faces.html"
-      xmlns:f="jakarta.faces.core">
-    <h:head>
-        <title>Edit Asset</title>
-               <style>
-        body {
-            background: #f0f2f5;
-            font-family: Arial;
-        }
+      xmlns:f="jakarta.faces.core"
+      xmlns:ui="jakarta.faces.facelets">
+    <ui:composition template="/Admin/AdminLayout.xhtml">
+    <ui:define name="title">
+        Edit Asset
+    </ui:define>
+    <ui:define name="content">
 
-        .form-container {
-            width: 50%;
-            margin: 40px auto;
-            background: white;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0px 4px 20px rgba(0,0,0,0.1);
-        }
+        <h:head>
+            <title>Edit Asset</title>
 
-        h1 {
-            text-align: center;
-            color: #0f1c3f;
-            margin-bottom: 30px;
-        }
+            <style>
+                body {
+                    background: #f0f2f5;
+                    font-family: Arial;
+                }
 
-        .grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            column-gap: 35px;
-            row-gap: 25px;
-        }
+                .form-container {
+                    width: 60%;
+                    margin: 40px auto;
+                    background: white;
+                    padding: 40px;
+                    border-radius: 12px;
+                    box-shadow: 0px 4px 20px rgba(0,0,0,0.1);
+                }
 
-        label {
-            font-weight: bold;
-            font-size: 16px;
-        }
+                h1 {
+                    text-align: center;
+                    color: #0f1c3f;
+                    margin-bottom: 30px;
+                }
 
-        input, select {
-            width: 100%;
-            padding: 10px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-            font-size: 15px;
-        }
+                .grid {
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    column-gap: 35px;
+                    row-gap: 25px;
+                }
 
-        .btn {
-            margin-top: 30px;
-            width: 100%;
-            background: #0f1c3f;
-            color: white;
-            padding: 12px;
-            font-size: 18px;
-            border-radius: 6px;
-            border: none;
-            cursor: pointer;
-        }
+                label {
+                    font-weight: bold;
+                    font-size: 16px;
+                }
 
-        .btn:hover {
-            background: #1d2e63;
-        }
+                input, select {
+                    width: 100%;
+                    padding: 10px;
+                    border-radius: 6px;
+                    border: 1px solid #ccc;
+                    font-size: 15px;
+                }
 
-        .preview-box {
-            width: 100%;
-            text-align: center;
-            margin-top: 10px;
-        }
+                .btn {
+                    margin-top: 30px;
+                    width: 100%;
+                    background: #0f1c3f;
+                    color: white;
+                    padding: 12px;
+                    font-size: 18px;
+                    border-radius: 6px;
+                    border: none;
+                    cursor: pointer;
+                }
 
-        #previewImg {
-            width: 80px;
-            height: 80px;
-            border-radius: 6px;
-            object-fit: cover;
-            border: 1px solid #ccc;
-        }
-    </style>
-    
-     <script>
-        function previewImage(input) {
-            const preview = document.getElementById("previewImg");
-            const file = input.files[0];
+                .btn:hover {
+                    background: #1d2e63;
+                }
 
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = e => preview.src = e.target.result;
-                reader.readAsDataURL(file);
-            }
-        }
-    </script>
-    </h:head>
-    <h:body>
-       <div class="form-container">
+                .preview-box {
+                    width: 100%;
+                    text-align: center;
+                    margin-top: 10px;
+                }
 
-    <h:form enctype="multipart/form-data">
+                #previewImg {
+                    width: 80px;
+                    height: 80px;
+                    border-radius: 6px;
+                    object-fit: cover;
+                    border: 1px solid #ccc;
+                }
+            </style>
 
-        <h1>Edit Asset</h1>
+            <script>
+                function previewImage(input) {
+                    const preview = document.getElementById("previewImg");
+                    const file = input.files[0];
 
-        <div class="grid">
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = e => preview.src = e.target.result;
+                        reader.readAsDataURL(file);
+                    }
+                }
+            </script>
+        </h:head>
 
-            <!-- SYMBOL IMAGE UPLOAD -->
-            <div>
-                <label>Symbol Image:</label>
-                <h:inputFile value="#{assetManagedBean.symbolImage}"
-                             onchange="previewImage(this)" />
+        <h:body>
 
-                <!-- CURRENT IMAGE PREVIEW -->
-                <div class="preview-box">
-                    <h:graphicImage id="previewImg"
-                        value="/resources/assets/#{assetManagedBean.symbol}"
-                        alt="Image Preview" />
-                </div>
+            <div class="form-container">
+
+                <h:form enctype="multipart/form-data">
+
+                    <h1>Edit Asset</h1>
+
+                    <div class="grid">
+
+                        <!-- SYMBOL IMAGE UPLOAD -->
+                        <div>
+                            <label>Symbol Image:</label>
+
+                            <h:inputFile value="#{assetManagedBean.symbolImage}"
+                                         onchange="previewImage(this)" />
+
+                            <!-- CURRENT IMAGE PREVIEW -->
+                            <div class="preview-box">
+                                <h:graphicImage id="previewImg"
+                                    value="/resources/assets/#{assetManagedBean.symbol}"
+                                    alt="Image Preview" />
+                            </div>
+                        </div>
+
+                        <!-- ASSET NAME -->
+                        <div>
+                            <label>Asset Name:</label>
+                            <h:inputText value="#{assetManagedBean.name}" required="true" />
+                        </div>
+
+                        <!-- ASSET TYPE -->
+                        <div>
+                            <label>Asset Type:</label>
+                            <h:selectOneMenu value="#{assetManagedBean.type}">
+                                <f:selectItem itemLabel="-- Select Type --" itemValue="" />
+                                <f:selectItem itemLabel="Stock" itemValue="STOCK"/>
+                                <f:selectItem itemLabel="Cryptocurrency" itemValue="CRYPTO"/>
+                                <f:selectItem itemLabel="Mutual Fund" itemValue="MUTUAL"/>
+                                <f:selectItem itemLabel="Commodity" itemValue="COMMODITY"/>
+                                <f:selectItem itemLabel="Bond" itemValue="BOND"/>
+                            </h:selectOneMenu>
+                        </div>
+
+                        <!-- CURRENT PRICE -->
+                        <div>
+                            <label>Current Price:</label>
+                            <h:inputText value="#{assetManagedBean.current_price}" required="true" />
+                        </div>
+
+                        <!-- STATUS -->
+                        <div>
+                            <label>Status:</label>
+                            <h:selectOneMenu value="#{assetManagedBean.status}">
+                                <f:selectItem itemValue="ACTIVE" itemLabel="ACTIVE"/>
+                                <f:selectItem itemValue="INACTIVE" itemLabel="INACTIVE"/>
+                            </h:selectOneMenu>
+                        </div>
+
+                        <!-- RISK LEVEL -->
+                        <div>
+                            <label>Risk Level:</label>
+                            <h:selectOneMenu value="#{assetManagedBean.risk}">
+                                <f:selectItem itemValue="LOW" itemLabel="LOW"/>
+                                <f:selectItem itemValue="MEDIUM" itemLabel="MEDIUM"/>
+                                <f:selectItem itemValue="HIGH" itemLabel="HIGH"/>
+                            </h:selectOneMenu>
+                        </div>
+
+                    </div>
+
+                    <h:commandButton value="Save Changes"
+                                     action="#{assetManagedBean.update}"
+                                     styleClass="btn" />
+
+                </h:form>
+
             </div>
 
-            <!-- ASSET NAME -->
-            <div>
-                <label>Asset Name:</label>
-                <h:inputText value="#{assetManagedBean.name}" required="true" />
-            </div>
+        </h:body>
 
-            <!-- ASSET TYPE -->
-            <div>
-                <label>Asset Type:</label>
-                <h:selectOneMenu value="#{assetManagedBean.type}">
-                    <f:selectItem itemLabel="-- Select Type --" itemValue="" />
-                    <f:selectItem itemLabel="Stock" itemValue="STOCK"/>
-                    <f:selectItem itemLabel="Cryptocurrency" itemValue="CRYPTO"/>
-                    <f:selectItem itemLabel="Mutual Fund" itemValue="MUTUAL"/>
-                    <f:selectItem itemLabel="Commodity" itemValue="COMMODITY"/>
-                    <f:selectItem itemLabel="Bond" itemValue="BOND"/>
-                </h:selectOneMenu>
-            </div>
+    </ui:define>
 
-            <!-- CURRENT PRICE -->
-            <div>
-                <label>Current Price:</label>
-                <h:inputText value="#{assetManagedBean.current_price}" required="true" />
-            </div>
+</ui:composition>
 
-            <!-- STATUS -->
-            <div>
-                <label>Status:</label>
-                <h:selectOneMenu value="#{assetManagedBean.status}">
-                    <f:selectItem itemValue="ACTIVE" itemLabel="ACTIVE"/>
-                    <f:selectItem itemValue="INACTIVE" itemLabel="INACTIVE"/>
-                </h:selectOneMenu>
-            </div>
 
-            <!-- RISK LEVEL -->
-            <div>
-                <label>Risk Level:</label>
-                <h:selectOneMenu value="#{assetManagedBean.risk}">
-                    <f:selectItem itemValue="LOW" itemLabel="LOW"/>
-                    <f:selectItem itemValue="MEDIUM" itemLabel="MEDIUM"/>
-                    <f:selectItem itemValue="HIGH" itemLabel="HIGH"/>
-                </h:selectOneMenu>
-            </div>
-
-        </div>
-
-        <h:commandButton value="Save Changes" action="#{assetManagedBean.update}" styleClass="btn"/>
-
-    </h:form>
-
-</div>
-
-    </h:body>
 </html>

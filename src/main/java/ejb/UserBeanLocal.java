@@ -44,14 +44,17 @@ public interface UserBeanLocal {
 //  Orders & Transactions
     void placeOrder(int uid, int aid, String orderType, BigDecimal units, BigDecimal amount);
     Collection<Orders> getUserOrders(int uid);
+    boolean updateOrderStatus(int oid, String status);
+    
+//    void recordTransaction(int oid, int uid, BigDecimal amount, String txnType, String status);
+    Transactions recordTransaction(int oid, int uid, BigDecimal amount, String txnType, String status);
 
-    void recordTransaction(int oid, int uid, BigDecimal amount, String txnType, String status);
     Collection<Transactions> getUserTransactions(int uid);
 
 //  Payments
     void makePayment(int uid, int tid, String method, String referenceNo, String status);
     Collection<Payments> getUserPayments(int uid);
-
+    
 
 //  Portfolio & Goals
     Collection<Portfolio> getUserPortfolio(int uid);

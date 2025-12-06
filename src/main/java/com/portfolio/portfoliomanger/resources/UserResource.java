@@ -202,18 +202,33 @@ public class UserResource {
        return ubl.getUserOrders(uid);
     }
 
-    @RolesAllowed("USER")
+//    @RolesAllowed("USER")
+//    @POST
+//    @Path("recordTransaction/{oid}/{uid}/{amount}/{txnType}/{status}")
+//    public void recordTransaction(
+//            @PathParam("oid") int oid, 
+//            @PathParam("uid") int uid, 
+//            @PathParam("amount") BigDecimal amount, 
+//            @PathParam("txnType") String txnType, 
+//            @PathParam("status") String status) {
+////        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+//         ubl.recordTransaction(oid, uid, amount, txnType, status);
+//    }
+    
+    
     @POST
     @Path("recordTransaction/{oid}/{uid}/{amount}/{txnType}/{status}")
-    public void recordTransaction(
+    @Produces(MediaType.APPLICATION_JSON)
+    public Transactions recordTransaction(
             @PathParam("oid") int oid, 
             @PathParam("uid") int uid, 
             @PathParam("amount") BigDecimal amount, 
             @PathParam("txnType") String txnType, 
             @PathParam("status") String status) {
-//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-         ubl.recordTransaction(oid, uid, amount, txnType, status);
+
+        return ubl.recordTransaction(oid, uid, amount, txnType, status);
     }
+
 
     @RolesAllowed("USER")
     @GET
@@ -249,6 +264,17 @@ public class UserResource {
     
     }
 
+    @RolesAllowed("USER")
+    @GET
+    @Produces("application/json")
+    @Path("updateOrderStatus/{oid}/{status}")
+    public boolean updateOrderStatus(@PathParam("oid") int oid,@PathParam("status") String status) {
+//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return     ubl.updateOrderStatus(oid, status);
+         
+           
+    }
+    
     @RolesAllowed("USER")
     @GET
     @Produces("application/json")

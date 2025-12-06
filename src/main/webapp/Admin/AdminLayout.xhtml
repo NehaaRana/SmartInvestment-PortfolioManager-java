@@ -1,0 +1,152 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:ui="jakarta.faces.facelets">
+    <h:head>
+        <title>Admin Panel</title>
+        
+        <ui:insert name="head" />
+
+    <style>
+        body {
+            margin: 0;
+            font-family: "Segoe UI", Roboto, sans-serif;
+            background: #f2f4f7;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            height: 100vh;
+            background: #1e2a47;
+            color: white;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 25px 20px;
+            transition: 0.3s;
+        }
+
+        /* Collapsed */
+        .sidebar.collapsed {
+            width: 70px;
+        }
+
+        .sidebar h2 {
+            margin: 0 0 30px 0;
+            font-size: 22px;
+        }
+
+        .sidebar ul {
+            padding: 0;
+            list-style: none;
+            margin-top: 20px;
+        }
+
+        .sidebar a {
+            color: #d0d4df;
+            text-decoration: none;
+            font-size: 16px;
+            display: block;
+            padding: 10px;
+            border-radius: 6px;
+        }
+
+        /* Main content */
+        .main {
+            margin-left: 260px;
+            padding: 20px 30px;
+            transition: 0.3s;
+        }
+
+        /* When sidebar collapses */
+        .main.collapsed {
+            margin-left: 70px;
+        }
+
+        /* Toggle Button */
+        .toggle-btn {
+            background: #1e2a47;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            cursor: pointer;
+            border-radius: 6px;
+            margin-right: 10px;
+        }
+        
+        .logout-btn {
+            background: #d9534f;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: 0.3s ease;
+            letter-spacing: 0.5px;
+            box-shadow: 0 3px 8px rgba(217,83,79,0.3);
+        }
+
+        .logout-btn:hover {
+            background: #c9302c;
+            box-shadow: 0 5px 12px rgba(217,83,79,0.4);
+            transform: translateY(-2px);
+        }
+
+        .logout-btn:active {
+            transform: scale(0.97);
+        }
+
+    </style>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById("sidebar");
+            const main = document.getElementById("main");
+
+            sidebar.classList.toggle("collapsed");
+            main.classList.toggle("collapsed");
+        }
+    </script>
+    </h:head>
+    <h:body>
+            <!-- SIDEBAR -->
+        <div id="sidebar" class="sidebar">
+            <h2>Admin</h2>
+
+            <ul>
+                <li><h:link outcome="/Admin/AdminDashboard" value="Dashboard"/></li>
+                <li><h:link outcome="/Admin/UserList" value="Manage Users"/></li>
+                <li><h:link outcome="/Admin/AllAssets" value="Manage Assets"/></li>
+                <li><h:link outcome="/Admin/OrderList" value="Manage Orders"/></li>
+                <li><h:link outcome="/Admin/WithDrawlList" value="Manage Withdrawals"/></li>
+            </ul>
+        </div>
+
+        <!-- MAIN CONTENT AREA -->
+        <div id="main" class="main">
+
+            <!-- TOP BAR -->
+            <div class="top-bar">
+                <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
+
+                <h1><ui:insert name="title">Page Title</ui:insert></h1>
+
+                <h:form>
+                    <h:commandButton value="⎋ Logout"
+                                     action="#{userDashboardBean.logout}"
+                                     styleClass="logout-btn"
+                                     immediate="true"/>
+                </h:form>
+
+            </div>
+
+            <!-- PAGE CONTENT -->
+            <ui:insert name="content" />
+
+        </div>
+    </h:body>
+</html>

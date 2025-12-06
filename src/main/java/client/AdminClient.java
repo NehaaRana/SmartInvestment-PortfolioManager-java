@@ -177,7 +177,10 @@ public class AdminClient {
     }
 
     public void updateOrderStatus(String oid, String status) throws ClientErrorException {
-        webTarget.path(java.text.MessageFormat.format("updateOrderStatus/{0}/{1}", new Object[]{oid, status})).request().put(null);
+//        webTarget.path(java.text.MessageFormat.format("updateOrderStatus/{0}/{1}", new Object[]{oid, status})).request().put(null);
+          webTarget.path(java.text.MessageFormat.format("updateOrderStatus/{0}/{1}", new Object[]{oid, status}))
+             .request()
+             .put(Entity.text("")); // send an empty string as entity
     }
 
     public void deleteUser(String uid) throws ClientErrorException {

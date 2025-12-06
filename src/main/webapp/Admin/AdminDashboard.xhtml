@@ -1,170 +1,54 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="jakarta.faces.html">
-    <h:head>
-        <title>Admin Dashbaord</title>
-       
-    <style>
-        body {
-            margin: 0;
-            font-family: "Segoe UI", Roboto, sans-serif;
-            background: #f2f4f7;
-        }
+      xmlns:ui="jakarta.faces.facelets">
+    
+<ui:composition template="/Admin/AdminLayout.xhtml">
 
-        /* --- SIDEBAR --- */
-        .sidebar {
-            width: 260px;
-            height: 100vh;
-            background: #1e2a47;
-            color: white;
-            position: fixed;
-            top: 0;
-            left: 0;
-            padding: 25px 20px;
-        }
+    <!-- PAGE TITLE -->
+    <ui:define name="title">
+        Admin Dashboard
+    </ui:define>
 
-        .sidebar h2 {
-            margin: 0 0 30px 0;
-            font-size: 22px;
-            letter-spacing: .5px;
-        }
+    <!-- MAIN PAGE CONTENT -->
+    <ui:define name="content">
 
-        .sidebar ul {
-            padding: 0;
-            list-style: none;
-            margin-top: 20px;
-        }
+        <style>
+            .stats-grid {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 25px;
+                margin-top: 20px;
+            }
 
-        .sidebar li {
-            margin: 18px 0;
-        }
+            .card {
+                background: white;
+                padding: 25px;
+                border-radius: 14px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+                transition: transform .2s, box-shadow .2s;
+                text-align: center;
+            }
 
-        .sidebar a {
-            color: #d0d4df;
-            text-decoration: none;
-            font-size: 17px;
-            display: block;
-            padding: 8px 10px;
-            border-radius: 6px;
-            transition: 0.3s;
-        }
+            .card:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+            }
 
-        .sidebar a:hover {
-            background: #304266;
-            color: white;
-        }
+            .card h3 {
+                margin: 0;
+                font-size: 18px;
+                color: #1e2a47;
+            }
 
-        /* --- MAIN CONTENT AREA --- */
-        .main {
-            margin-left: 260px;
-            padding: 20px 30px;
-        }
+            .value {
+                margin-top: 12px;
+                font-size: 32px;
+                font-weight: bold;
+                color: #0077ff;
+            }
+        </style>
 
-        /* --- TOP HEADER BAR --- */
-        .top-bar {
-            background: white;
-            padding: 15px 25px;
-            border-radius: 10px;
-            margin-bottom: 25px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .top-bar h1 {
-            font-size: 24px;
-            margin: 0;
-            color: #1e2a47;
-        }
-
-        .logout-btn {
-            background: #c62828;
-            color: white;
-            padding: 10px 18px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 15px;
-            transition: 0.3s;
-        }
-
-        .logout-btn:hover {
-            background: #e53935;
-        }
-
-        /* --- STAT CARDS --- */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 25px;
-            margin-top: 20px;
-        }
-
-        .card {
-            background: white;
-            padding: 25px;
-            border-radius: 14px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            transition: transform .2s, box-shadow .2s;
-            text-align: center;
-        }
-
-        .card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
-        }
-
-        .card h3 {
-            margin: 0;
-            font-size: 18px;
-            color: #1e2a47;
-        }
-
-        .value {
-            margin-top: 12px;
-            font-size: 32px;
-            font-weight: bold;
-            color: #0077ff;
-        }
-    </style>
-
-</h:head>
-
-<h:body>
-
-    <!-- SIDEBAR -->
-    <div class="sidebar">
-        <h2>Admin Panel</h2>
-
-        <ul>
-            <li><h:link outcome="/Admin/AdminDashboard" value="Dashboard"/></li>
-            <li><h:link outcome="/Admin/UserList" value="Manage Users"/></li>
-            <li><h:link outcome="/Admin/AllAssets" value="Manage Assets"/></li>
-            <li><h:link outcome="/Admin/OrderList" value="Manage Orders"/></li>
-            <li><h:link outcome="/Admin/WithdrawlList" value="Withdrawals"/></li>
-            <!--<li><h:link outcome="/Admin/reports" value="Financial Reports"/></li>-->
-        </ul>
-    </div>
-
-    <!-- MAIN CONTENT -->
-    <div class="main">
-
-        <!-- TOP BAR -->
-        <div class="top-bar">
-            <h1>Welcome, Admin</h1>
-
-            <h:form>
-
-                    <h:commandButton value="Logout" styleClass="logout-btn"
-                             action="#{userDashboardBean.logout}"
-                             immediate="true"
-                             />
-            </h:form>
-        </div>
-
-        <!-- STAT CARDS -->
         <div class="stats-grid">
 
             <div class="card">
@@ -189,9 +73,10 @@
 
         </div>
 
-    </div>
+    </ui:define>
 
-    </h:body>
+</ui:composition>
+
 </html>
 
 

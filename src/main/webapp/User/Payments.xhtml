@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="jakarta.faces.core">
+    <h:head>
+        <title>My Payments</title>
+    </h:head>
+    <h:body>
+        <h2>My Payments</h2>
+
+<h:form id="paymentForm">
+
+<p:dataTable value="#{paymentBean.paymentsList}" var="p"
+             paginator="true" rows="10"
+             emptyMessage="No Payments Found">
+
+    <p:column headerText="Payment ID">
+        #{p.pid}
+    </p:column>
+
+    <p:column headerText="Transaction ID">
+        #{p.tid}
+    </p:column>
+
+    <p:column headerText="Method">
+        #{p.method}
+    </p:column>
+
+    <p:column headerText="Reference No">
+        #{p.referenceNo}
+    </p:column>
+
+    <p:column headerText="Status">
+        <span style="color:green;font-weight:bold">
+            #{p.status}
+        </span>
+    </p:column>
+
+    <p:column headerText="Date">
+        #{p.createdAt}
+    </p:column>
+
+</p:dataTable>
+
+</h:form>
+
+    </h:body>
+</html>

@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>My Transactions</title>
+    </h:head>
+    <h:body>
+        <h2>My Transactions</h2>
+
+        <h:form id="txForm">
+
+        <p:dataTable value="#{transactionBean.transactionList}" var="t"
+                     paginator="true" rows="10"
+                     emptyMessage="No Transactions Found">
+
+            <p:column headerText="Txn ID">
+                #{t.tid}
+            </p:column>
+
+            <p:column headerText="Order ID">
+                #{t.oid}
+            </p:column>
+
+            <p:column headerText="Amount">
+                #{t.amount}
+            </p:column>
+
+            <p:column headerText="Type">
+                #{t.txnType}
+            </p:column>
+
+            <p:column headerText="Status">
+                #{t.status}
+            </p:column>
+
+            <p:column headerText="Date">
+                #{t.createdAt}
+            </p:column>
+
+        </p:dataTable>
+
+    </h:form>
+    </h:body>
+</html>

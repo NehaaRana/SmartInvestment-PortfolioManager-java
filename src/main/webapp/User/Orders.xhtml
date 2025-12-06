@@ -56,9 +56,10 @@
     </p:column>
     <p:column headerText="Status">
         <h:panelGroup styleClass="status-badge 
-            #{o.status eq 'PENDING' ? 'pending' : 
-              o.status eq 'COMPLETED' ? 'completed' : 
-              'cancelled'}">
+              #{o.status eq 'PENDING' ? 'pending' :
+                o.status eq 'PAID' ? 'completed' :
+                o.status eq 'COMPLETED' ? 'completed' :
+                'cancelled'}">
             #{o.status}
         </h:panelGroup>
     </p:column>
@@ -66,19 +67,33 @@
     
     <p:column headerText="Action">
         <h:panelGroup>
+            
+              <!-- Pay button ONLY after admin approval -->
+                <p:commandButton value="Pay Now"
+                                 icon="pi pi-credit-card"
+                                 update="paymentDialog ordersForm"
+                                 oncomplete="PF('paymentDlg').show()"
+                                 rendered="#{o.status eq 'COMPLETED'}"
+                                 actionListener="#{orderBean.preparePayment(o)}" />
 
-            <!-- Show Pay Button only when NOT PAID -->
+                <!-- Show payment success only if paid -->
+                <h:outputText value="Payment Success"
+                              style="color:green; font-weight:bold;"
+                              rendered="#{o.status eq 'PAID'}" />
+
+<!--             Show Pay Button only when NOT PAID 
             <p:commandButton value="Pay Now"
                              icon="pi pi-credit-card"
                              update="paymentDialog ordersForm"
                              oncomplete="PF('paymentDlg').show()"
-                             rendered="#{o.status ne 'PAID'}"
+                             rendered="#{o.status ne 'PAID' and o.status ne 'COMPLETED'}"
                              actionListener="#{orderBean.preparePayment(o)}" />
 
-            <!-- Show Success message when order is PAID -->
+             Show Success message when order is PAID 
             <h:outputText value="Payment Success"
                           style="color:green; font-weight:bold;"
-                          rendered="#{o.status eq 'PAID'}" />
+                         rendered="#{o.status eq 'PAID' or o.status eq 'COMPLETED'}"
+                         />-->
 
         </h:panelGroup>
     </p:column>

@@ -15,6 +15,7 @@ import jakarta.faces.context.FacesContext;
 import jakarta.inject.Inject;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import record.keepRecord;
@@ -230,6 +231,29 @@ public class OrderBean implements Serializable {
             if (updated) {
                 selectedOrder.setStatus("PAID");  // Update UI object
             }
+            //Add or Update Portfolio
+            BigDecimal pricePerUnit = selectedOrder.getAmount()
+                    .divide(selectedOrder.getUnits(), 2, RoundingMode.HALF_UP);
+
+            userclient.addOrUpdatePortfolio(
+                    String.valueOf(uid),
+                    String.valueOf(selectedOrder.getAid().getAid()),
+                    selectedOrder.getUnits().toString(),
+                    pricePerUnit.toString()
+            );
+            System.out.println("Portfolio method executed");
+
+
+//            userclient.addOrUpdatePortfolio(
+//                    String.valueOf(uid),
+//                    String.valueOf(selectedOrder.getAid().getAid()),
+//                    selectedOrder.getUnits().toString(),
+//                    selectedOrder.getAmount().toString()  // Use unit price if stored
+//                    
+//                    // OR selectedOrder.getAmount().toString() if amount is single unit price
+//            );
+            System.out.println("Portfolio method executed");
+
 
 
             // ⭐ STEP 4 → Refresh table

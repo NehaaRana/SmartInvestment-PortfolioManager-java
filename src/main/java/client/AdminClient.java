@@ -6,6 +6,7 @@ package client;
 
 import Entity.Assets;
 import Entity.Orders;
+import Entity.Redemptions;
 import Entity.Users;
 import Filter.MyFilter;
 import jakarta.ws.rs.ClientErrorException;
@@ -101,7 +102,7 @@ public class AdminClient {
     }
 
     public void approveRedemption(String rid) throws ClientErrorException {
-        webTarget.path(java.text.MessageFormat.format("approveRedemption/{0}", new Object[]{rid})).request().put(null);
+        webTarget.path(java.text.MessageFormat.format("approveRedemption/{0}", new Object[]{rid})).request().put(Entity.text(""));
     }
 
     public <T> T findUserById(Class<T> responseType, String uid) throws ClientErrorException {
@@ -110,10 +111,11 @@ public class AdminClient {
         return resource.request(jakarta.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
     }
 
-    public <T> T getAllRedemptions(Class<T> responseType) throws ClientErrorException {
+    public Collection<Redemptions> getAllRedemptions() throws ClientErrorException{
         WebTarget resource = webTarget;
         resource = resource.path("getAllRedemptions");
-        return resource.request(jakarta.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+        return resource.request(jakarta.ws.rs.core.MediaType.APPLICATION_JSON)
+                .get(new jakarta.ws.rs.core.GenericType<Collection<Redemptions>>() {});
     }
 
     public void addAsset(String symbol, String name, String type, String currentPrice, String status, String risk) throws ClientErrorException {
@@ -188,7 +190,7 @@ public class AdminClient {
     }
 
     public void rejectRedemption(String rid) throws ClientErrorException {
-        webTarget.path(java.text.MessageFormat.format("rejectRedemption/{0}", new Object[]{rid})).request().put(null);
+        webTarget.path(java.text.MessageFormat.format("rejectRedemption/{0}", new Object[]{rid})).request().put(Entity.text(""));
     }
 
     public <T> T getTotalInvestedAmount(Class<T> responseType) throws ClientErrorException {

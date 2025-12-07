@@ -363,7 +363,18 @@ public class UserResource {
        return ubl.getUserPayouts(uid);
     }
     
-    
+    @POST
+    @Path("addOrUpdatePortfolio/{uid}/{aid}/{units}/{amount}")
+    @RolesAllowed("USER")
+    public void addOrUpdatePortfolio(
+            @PathParam("uid") int uid,
+            @PathParam("aid") int aid,
+            @PathParam("units") BigDecimal units,
+            @PathParam("amount") BigDecimal amount) {
+
+        ubl.addOrUpdatePortfolio(uid, aid, units, amount);
+    }
+
     
     
     

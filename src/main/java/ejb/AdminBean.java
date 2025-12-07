@@ -207,6 +207,24 @@ public class AdminBean implements AdminBeanLocal {
             r.setApprovedAt(new Date());
             r.setStatus("APPROVED");
             em.merge(r);
+            
+            Portfolio p = em.createNamedQuery("Portfolio.findByUserAsset", Portfolio.class)
+                .setParameter("uid", r.getUid().getUid())
+                .setParameter("aid", r.getAid().getAid())
+                .getSingleResult();
+
+            if(p != null) {
+                // 3️⃣ Subtract units
+                BigDecimal newUnits = p.getUnits().subtract(r.getUnits());
+                p.setUnits(newUnits);
+
+                // 4️⃣ If units become zero, remove portfolio record
+                if(newUnits.compareTo(BigDecimal.ZERO) == 0) {
+                    em.remove(p);
+                } else {
+                    em.merge(p);
+                }
+            }
 
             // When approved, optionally create a payout record (admin can do this manually too)
             // BigDecimal amount = calculate payout amount (units * asset current price - exit_fee_amt)

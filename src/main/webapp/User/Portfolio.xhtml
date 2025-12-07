@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="jakarta.faces.html"
       xmlns:f="jakarta.faces.core"
-      xmlns:ui="jakarta.faces.facelets">
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:p="http://primefaces.org/ui">
 
 <h:head>
     <title>My Portfolio</title>
@@ -83,46 +84,60 @@
 
         <!-- Portfolio Table -->
         <h:dataTable value="#{portfolioBean.portfolioList}" var="p"
-                     styleClass="table table-bordered table-hover">
+             styleClass="table table-bordered table-hover">
 
             <h:column>
-                <f:facet name="header">Asset</f:facet>
-                <strong>#{p.aid.name}</strong><br/>
-                <span class="badge text-bg-primary">#{p.aid.type}</span>
-            </h:column>
+    <f:facet name="header">Asset</f:facet>
+    <strong>#{p.aid.name}</strong><br/>
+    <span class="badge text-bg-primary">#{p.aid.type}</span>
+</h:column>
 
-            <h:column>
-                <f:facet name="header">Units</f:facet>
-                #{p.units}
-            </h:column>
+<h:column>
+    <f:facet name="header">Units</f:facet>
+    #{p.units}
+</h:column>
 
-            <h:column>
-                <f:facet name="header">Avg Price</f:facet>
-                ₹ #{p.avgPrice}
-            </h:column>
+<h:column>
+    <f:facet name="header">Avg Price</f:facet>
+    ₹ #{p.avgPrice}
+</h:column>
 
-            <h:column>
-                <f:facet name="header">Current Value</f:facet>
-                ₹ #{p.currentValue}
+<h:column>
+    <f:facet name="header">Current Price</f:facet>
+    ₹ #{p.aid.currentPrice}
+</h:column>
 
-                <!-- Gain/Loss style -->
-                <br/>
-                <span class="#{p.currentValue gt p.avgPrice ? 'value-up' : 'value-down'}">
-                    #{p.currentValue gt p.avgPrice ? '▲ Gain' : '▼ Loss'}
-                </span>
-            </h:column>
+<h:column>
+    <f:facet name="header">Current Value</f:facet>
+    ₹ #{p.units * p.aid.currentPrice}
+    <br/>
+    <span class="#{(p.units * p.aid.currentPrice) gt (p.units * p.avgPrice) ? 'value-up' : 'value-down'}">
+        #{(p.units * p.aid.currentPrice) gt (p.units * p.avgPrice) ? '▲ Gain' : '▼ Loss'}
+    </span>
+</h:column>
 
-            <h:column>
-                <f:facet name="header">Last Updated</f:facet>
-                <h:outputText value="#{p.updatedAt}">
-                    <f:convertDateTime pattern="dd MMM yyyy | HH:mm"/>
-                </h:outputText>
-            </h:column>
+<h:column>
+    <f:facet name="header">Updated</f:facet>
+    <h:outputText value="#{p.updatedAt}">
+        <f:convertDateTime pattern="dd MMM yyyy"/>
+    </h:outputText>
+</h:column>
+
+<h:column>
+    <f:facet name="header">Action</f:facet>
+    <p:commandButton value="Redeem"
+                     icon="pi pi-minus-circle"
+                     actionListener="#{portfolioBean.openRedeemDialog(p)}"
+                     update=":redeemForm"
+                     oncomplete="PF('redeemModal').show()"
+                     styleClass="p-button-danger p-button-rounded p-button-sm"/>
+</h:column>
 
         </h:dataTable>
 
+
         <!-- No Data Message -->
-        <h:panelGroup rendered="#{empty portfolioBean.portfolioList}">
+        <h:panelGroup rendered="#{empty portfolioBean.portfolioOrders}">
             <div class="alert alert-info text-center mt-3">
                 No portfolio records found.
             </div>
@@ -130,6 +145,34 @@
 
     </div>
 </div>
+<p:dialog id="redeemDialog"
+          widgetVar="redeemModal"
+          header="Redeem Units"
+          modal="true" closable="true" width="420">
+
+    <h:form id="redeemForm">
+        <p:panelGrid columns="2" columnClasses="label,value">
+
+            <p:outputLabel value="Asset:" />
+            <p:outputLabel value="#{portfolioBean.selectedPortfolio.aid.name}" />
+
+            <p:outputLabel value="Available Units:" />
+            <p:outputLabel value="#{portfolioBean.selectedPortfolio.units}" />
+
+            <p:outputLabel value="Units to Redeem:" />
+            <p:inputText value="#{portfolioBean.redemUnits}" />
+
+        </p:panelGrid>
+
+        <p:separator />
+
+        <p:commandButton value="Confirm Redemption"
+                         action="#{portfolioBean.submitRedemption}"
+                         update="@form :portfolioForm"
+                         oncomplete="PF('redeemModal').hide()"
+                         styleClass="p-button-success"/>
+    </h:form>
+</p:dialog>
 
 </h:body>
 </html>

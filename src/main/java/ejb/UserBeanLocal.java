@@ -59,7 +59,7 @@ public interface UserBeanLocal {
 //  Portfolio & Goals
     Collection<Portfolio> getUserPortfolio(int uid);
     void updatePortfolioValue(int uid, int aid, BigDecimal currentValue);
-
+    void addOrUpdatePortfolio(int uid, int aid, BigDecimal units, BigDecimal pricePerUnit);
     void createGoal(int uid, String goalName, BigDecimal targetAmt, Date targetDate);
     void updateGoalProgress(int goalId, BigDecimal currentAmt);
     Collection<Goals> getUserGoals(int uid);

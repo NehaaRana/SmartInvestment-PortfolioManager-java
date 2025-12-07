@@ -70,6 +70,13 @@ public class UserClient {
     public void updatePortfolioValue(String uid, String aid, String currentValue) throws ClientErrorException {
         webTarget.path(java.text.MessageFormat.format("updatePortfolioValue/{0}/{1}/{2}", new Object[]{uid, aid, currentValue})).request().put(null);
     }
+    
+    public void addOrUpdatePortfolio(String uid, String aid, String units, String amount) throws ClientErrorException {
+    webTarget.path(MessageFormat.format(
+            "addOrUpdatePortfolio/{0}/{1}/{2}/{3}", uid, aid, units, amount))
+            .request()
+            .post(null);
+    }
 
 //    public void updateProfile(String uid, String fullName, String phone, String password) throws ClientErrorException {
 //        webTarget.path(java.text.MessageFormat.format("updateProfile/{0}/{1}/{2}/{3}", new Object[]{uid, fullName, phone, password})).request().put(null);

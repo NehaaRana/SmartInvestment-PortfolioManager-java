@@ -4,13 +4,19 @@
  */
 package CDIBean;
 
+import Entity.Orders;
 import Entity.Portfolio;
 import client.UserClient;
 import jakarta.annotation.PostConstruct;
 import jakarta.inject.Named;
 import jakarta.enterprise.context.RequestScoped;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
+import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import record.keepRecord;
@@ -20,8 +26,9 @@ import record.keepRecord;
  * @author User
  */
 @Named(value = "portfolioBean")
-@RequestScoped
-public class PortfolioBean {
+//@RequestScoped
+@ViewScoped
+public class PortfolioBean implements Serializable{
 
     /**
      * Creates a new instance of PortfolioBean
@@ -35,8 +42,22 @@ public class PortfolioBean {
     private BigDecimal currentValue;
     private Date updatedAt;
     private List<Portfolio> portfolioList;
+    private List<Orders> portfolioOrders;
     private String assetName; // from Assets table
     private String assetType; // e.g., Stock / MF / Crypto
+    
+    private Orders selectOrders;
+    private String redemUnits;
+    private Portfolio selectedPortfolio;
+
+    public Portfolio getSelectedPortfolio() {
+        return selectedPortfolio;
+    }
+
+    public void setSelectedPortfolio(Portfolio selectedPortfolio) {
+        this.selectedPortfolio = selectedPortfolio;
+    }
+    
 
     public PortfolioBean() {
     }
@@ -44,33 +65,111 @@ public class PortfolioBean {
     @PostConstruct
     public void init() {
         try {
-            String token = keepRecord.getToken();
+            UserClient client = new UserClient(keepRecord.getToken());
             String uid = keepRecord.getUid();
 
-            UserClient uc = new UserClient(token);
+            Orders[] orderArray = client.getUserOrders(Orders[].class, uid);
+            Portfolio[] pfArray = client.getUserPortfolio(Portfolio[].class, uid);
 
-            // Call your API: returns *one Portfolio object*
-//            Portfolio p = uc.getUserPortfolio(Portfolio.class, uid);
-              portfolioList = uc.getUserPortfolio(List.class, uid);
-//            if (p != null) {
-//                this.pfId = p.getPfId();
-//                this.units = p.getUnits();
-//                this.avgPrice = p.getAvgPrice();
-//                this.currentValue = p.getCurrentValue();
-//                this.updatedAt = p.getUpdatedAt();
-//
-//                // From Assets table (ManyToOne)
-//                if (p.getAid() != null) {
-//                    this.assetName = p.getAid().getName();
-//                    this.assetType = p.getAid().getType();
-//                }
-//            }
+            portfolioOrders = new ArrayList<>();
+            if (orderArray != null) {
+                for (Orders o : orderArray) {
+                    if ("PAID".equalsIgnoreCase(o.getStatus())) {   // show only purchased orders
+                        portfolioOrders.add(o);
+                    }
+                }
+            }
+            
+            
+            portfolioList = new ArrayList<>();
+            if (pfArray != null) {
+                for (Portfolio p : pfArray) {
+                    portfolioList.add(p);
+                }
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    
+    
+    public Orders getSelectOrders() {
+        return selectOrders;
+    }
+
+    public void setSelectOrders(Orders selectOrders) {
+        this.selectOrders = selectOrders;
+    }
+
+    public String getRedemUnits() {
+        return redemUnits;
+    }
+
+////            Portfolio p = uc.getUserPortfolio(Portfolio.class, uid);
+//              portfolioList = uc.getUserPortfolio(List.class, uid);
+////            if (p != null) {
+    ////                this.pfId = p.getPfId();
+    ////                this.units = p.getUnits();
+    ////                this.avgPrice = p.getAvgPrice();
+    ////                this.currentValue = p.getCurrentValue();
+    ////                this.updatedAt = p.getUpdatedAt();
+    ////
+    ////                // From Assets table (ManyToOne)
+    ////                if (p.getAid() != null) {
+    ////                    this.assetName = p.getAid().getName();
+    ////                    this.assetType = p.getAid().getType();
+    ////                }
+    ////            }
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+//    public void openRedeemDialog(Orders order) {
+//        this.selectOrders = order;
+//    }
+    
+    public void openRedeemDialog(Portfolio p) {
+    this.selectedPortfolio = p;  
+}
+
+
+    public void submitRedemption() {
+        try {
+            UserClient client = new UserClient(keepRecord.getToken());
+
+            // calling your existing method
+            client.requestRedemption(
+                    String.valueOf(keepRecord.getUid()),
+                    String.valueOf(selectedPortfolio.getAid().getAid()),
+                    redemUnits,
+                    "PENDING"
+            );
+
+            FacesContext.getCurrentInstance().addMessage(null,
+                new FacesMessage("Redemption request submitted successfully!")
+            );
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setRedemUnits(String redemUnits) {
+        this.redemUnits = redemUnits;
+    }
+
+    public List<Orders> getPortfolioOrders() {
+        return portfolioOrders;
+    }
+
+    public void setPortfolioOrders(List<Orders> portfolioOrders) {
+        this.portfolioOrders = portfolioOrders;
+    }
+
+    
     public List<Portfolio> getPortfolioList() {
         return portfolioList;
     }
@@ -134,8 +233,5 @@ public class PortfolioBean {
 
     public void setAssetType(String assetType) {
         this.assetType = assetType;
-    }
-    
-    
-    
+    }  
 }

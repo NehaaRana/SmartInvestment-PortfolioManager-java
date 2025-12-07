@@ -24,6 +24,7 @@ import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.security.enterprise.identitystore.Pbkdf2PasswordHash;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Collection;
 import java.util.Date;
 
@@ -499,7 +500,93 @@ public class UserBean implements UserBeanLocal {
     }
     }
 
-   
-    
-   
+    @Override
+@RolesAllowed("USER")
+public void addOrUpdatePortfolio(int uid, int aid, BigDecimal units, BigDecimal pricePerUnit) {
+
+    Users user = em.find(Users.class, uid);
+    Assets asset = em.find(Assets.class, aid);
+
+    Collection<Portfolio> portfolioList = em.createNamedQuery("Portfolio.findByUserAsset", Portfolio.class)
+            .setParameter("uid", user.getUid())   // pass Integer, not entity
+            .setParameter("aid", asset.getAid())  // pass Integer
+            .getResultList();
+
+    if (!portfolioList.isEmpty()) {
+        Portfolio p = portfolioList.iterator().next();
+
+        BigDecimal existingUnits = p.getUnits();
+        BigDecimal existingAvg = p.getAvgPrice();
+
+        BigDecimal totalCost = (existingUnits.multiply(existingAvg))
+                 .add(units.multiply(pricePerUnit));
+
+        BigDecimal newUnits = existingUnits.add(units);
+        BigDecimal newAvg = totalCost.divide(newUnits, 2, RoundingMode.HALF_UP);
+
+        p.setUnits(newUnits);
+        p.setAvgPrice(newAvg);
+        p.setUpdatedAt(new Date());
+
+        em.merge(p);
+
+    } else {
+        Portfolio p = new Portfolio();
+        p.setUid(user);   // Here entity is correct
+        p.setAid(asset);  // Here entity is correct
+        p.setUnits(units);
+        p.setAvgPrice(pricePerUnit);
+        p.setCurrentValue(pricePerUnit);
+        p.setUpdatedAt(new Date());
+
+        em.persist(p);
+    }
+}
+
+
+//    @Override
+//    @RolesAllowed("USER")
+//    public void addOrUpdatePortfolio(int uid, int aid, BigDecimal units, BigDecimal pricePerUnit) {
+////        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+//           Collection<Portfolio> portfolioList = em.createNamedQuery("Portfolio.findByUserAsset", Portfolio.class)
+//            .setParameter("uid", uid)
+//            .setParameter("aid", aid)
+//            .getResultList();
+//
+//        Users user = em.find(Users.class, uid);
+//        Assets asset = em.find(Assets.class, aid);
+//
+//        if (!portfolioList.isEmpty()) {
+//            // UPDATE Existing Record
+//            Portfolio p = portfolioList.iterator().next();
+//
+//            BigDecimal existingUnits = p.getUnits();
+//            BigDecimal existingAvg = p.getAvgPrice();
+//
+//            // Calculate new average price = weighted average
+//            BigDecimal totalCost = (existingUnits.multiply(existingAvg))
+//                         .add(units.multiply(pricePerUnit));
+//
+//            BigDecimal newUnits = existingUnits.add(units);
+//            BigDecimal newAvg = totalCost.divide(newUnits, 2, RoundingMode.HALF_UP);
+//
+//            p.setUnits(newUnits);
+//            p.setAvgPrice(newAvg);
+//            p.setUpdatedAt(new Date());
+//
+//            em.merge(p);
+//
+//        } else {
+//            // INSERT New record
+//            Portfolio p = new Portfolio();
+//            p.setUid(user);
+//            p.setAid(asset);
+//            p.setUnits(units);
+//            p.setAvgPrice(pricePerUnit);
+//            p.setCurrentValue(pricePerUnit); // Default same as avg initially
+//            p.setUpdatedAt(new Date());
+//
+//            em.persist(p);
+//        }
+//    }
 }

@@ -68,14 +68,20 @@
     <p:column headerText="Action">
         <h:panelGroup>
             
-              <!-- Pay button ONLY after admin approval -->
+<!--               Pay button ONLY after admin approval 
                 <p:commandButton value="Pay Now"
                                  icon="pi pi-credit-card"
                                  update="paymentDialog ordersForm"
                                  oncomplete="PF('paymentDlg').show()"
                                  rendered="#{o.status eq 'COMPLETED'}"
+                                 actionListener="#{orderBean.preparePayment(o)}" />-->
+                 <!-- Pay button for all NOT PAID orders -->
+                <p:commandButton value="Pay Now"
+                                 icon="pi pi-credit-card"
+                                 update="paymentDialog ordersForm"
+                                 oncomplete="PF('paymentDlg').show()"
+                                 rendered="#{o.status ne 'PAID'}"
                                  actionListener="#{orderBean.preparePayment(o)}" />
-
                 <!-- Show payment success only if paid -->
                 <h:outputText value="Payment Success"
                               style="color:green; font-weight:bold;"

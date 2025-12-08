@@ -13,8 +13,8 @@ import jakarta.inject.Named;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Collection;
-import java.util.List;
 import record.keepRecord;
 
 /**
@@ -57,7 +57,22 @@ public class RedemptionBean implements Serializable {
     public void approve(Redemptions r){
         try{
             adminClient.approveRedemption(r.getRid().toString());
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage("redemption approved"));
+            
+            // ---- ADD PAYOUT AFTER APPROVE ----
+            BigDecimal units = r.getUnits();
+            BigDecimal price = r.getAid().getCurrentPrice();
+            BigDecimal payoutAmount = units.multiply(price);
+             // Auto-generate reference number
+            String referenceNo = "PAY-" + r.getRid() + "-" + System.currentTimeMillis();
+            // Insert payout entry
+            adminClient.addPayout(
+                    String.valueOf(r.getRid()),
+                    String.valueOf(r.getUid().getUid()),
+                    payoutAmount.toString(),
+                    referenceNo,
+                    "SUCCESS"
+            );
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage("Redemption approved & payout added successfully!"));
             loadRedemptions();
         }catch(Exception e){
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage("Error:"+e.getMessage()));

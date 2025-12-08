@@ -1,0 +1,114 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:f="jakarta.faces.core">
+   <ui:composition template="/Admin/AdminLayout.xhtml">
+
+    <!-- PAGE TITLE -->
+    <ui:define name="title">
+        Payouts List
+    </ui:define>
+
+    <!-- MAIN CONTENT -->
+    <ui:define name="content">
+
+        <style>
+            .payoutTable {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 15px;
+            }
+
+            .payoutTable th {
+                background-color: #1e2a47;
+                color: #fff;
+                padding: 10px;
+                border: 1px solid #444;
+            }
+
+            .payoutTable td {
+                padding: 10px;
+                border: 1px solid #ccc;
+            }
+
+            .status-badge {
+                padding: 5px 10px;
+                border-radius: 4px;
+                color: white;
+                font-weight: bold;
+            }
+
+            .status-SUCCESS { background-color: #28a745; }
+            .status-FAILED { background-color: #dc3545; }
+            .status-PENDING { background-color: #ffc107; color: #000; }
+        </style>
+
+        <h2 style="margin-bottom:20px;">Payouts List</h2>
+
+        <h:form>
+
+            <h:panelGroup id="payoutWrapper">
+
+                <h:dataTable value="#{payoutBean.payoutList}"
+                             var="p"
+                             styleClass="payoutTable">
+
+                    <!-- PID -->
+                    <h:column>
+                        <f:facet name="header">Payout ID</f:facet>
+                        #{p.payId}
+                    </h:column>
+
+                    <!-- USER -->
+                    <h:column>
+                        <f:facet name="header">User</f:facet>
+                        #{p.uid.fullName} <br/>
+                        <small>(UID: #{p.uid.uid})</small>
+                    </h:column>
+
+                    <!-- REDEMPTION ID -->
+                    <h:column>
+                        <f:facet name="header">Redemption ID</f:facet>
+                        #{p.rid.rid}
+                    </h:column>
+
+                    <!-- AMOUNT -->
+                    <h:column>
+                        <f:facet name="header">Amount</f:facet>
+                        ₹ #{p.amount}
+                    </h:column>
+
+                    <!-- REFERENCE NO -->
+                    <h:column>
+                        <f:facet name="header">Reference No</f:facet>
+                        #{p.referenceNo}
+                    </h:column>
+
+                    <!-- STATUS -->
+                    <h:column>
+                        <f:facet name="header">Status</f:facet>
+
+                        <span class="status-badge status-#{p.status}">
+                            #{p.status}
+                        </span>
+
+                    </h:column>
+
+                    <!-- CREATED AT -->
+                    <h:column>
+                        <f:facet name="header">Date</f:facet>
+                        #{p.createdAt}
+                    </h:column>
+
+                </h:dataTable>
+
+            </h:panelGroup>
+
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>
+</html>

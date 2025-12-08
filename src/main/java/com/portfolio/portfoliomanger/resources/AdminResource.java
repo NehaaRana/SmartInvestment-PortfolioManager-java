@@ -236,7 +236,7 @@ public class AdminResource {
 
     @RolesAllowed("ADMIN")
     @POST
-    @Path("addPayout/{rid}/{uid}/{amount}/{referenceNo}/{status}/")
+    @Path("addPayout/{rid}/{uid}/{amount}/{referenceNo}/{status}")
     public void addPayout(@PathParam("rid") int rid, 
             @PathParam("uid") int uid,
             @PathParam("amount") BigDecimal amount,

@@ -187,11 +187,23 @@ public class UserClient {
         webTarget.path(java.text.MessageFormat.format("createGoal/{0}/{1}/{2}/{3}", new Object[]{uid, goalName, targetAmt, targetDate})).request().post(null);
     }
 
-    public <T> T getUserPayouts(Class<T> responseType, String uid) throws ClientErrorException {
-        WebTarget resource = webTarget;
-        resource = resource.path(java.text.MessageFormat.format("getUserPayouts/{0}", new Object[]{uid}));
-        return resource.request(jakarta.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+//    public <T> T getUserPayouts(Class<T> responseType, String uid) throws ClientErrorException {
+//        WebTarget resource = webTarget;
+//        resource = resource.path(java.text.MessageFormat.format("getUserPayouts/{0}", new Object[]{uid}));
+//        return resource.request(jakarta.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+//    }
+    
+    public <T> T getUserPayouts(jakarta.ws.rs.core.GenericType<T> responseType, String uid) 
+        throws ClientErrorException {
+
+        WebTarget resource = webTarget.path(
+            java.text.MessageFormat.format("getUserPayouts/{0}", uid)
+        );
+
+        return resource.request(jakarta.ws.rs.core.MediaType.APPLICATION_JSON)
+                       .get(responseType);
     }
+
 
     public void removeFromWatchlist(String wid) throws ClientErrorException {
         webTarget.path(java.text.MessageFormat.format("removeFromWatchlist/{0}", new Object[]{wid})).request().delete();

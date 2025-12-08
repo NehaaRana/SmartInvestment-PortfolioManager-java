@@ -242,40 +242,70 @@ public class AdminBean implements AdminBeanLocal {
         }
     }
 
+//    @Override
+//    @RolesAllowed("ADMIN")
+//    public void addPayout(int rid, int uid, BigDecimal amount, String referenceNo, String status) {
+////        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+//        Users u = (Users) em.find(Users.class,uid);
+//        Redemptions r = (Redemptions) em.find(Redemptions.class,rid);
+//        
+//        Collection<Payouts> userPayouts = u.getPayoutsCollection();
+//        Collection<Payouts> redemptionPayouts = r.getPayoutsCollection();
+//
+//        Payouts p = new Payouts();
+//       
+//        p.setRid(r);
+//        p.setUid(u);
+//        p.setAmount(amount);
+//        p.setReferenceNo(referenceNo);
+//        p.setStatus(status);
+//        p.setCreatedAt(new Date());
+//        
+//        userPayouts.add(p);
+//        redemptionPayouts.add(p);
+//        u.setPayoutsCollection(userPayouts);
+//        r.setPayoutsCollection(redemptionPayouts);
+//        em.persist(p);
+//        em.merge(u);
+//        em.merge(r);
+//
+//        // Mark redemption as paid if appropriate
+////        Redemptions r = em.find(Redemptions.class, rid);
+//        if (r != null && "APPROVED".equalsIgnoreCase(r.getStatus())) {
+//            r.setPaidAt(new Date());
+//            em.merge(r);
+//        }
+//    }
+    
     @Override
     @RolesAllowed("ADMIN")
     public void addPayout(int rid, int uid, BigDecimal amount, String referenceNo, String status) {
-//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-        Users u = (Users) em.find(Users.class,uid);
-        Redemptions r = (Redemptions) em.find(Redemptions.class,rid);
-        
-        Collection<Payouts> userPayouts = u.getPayoutsCollection();
-        Collection<Payouts> redemptionPayouts = r.getPayoutsCollection();
+
+        Users u = em.find(Users.class, uid);
+        Redemptions r = em.find(Redemptions.class, rid);
+
+        if (u == null || r == null) {
+            throw new IllegalArgumentException("Invalid UID or RID");
+        }
 
         Payouts p = new Payouts();
-       
-        p.setRid(r);
         p.setUid(u);
+        p.setRid(r);
         p.setAmount(amount);
         p.setReferenceNo(referenceNo);
         p.setStatus(status);
         p.setCreatedAt(new Date());
-        
-        userPayouts.add(p);
-        redemptionPayouts.add(p);
-        u.setPayoutsCollection(userPayouts);
-        r.setPayoutsCollection(redemptionPayouts);
-        em.persist(p);
-        em.merge(u);
-        em.merge(r);
 
-        // Mark redemption as paid if appropriate
-//        Redemptions r = em.find(Redemptions.class, rid);
-        if (r != null && "APPROVED".equalsIgnoreCase(r.getStatus())) {
+        em.persist(p);
+
+        // When payout done → mark redemption as PAID
+        if ("SUCCESS".equalsIgnoreCase(status)) {
+            r.setStatus("PAID");
             r.setPaidAt(new Date());
             em.merge(r);
         }
     }
+
 
     @Override
     @RolesAllowed("ADMIN")

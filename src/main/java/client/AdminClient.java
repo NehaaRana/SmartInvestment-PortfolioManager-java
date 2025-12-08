@@ -6,6 +6,7 @@ package client;
 
 import Entity.Assets;
 import Entity.Orders;
+import Entity.Payouts;
 import Entity.Redemptions;
 import Entity.Users;
 import Filter.MyFilter;
@@ -67,7 +68,11 @@ public class AdminClient {
     }
 
     public void addPayout(String rid, String uid, String amount, String referenceNo, String status) throws ClientErrorException {
-        webTarget.path(java.text.MessageFormat.format("addPayout/{0}/{1}/{2}/{3}/{4}", new Object[]{rid, uid, amount, referenceNo, status})).request().post(null);
+//        webTarget.path(java.text.MessageFormat.format("addPayout/{0}/{1}/{2}/{3}/{4}", new Object[]{rid, uid, amount, referenceNo, status})).request().post(null);
+         webTarget.path(java.text.MessageFormat.format(
+            "addPayout/{0}/{1}/{2}/{3}/{4}",
+            new Object[]{rid, uid, amount, referenceNo, status}
+        )).request().post(null);
     }
 
     public void addUser(String fullName, String email, String password, String phone, String gid) throws ClientErrorException {
@@ -161,17 +166,28 @@ public class AdminClient {
     }
 
     public void updatePayoutStatus(String payId, String status) throws ClientErrorException {
-        webTarget.path(java.text.MessageFormat.format("updatePayoutStatus/{0}/{1}", new Object[]{payId, status})).request().put(null);
+//        webTarget.path(java.text.MessageFormat.format("updatePayoutStatus/{0}/{1}", new Object[]{payId, status})).request().put(null);
+           webTarget.path(java.text.MessageFormat.format(
+                "updatePayoutStatus/{0}/{1}", 
+                new Object[]{payId, status}
+            )).request().put(null);
     }
 
     public void updateAssetStatus(String aid, String status) throws ClientErrorException {
         webTarget.path(java.text.MessageFormat.format("updateAssetStatus/{0}/{1}", new Object[]{aid, status})).request().put(null);
     }
 
-    public <T> T getAllPayouts(Class<T> responseType) throws ClientErrorException {
+//    public <T> T getAllPayouts(Class<T> responseType) throws ClientErrorException {
+//        WebTarget resource = webTarget;
+//        resource = resource.path("getAllPayouts");
+//        return resource.request(jakarta.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+//    }
+    
+    public Collection<Payouts> getAllPayouts() throws ClientErrorException {
         WebTarget resource = webTarget;
         resource = resource.path("getAllPayouts");
-        return resource.request(jakarta.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+        return resource.request(jakarta.ws.rs.core.MediaType.APPLICATION_JSON).
+                get(new jakarta.ws.rs.core.GenericType<Collection<Payouts>>() {});
     }
 
     public void updatePaymentStatus(String pid, String status) throws ClientErrorException {

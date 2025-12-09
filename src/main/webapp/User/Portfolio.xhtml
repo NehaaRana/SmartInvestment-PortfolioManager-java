@@ -43,7 +43,6 @@
 
 <h:body>
     <ui:include src="/Navbar.xhtml"/>
-    <p:growl id="globalMsg" showDetail="true" life="3000" />
 
  <!-- FIXED TOP NAVBAR -->
 <!--<div class="topbar"
@@ -82,65 +81,66 @@
     </div>
 
     <div class="portfolio-card">
+        <h:form id="portfolioForm">
 
-        <!-- Portfolio Table -->
-        <h:dataTable value="#{portfolioBean.portfolioList}" var="p"
-             styleClass="table table-bordered table-hover">
+            <p:growl id="globalMsg" showDetail="true" life="3000" />
+            <!-- Portfolio Table -->
+            <h:dataTable value="#{portfolioBean.portfolioList}" var="p"
+                 styleClass="table table-bordered table-hover">
 
-            <h:column>
-    <f:facet name="header">Asset</f:facet>
-    <strong>#{p.aid.name}</strong><br/>
-    <span class="badge text-bg-primary">#{p.aid.type}</span>
-</h:column>
+                <h:column>
+                    <f:facet name="header">Asset</f:facet>
+                    <strong>#{p.aid.name}</strong><br/>
+                    <span class="badge text-bg-primary">#{p.aid.type}</span>
+                </h:column>
 
-<h:column>
-    <f:facet name="header">Units</f:facet>
-    #{p.units}
-</h:column>
+                <h:column>
+                    <f:facet name="header">Units</f:facet>
+                    #{p.units}
+                </h:column>
 
+                <h:column>
+                    <f:facet name="header">Current Price</f:facet>
+                    ₹ #{p.aid.currentPrice}
+                </h:column>
 
+                <h:column>
+                    <f:facet name="header">Current Value</f:facet>
+                         ₹ #{portfolioBean.calculateCurrentValue(p)}
+                         <br/><br/>
+                        <p:tag severity="#{portfolioBean.inProfit(p) ? 'success' : 'danger'}">
+                           <h:outputText value="Profit: ₹ #{portfolioBean.profitLossAmount(p)}"
+                                         rendered="#{portfolioBean.inProfit(p)}" />
 
-<h:column>
-    <f:facet name="header">Current Price</f:facet>
-    ₹ #{p.aid.currentPrice}
-</h:column>
-
-<h:column>
-    <f:facet name="header">Current Value</f:facet>
-         ₹ #{portfolioBean.calculateCurrentValue(p)}
-         <br/><br/>
-        <p:tag severity="#{portfolioBean.inProfit(p) ? 'success' : 'danger'}">
-           <h:outputText value="Profit: ₹ #{portfolioBean.profitLossAmount(p)}"
-                         rendered="#{portfolioBean.inProfit(p)}" />
-
-           <h:outputText value="Loss: ₹ #{portfolioBean.profitLossAmount(p).abs()}"
-                         rendered="#{not portfolioBean.inProfit(p)}" />
-        </p:tag>
+                           <h:outputText value="Loss: ₹ #{portfolioBean.profitLossAmount(p).abs()}"
+                                         rendered="#{not portfolioBean.inProfit(p)}" />
+                        </p:tag>
 
 
-<!--    <p:tag 
-        value="#{portfolioBean.inProfit(p) ? 'Profit' : 'Loss'}"
-        severity="#{portfolioBean.inProfit(p) ? 'success' : 'danger'}" />-->
-</h:column>
+                <!--    <p:tag 
+                        value="#{portfolioBean.inProfit(p) ? 'Profit' : 'Loss'}"
+                        severity="#{portfolioBean.inProfit(p) ? 'success' : 'danger'}" />-->
+                </h:column>
 
-<h:column>
-    <f:facet name="header">Updated</f:facet>
-    <h:outputText value="#{p.updatedAt}">
-        <f:convertDateTime pattern="dd MMM yyyy"/>
-    </h:outputText>
-</h:column>
+                <h:column>
+                    <f:facet name="header">Updated</f:facet>
+                    <h:outputText value="#{p.updatedAt}">
+                        <f:convertDateTime pattern="dd MMM yyyy"/>
+                    </h:outputText>
+                </h:column>
 
-<h:column>
-    <f:facet name="header">Action</f:facet>
-    <p:commandButton value="Redeem"
-                     icon="pi pi-minus-circle"
-                     actionListener="#{portfolioBean.openRedeemDialog(p)}"
-                     update=":redeemForm"
-                     oncomplete="PF('redeemModal').show()"
-                     styleClass="p-button-danger p-button-rounded p-button-sm"/>
-</h:column>
+                <h:column>
+                    <f:facet name="header">Action</f:facet>
+                    <p:commandButton value="Redeem"
+                                     icon="pi pi-minus-circle"
+                                     actionListener="#{portfolioBean.openRedeemDialog(p)}"
+                                     update=":redeemForm"
+                                     oncomplete="PF('redeemModal').show()"
+                                     styleClass="p-button-danger p-button-rounded p-button-sm"/>
+                </h:column>
 
-        </h:dataTable>
+            </h:dataTable>
+        </h:form>
 
 
         <!-- No Data Message -->

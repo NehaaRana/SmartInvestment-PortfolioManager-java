@@ -112,7 +112,7 @@ public class keepRecord implements Serializable {
        token=null;
        email=null;
        password=null;
-       token=null;
+//       token=null;
        errorStatus="";
        uid=null;
     }

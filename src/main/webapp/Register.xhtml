@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="jakarta.faces.html"
       xmlns:f="jakarta.faces.core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="jakarta.faces.facelets">
 
 <h:head>
     <title>Create Account — Portfolio SIP Manager</title>
@@ -86,20 +87,8 @@
 <h:body>
 
      <!-- NAV -->
-    <div class="topbar">
-        <div class="brand">Portfolio SIP Manager</div>
+    <ui:include src="/Navbar.xhtml"/>
 
-        <div style="display:flex; gap:14px; align-items:center;">
-            <a href="index.jsf" style="text-decoration:none; color:#05203a; font-weight:600;">Home</a>
-            <a href="User/ViewPlans.jsf" style="text-decoration:none; color:#05203a; font-weight:600;">SIP Plans</a>
-            <a href="About.jsf" style="text-decoration:none; color:#05203a; font-weight:600;">About</a>
-
-            <p:button value="Login" outcome="Login" icon="pi pi-sign-in"
-                      styleClass="p-button-text" />
-            <p:button value="Register" outcome="Register" icon="pi pi-user-plus"
-                      styleClass="p-button-outlined p-button-rounded" />
-        </div>
-    </div>
 
     <!-- REGISTER FORM -->
     <div class="register-box">
@@ -111,6 +100,13 @@
 
             <p:messages closable="true" showDetail="true" />
 
+          
+            
+            <h:panelGroup rendered="#{not empty userManageBean.msg}">
+                <div class="error-msg">#{userManageBean.msg}</div>
+            </h:panelGroup>
+
+
             <p:panelGrid columns="2" style="width:100%;">
 
                 <p:outputLabel for="name" value="Full Name" styleClass="label"/>
@@ -119,14 +115,20 @@
 
                 <p:outputLabel for="email" value="Email" styleClass="label"/>
                 <p:inputText id="email" value="#{userManageBean.email}" placeholder="example@mail.com"
-                             required="true" requiredMessage="Email is required."/>
+                             required="true" requiredMessage="Email is required." validatorMessage="Enter a valid email address">
+                    <f:validateRegex pattern="^[^@]+@[^@]+\\.[^@]+$"/>
+                </p:inputText>
 
                 <p:outputLabel for="pass" value="Password" styleClass="label"/>
                 <p:password id="pass" value="#{userManageBean.password}" placeholder="Create password"
-                            feedback="false" required="true" requiredMessage="Password is required."/>
+                            feedback="false" required="true" requiredMessage="Password is required." validatorMessage="Password must be at least 6 characters">
+                    <f:validateLength minimum="6"/>
+                </p:password>
 
                 <p:outputLabel for="phone" value="Phone" styleClass="label"/>
-                <p:inputText id="phone" value="#{userManageBean.phone}" placeholder="9876543210"/>
+                <p:inputText id="phone" value="#{userManageBean.phone}" placeholder="9876543210" validatorMessage="Phone number must be 10 digits">
+                    <f:validateRegex pattern="^[0-9]{10}$"/>
+                </p:inputText>
 
             </p:panelGrid>
 

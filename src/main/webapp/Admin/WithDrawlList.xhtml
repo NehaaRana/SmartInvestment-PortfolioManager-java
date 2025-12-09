@@ -28,6 +28,7 @@
         </h:head>
 
         <h:body>
+        <p:growl id="msg" showDetail="true" life="3000" sticky="false" globalOnly="true" />
 
             <h2>Withdrawals</h2>
             <h:form id="redemptionForm">
@@ -51,11 +52,11 @@
                     </p:column>
                     <p:column headerText="Actions">
                         <p:commandButton value="Approve" icon="pi pi-check"
-                                         update="redemptionForm" 
+                                         update="msg redemptionForm" 
                                          actionListener="#{redemptionBean.approve(r)}"
                                          rendered="#{r.status eq 'PENDING'}"/>
                         <p:commandButton value="Reject" icon="pi pi-check"
-                                         update="redemptionForm" 
+                                         update="msg redemptionForm" 
                                          actionListener="#{redemptionBean.reject(r)}"
                                          style="margin-left: 5px"
                                          rendered="#{r.status eq 'PENDING'}"/>

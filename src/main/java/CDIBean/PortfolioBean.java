@@ -156,6 +156,13 @@ public class PortfolioBean implements Serializable{
             e.printStackTrace();
         }
     }
+    
+    
+    public BigDecimal profitLossAmount(Portfolio p) {
+        BigDecimal invested = p.getUnits().multiply(p.getAvgPrice());
+        BigDecimal currentVal = p.getUnits().multiply(p.getAid().getCurrentPrice());
+        return currentVal.subtract(invested);   // Can be +ve or -ve
+    }
 
     public void setRedemUnits(String redemUnits) {
         this.redemUnits = redemUnits;
@@ -206,7 +213,18 @@ public class PortfolioBean implements Serializable{
     public BigDecimal getCurrentValue() {
         return currentValue;
     }
-
+    
+//    Portfolio bean current value
+    public BigDecimal calculateCurrentValue(Portfolio p) {
+        return p.getUnits().multiply(p.getAid().getCurrentPrice());
+    }
+    
+    public boolean inProfit(Portfolio p) {
+        BigDecimal invested = p.getUnits().multiply(p.getAvgPrice());
+        BigDecimal currentVal = p.getUnits().multiply(p.getAid().getCurrentPrice());
+        return currentVal.compareTo(invested) > 0;
+    }
+    
     public void setCurrentValue(BigDecimal currentValue) {
         this.currentValue = currentValue;
     }

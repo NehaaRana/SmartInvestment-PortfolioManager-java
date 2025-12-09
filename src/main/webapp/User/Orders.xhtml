@@ -22,6 +22,7 @@
 </h:head>
 
 <h:body>
+<p:growl id="globalMsg" showDetail="true" life="3000" />
 
 <h2 style="text-align:center">My Orders</h2>
 <p:messages  />
@@ -126,7 +127,6 @@
 
     <h:form id="paymentForm">
 
-        <p:messages id="msgs" closable="true" />
 
         <h:panelGrid columns="2" cellpadding="5">
 
@@ -146,7 +146,7 @@
         <p:commandButton value="Pay Now"
                          icon="pi pi-credit-card"
                          actionListener="#{orderBean.makePayment}"
-                         update="paymentForm msgs"
+                         update="paymentForm :globalMsg"
                          oncomplete="PF('paymentDlg').hide();" />
     </h:form>
 

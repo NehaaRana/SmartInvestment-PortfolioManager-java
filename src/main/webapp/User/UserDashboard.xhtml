@@ -93,22 +93,32 @@
         <div class="cards">
             <div class="card">
                 <h3>Total Investment</h3>
-                <h2>₹ 1,20,000</h2>
+                <h2>₹ #{userDashboardBean.totalPortfolioValue}</h2>
             </div>
 
-            <div class="card">
+<!--            <div class="card">
                 <h3>Active SIP</h3>
                 <h2>10 Plans</h2>
+            </div>-->
+
+            <div class="card">
+                <h3>Profit Loss</h3>
+                <h2>₹ #{userDashboardBean.profitLoss}</h2>
             </div>
 
             <div class="card">
-                <h3>Total Returns</h3>
-                <h2>₹ 17,800</h2>
+                <h3>Total Return</h3>
+                <h2>₹ #{userDashboardBean.totalReturns}</h2>
             </div>
+            
+<!--            <div class="card">
+                <h3>Today’s Change</h3>
+                <h2>₹ #{userDashboardBean.todayChange}</h2>
+            </div>-->
 
             <div class="card">
                 <h3>Completed Orders</h3>
-                <h2>28</h2>
+                <h2>#{userDashboardBean.completedOrders}</h2>
             </div>
         </div>
 

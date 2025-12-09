@@ -109,10 +109,18 @@
     <f:facet name="header">Current Value</f:facet>
          ₹ #{portfolioBean.calculateCurrentValue(p)}
          <br/><br/>
+        <p:tag severity="#{portfolioBean.inProfit(p) ? 'success' : 'danger'}">
+           <h:outputText value="Profit: ₹ #{portfolioBean.profitLossAmount(p)}"
+                         rendered="#{portfolioBean.inProfit(p)}" />
 
-    <p:tag 
+           <h:outputText value="Loss: ₹ #{portfolioBean.profitLossAmount(p).abs()}"
+                         rendered="#{not portfolioBean.inProfit(p)}" />
+        </p:tag>
+
+
+<!--    <p:tag 
         value="#{portfolioBean.inProfit(p) ? 'Profit' : 'Loss'}"
-        severity="#{portfolioBean.inProfit(p) ? 'success' : 'danger'}" />
+        severity="#{portfolioBean.inProfit(p) ? 'success' : 'danger'}" />-->
 </h:column>
 
 <h:column>

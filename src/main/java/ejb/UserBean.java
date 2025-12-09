@@ -400,7 +400,7 @@ public class UserBean implements UserBeanLocal {
 
     @Override
     @RolesAllowed("USER")
-    public void createGoal(int uid, String goalName, BigDecimal targetAmt, Date  targetDate) {
+    public void createGoal(int uid, String goalName, BigDecimal targetAmt, String  targetDate) {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
         Users user = em.find(Users.class, uid);
         Collection<Goals> userGoal = user.getGoalsCollection();

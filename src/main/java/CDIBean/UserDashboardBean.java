@@ -102,7 +102,11 @@ public class UserDashboardBean implements  Serializable{
 
         profile = userClient.getProfile(Object.class, uid);
         portfolio = userClient.getUserPortfolio(Object.class, uid);
-        goals = userClient.getUserGoals(Object.class, uid);
+//        goals = userClient.getUserGoals(Object.class, uid);
+        goals = userClient.getUserGoals(
+            new jakarta.ws.rs.core.GenericType<java.util.Collection<Entity.Goals>>() {},
+            uid
+        );
         orders = userClient.getUserOrders(Object[].class, uid);
         payments = userClient.getUserPayments(Object.class, uid);
         transactions = userClient.getUserTransactions(Object.class, uid);

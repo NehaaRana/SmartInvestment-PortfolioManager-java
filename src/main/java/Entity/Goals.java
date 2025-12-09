@@ -4,6 +4,7 @@
  */
 package Entity;
 
+import jakarta.json.bind.annotation.JsonbDateFormat;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -59,9 +60,11 @@ public class Goals implements Serializable {
     private BigDecimal targetAmt;
     @Column(name = "current_amt")
     private BigDecimal currentAmt;
+//    @JsonbDateFormat("yyyy-MM-dd")
     @Column(name = "target_date")
-    @Temporal(TemporalType.DATE)
-    private Date targetDate;
+//    @Temporal(TemporalType.DATE)
+    private String targetDate;
+    @JsonbDateFormat("yyyy-MM-dd'T'HH:mm:ss")
     @Column(name = "created_at",insertable=false,updatable=false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
@@ -113,11 +116,11 @@ public class Goals implements Serializable {
         this.currentAmt = currentAmt;
     }
 
-    public Date getTargetDate() {
+    public String getTargetDate() {
         return targetDate;
     }
 
-    public void setTargetDate(Date targetDate) {
+    public void setTargetDate(String targetDate) {
         this.targetDate = targetDate;
     }
 

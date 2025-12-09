@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>User Goals</title>
+</h:head>
+
+<h:body>
+
+    <!-- Create Goal Form -->
+    <h:form id="goalForm">
+        <h2>Create New Goal</h2>
+
+        <p:panelGrid columns="2" style="width:50%">
+            <p:outputLabel value="Goal Name:" />
+            <p:inputText value="#{goalBean.goalName}" required="true"/>
+
+            <p:outputLabel value="Target Amount:" />
+            <p:inputText value="#{goalBean.targetAmt}" required="true"/>
+
+            <p:outputLabel value="Target Date:" />
+            <p:datePicker value="#{goalBean.targetDate}" pattern="yyyy-MM-dd" required="true"/>
+        </p:panelGrid>
+
+        <p:commandButton value="Create Goal"
+                         action="#{goalBean.createGoal}"
+                         update=":goalTableForm:goalTable :goalForm:goalMessages"
+                         style="margin-top:10px"/>
+
+        <p:messages id="goalMessages" />
+    </h:form>
+
+
+    <!-- Display Goals -->
+    <h2>My Goals</h2>
+
+    <h:form id="goalTableForm">
+        <p:dataTable id="goalTable" value="#{goalBean.goalList}" var="g" style="width:100%">
+            <p:column headerText="Goal Name">
+                #{g.goalName}
+            </p:column>
+
+            <p:column headerText="Target Amount">
+                ₹ #{g.targetAmt}
+            </p:column>
+
+            <p:column headerText="Current Amount">
+                ₹ #{g.currentAmt}
+            </p:column>
+
+            <p:column headerText="Progress">
+                <p:progressBar value="#{goalBean.calculateProgress(g)}" labelTemplate="{value}%"/>
+            </p:column>
+
+            <p:column headerText="Target Date">
+                #{g.targetDate}
+            </p:column>
+
+            <p:column headerText="Add Money">
+                <p:inputText value="#{goalBean.updateAmounts[g.goalId]}" style="width:70px"/>
+                <p:commandButton value="Add"
+                 action="#{goalBean.updateProgress(g.goalId)}"
+                 update=":goalTableForm:goalTable :goalTableForm:goalMessages"
+                 oncomplete="$(this).prev().val('')"/>
+            </p:column>
+        </p:dataTable>
+    </h:form>
+
+</h:body>
+</html>

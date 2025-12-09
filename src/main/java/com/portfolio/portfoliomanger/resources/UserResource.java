@@ -308,14 +308,15 @@ public class UserResource {
 //          throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
         
 //            Date targetDate = Date.valueOf(targetDateStr); // yyyy-MM-dd format
-            java.sql.Date targetDate = java.sql.Date.valueOf(targetDateStr); // yyyy-MM-dd format
+//            java.sql.Date targetDate = java.sql.Date.valueOf(targetDateStr); // yyyy-MM-dd format
 
-            ubl.createGoal(uid, goalName, targetAmt, targetDate);
+            ubl.createGoal(uid, goalName, targetAmt, targetDateStr);
     
     }
     
     @RolesAllowed("USER")
     @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
     @Path("updateGoalProgress/{goalId}/{currentAmt}")
     public void updateGoalProgress(@PathParam("goalId") int goalId,@PathParam("currentAmt") BigDecimal currentAmt) {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody

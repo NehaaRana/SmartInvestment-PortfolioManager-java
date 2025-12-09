@@ -114,7 +114,7 @@ public class UserClient {
         return resource.request(jakarta.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
     }
 
-    public <T> T getUserGoals(Class<T> responseType, String uid) throws ClientErrorException {
+    public <T> T getUserGoals(jakarta.ws.rs.core.GenericType<T> responseType, String uid) throws ClientErrorException {
         WebTarget resource = webTarget;
         resource = resource.path(java.text.MessageFormat.format("getUserGoals/{0}", new Object[]{uid}));
         return resource.request(jakarta.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
@@ -149,7 +149,7 @@ public class UserClient {
 
     
     public void updateGoalProgress(String goalId, String currentAmt) throws ClientErrorException {
-        webTarget.path(java.text.MessageFormat.format("updateGoalProgress/{0}/{1}", new Object[]{goalId, currentAmt})).request().put(null);
+        webTarget.path(java.text.MessageFormat.format("updateGoalProgress/{0}/{1}", new Object[]{goalId, currentAmt})).request().put(jakarta.ws.rs.client.Entity.text(""));
     }
 
     public <T> T getUserOrders(Class<T> responseType, String uid) throws ClientErrorException {

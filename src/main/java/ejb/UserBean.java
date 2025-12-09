@@ -422,16 +422,32 @@ public class UserBean implements UserBeanLocal {
     
     }
 
+//    @Override
+//    @RolesAllowed("USER")
+//    public void updateGoalProgress(int goalId, BigDecimal currentAmt) {
+////        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+//        Goals g = em.find(Goals.class, goalId);
+//        if (g != null) {
+//            g.setCurrentAmt(currentAmt);
+//            em.merge(g);
+//        }
+//    }
+    
     @Override
     @RolesAllowed("USER")
-    public void updateGoalProgress(int goalId, BigDecimal currentAmt) {
-//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void updateGoalProgress(int goalId, BigDecimal addAmt) {
         Goals g = em.find(Goals.class, goalId);
         if (g != null) {
-            g.setCurrentAmt(currentAmt);
+
+            if (g.getCurrentAmt() == null) {
+                g.setCurrentAmt(BigDecimal.ZERO);
+            }
+
+            g.setCurrentAmt(g.getCurrentAmt().add(addAmt));   // ✅ ADD, don't replace
             em.merge(g);
         }
     }
+
 
     @Override
     @RolesAllowed("USER")

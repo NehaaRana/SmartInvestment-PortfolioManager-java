@@ -67,8 +67,15 @@ public class GoalBean implements Serializable {
     // Load goals of logged-in user
     public void loadGoals() {
         try {
-            goalList = userClient.getUserGoals(new jakarta.ws.rs.core.GenericType<Collection<Goals>>() {},
-            keepRecord.getUid());
+//            goalList = userClient.getUserGoals(new jakarta.ws.rs.core.GenericType<Collection<Goals>>() {},
+                goalList = new java.util.ArrayList<>(
+                    userClient.getUserGoals(
+                        new jakarta.ws.rs.core.GenericType<Collection<Goals>>() {},
+                        keepRecord.getUid()
+                    )
+            );
+
+           
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null,
                 new FacesMessage("Error loading goals: " + e.getMessage()));
@@ -110,29 +117,85 @@ public class GoalBean implements Serializable {
 //        }
 //    }
     public void updateProgress(Integer goalId) {
-    try {
-        System.out.println("GoalId = " + goalId);
-        System.out.println("Amount entered = " + updateAmounts.get(goalId));
-        String amount = updateAmounts.get(goalId);
-        userClient.updateGoalProgress(goalId.toString(), amount);
-        loadGoals();
-        
-        updateAmounts.put(goalId,"");
-        FacesContext.getCurrentInstance().addMessage(null,
-            new FacesMessage(FacesMessage.SEVERITY_INFO, "Progress Updated!", null));
+        try {
+            Goals selectedGoal = null;
 
-    } catch (Exception e) {
-        FacesContext.getCurrentInstance().addMessage(null,
-            new FacesMessage("Error updating progress: " + e.getMessage()));
+            for (Goals g : goalList) {
+                if (g.getGoalId().equals(goalId)) {
+                    selectedGoal = g;
+                    break;
+                }
+            }
+
+            if (selectedGoal == null) {
+                FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Goal not found", null));
+                return;
+            }
+
+            String amountStr = updateAmounts.get(goalId);
+
+            if (amountStr == null || amountStr.trim().isEmpty()) {
+                FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_WARN, "Enter amount", null));
+                return;
+            }
+
+            java.math.BigDecimal addAmt = new java.math.BigDecimal(amountStr);
+            java.math.BigDecimal current = selectedGoal.getCurrentAmt();
+            java.math.BigDecimal target = selectedGoal.getTargetAmt();
+
+            if (current == null) current = java.math.BigDecimal.ZERO;
+
+            java.math.BigDecimal remaining = target.subtract(current);
+
+            // ❌ BLOCK if exceeding target
+            if (addAmt.compareTo(remaining) > 0) {
+                FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(
+                        FacesMessage.SEVERITY_ERROR,
+                        "Limit Exceeded",
+                        "You can only add ₹" + remaining + " or less"
+                    )
+                );
+                return;
+            }
+
+            // ✅ Allow update
+            userClient.updateGoalProgress(goalId.toString(), addAmt.toPlainString());
+            loadGoals();
+
+            updateAmounts.put(goalId, "");
+
+            FacesContext.getCurrentInstance().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Amount added successfully"));
+
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", e.getMessage()));
+        }
     }
-}
+
 
 
     // Calculate progress percentage
+//    public int calculateProgress(Goals g) {
+//        if (g.getCurrentAmt() == null || g.getTargetAmt() == null) return 0;
+//        return (int) ((g.getCurrentAmt().doubleValue() / g.getTargetAmt().doubleValue()) * 100);
+//    }
+    
     public int calculateProgress(Goals g) {
         if (g.getCurrentAmt() == null || g.getTargetAmt() == null) return 0;
-        return (int) ((g.getCurrentAmt().doubleValue() / g.getTargetAmt().doubleValue()) * 100);
+
+        int percent = (int) ((g.getCurrentAmt().doubleValue() / g.getTargetAmt().doubleValue()) * 100);
+
+        if (percent > 100) {
+            return 100;  // Progress capped visually
+        }
+
+        return percent;
     }
+
 
     // Reset fields after creation
     private void clearForm() {

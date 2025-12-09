@@ -67,7 +67,6 @@ public class Transactions implements Serializable {
     
     private Collection<Payments> paymentsCollection;
     @JoinColumn(name = "oid", referencedColumnName = "oid")
-    @JsonbTransient
     @ManyToOne
     private Orders oid;
     @JoinColumn(name = "uid", referencedColumnName = "uid")

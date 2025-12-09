@@ -13,7 +13,7 @@
     <!-- Create Goal Form -->
     <h:form id="goalForm">
         <h2>Create New Goal</h2>
-
+        
         <p:panelGrid columns="2" style="width:50%">
             <p:outputLabel value="Goal Name:" />
             <p:inputText value="#{goalBean.goalName}" required="true"/>
@@ -30,7 +30,8 @@
                          update=":goalTableForm:goalTable :goalForm:goalMessages"
                          style="margin-top:10px"/>
 
-        <p:messages id="goalMessages" />
+       <p:growl id="goalMessages" showDetail="true" life="3000"/>
+
     </h:form>
 
 
@@ -38,6 +39,8 @@
     <h2>My Goals</h2>
 
     <h:form id="goalTableForm">
+        <p:growl id="goalMessages" showDetail="true" life="3000"/>
+
         <p:dataTable id="goalTable" value="#{goalBean.goalList}" var="g" style="width:100%">
             <p:column headerText="Goal Name">
                 #{g.goalName}
@@ -51,21 +54,38 @@
                 ₹ #{g.currentAmt}
             </p:column>
 
+
             <p:column headerText="Progress">
-                <p:progressBar value="#{goalBean.calculateProgress(g)}" labelTemplate="{value}%"/>
+                <p:progressBar 
+                    value="#{goalBean.calculateProgress(g)}"
+                    displayOnly="true"
+                    labelTemplate="{value}%"
+                />
+
+                <h:outputText 
+                    value="Completed" 
+                    rendered="#{goalBean.calculateProgress(g) == 100}"
+                    style="font-weight:bold;color:green;margin-left:10px"
+                />
             </p:column>
+
+
 
             <p:column headerText="Target Date">
                 #{g.targetDate}
             </p:column>
+                 <p:column headerText="Add Money">
+                    <p:inputText value="#{goalBean.updateAmounts[g.goalId]}" style="width:70px"/>
 
-            <p:column headerText="Add Money">
-                <p:inputText value="#{goalBean.updateAmounts[g.goalId]}" style="width:70px"/>
-                <p:commandButton value="Add"
-                 action="#{goalBean.updateProgress(g.goalId)}"
-                 update=":goalTableForm:goalTable :goalTableForm:goalMessages"
-                 oncomplete="$(this).prev().val('')"/>
-            </p:column>
+                    <p:commandButton value="Add"
+                        action="#{goalBean.updateProgress(g.goalId)}"
+                        update=":goalTableForm :goalForm"
+                        disabled="#{goalBean.calculateProgress(g) == 100}" />
+
+                </p:column>
+
+
+            
         </p:dataTable>
     </h:form>
 

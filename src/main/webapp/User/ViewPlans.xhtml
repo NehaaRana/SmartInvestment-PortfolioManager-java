@@ -101,7 +101,9 @@
 
 <h:body>
     <ui:include src="/Navbar.xhtml"/>
-
+      
+    <p:growl id="globalMsg" showDetail="true" sticky="false" life="4000"/>
+    
     <!-- PAGE TITLE -->
     <h2 class="page-title">Our SIP Plans</h2>
     <div class="page-sub">
@@ -207,10 +209,11 @@
 
         </p:panelGrid>
 
-        <p:commandButton value="Place Order"
+
+            <p:commandButton value="Place Order"
                          action="#{orderBean.placeOrder}"
-                         update="@form :viewPlansForm:planGrid"
-                         oncomplete="PF('orderModal').hide()"/>
+                         update="globalMsg :viewPlansForm:planGrid"
+                         oncomplete="PF('orderModal').hide()" />
     </h:form>
 </p:dialog>
 

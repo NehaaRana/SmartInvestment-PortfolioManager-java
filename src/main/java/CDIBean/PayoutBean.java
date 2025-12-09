@@ -14,6 +14,7 @@ import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.inject.Inject;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Collection;
 import record.keepRecord;
 
@@ -31,6 +32,15 @@ public class PayoutBean implements Serializable {
     private UserClient userClient; 
     private Collection<Payouts> payoutList;      // ADMIN — All payouts
     private Collection<Payouts> userPayoutList;  // USER — Logged-in user's payouts
+    private BigDecimal totalReturns = BigDecimal.ZERO;
+
+    public BigDecimal getTotalReturns() {
+        return totalReturns;
+    }
+
+    public void setTotalReturns(BigDecimal totalReturns) {
+        this.totalReturns = totalReturns;
+    }
 
     public Collection<Payouts> getUserPayoutList() {
         return userPayoutList;
@@ -82,7 +92,7 @@ public class PayoutBean implements Serializable {
                 new FacesMessage("Error loading payouts: " + e.getMessage()));
         }
     }
-       // USER — Load payouts for logged-in user
+    
      // ------------------------------
     // USER — Load payouts for logged-in user
     // ------------------------------
@@ -92,6 +102,17 @@ public class PayoutBean implements Serializable {
                 new jakarta.ws.rs.core.GenericType<Collection<Payouts>>() {},
                 String.valueOf(uid)
             );
+            
+            // Calculate total return
+            totalReturns = BigDecimal.ZERO;
+            if (userPayoutList != null) {
+                for (Payouts p : userPayoutList) {
+                    if (p.getAmount() != null) {  // assuming Payouts has getAmount()
+                        totalReturns = totalReturns.add(p.getAmount());
+                    }
+                }
+            }
+            
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null,
                 new FacesMessage("Error loading user payouts: " + e.getMessage()));

@@ -43,6 +43,7 @@
 
 <h:body>
     <ui:include src="/Navbar.xhtml"/>
+    <p:growl id="globalMsg" showDetail="true" life="3000" />
 
  <!-- FIXED TOP NAVBAR -->
 <!--<div class="topbar"
@@ -97,10 +98,7 @@
     #{p.units}
 </h:column>
 
-<h:column>
-    <f:facet name="header">Avg Price</f:facet>
-    ₹ #{p.avgPrice}
-</h:column>
+
 
 <h:column>
     <f:facet name="header">Current Price</f:facet>
@@ -109,11 +107,12 @@
 
 <h:column>
     <f:facet name="header">Current Value</f:facet>
-    ₹ #{p.units * p.aid.currentPrice}
-    <br/>
-    <span class="#{(p.units * p.aid.currentPrice) gt (p.units * p.avgPrice) ? 'value-up' : 'value-down'}">
-        #{(p.units * p.aid.currentPrice) gt (p.units * p.avgPrice) ? '▲ Gain' : '▼ Loss'}
-    </span>
+         ₹ #{portfolioBean.calculateCurrentValue(p)}
+         <br/><br/>
+
+    <p:tag 
+        value="#{portfolioBean.inProfit(p) ? 'Profit' : 'Loss'}"
+        severity="#{portfolioBean.inProfit(p) ? 'success' : 'danger'}" />
 </h:column>
 
 <h:column>
@@ -168,7 +167,7 @@
 
         <p:commandButton value="Confirm Redemption"
                          action="#{portfolioBean.submitRedemption}"
-                         update="@form :portfolioForm"
+                         update="@form :globalMsg"
                          oncomplete="PF('redeemModal').hide()"
                          styleClass="p-button-success"/>
     </h:form>

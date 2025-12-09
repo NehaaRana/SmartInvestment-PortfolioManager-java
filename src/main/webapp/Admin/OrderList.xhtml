@@ -131,24 +131,7 @@
 
                     <h:column>
                         <f:facet name="header">Actions</f:facet>
-
                            
-                            <h:commandButton value="Approve" action="#{orderManagedBean.updateStatus}"
-                                        styleClass="btn"
-                                        rendered="#{o.status ne 'COMPLETED'}"
-                                        onclick="return confirm('Approve this order?');">
-                                <f:setPropertyActionListener target="#{orderManagedBean.selectedOrderId}" value="#{o.oid}" />
-                                <f:setPropertyActionListener target="#{orderManagedBean.newStatus}" value="COMPLETED" />
-                            </h:commandButton>
-
-
-                            <h:commandButton value="Cancel" action="#{orderManagedBean.updateStatus}"
-                                            styleClass="btn delete"
-                                            rendered="#{o.status ne 'CANCELLED'}"
-                                            onclick="return confirm('Cancel this order?');">
-                               <f:setPropertyActionListener target="#{orderManagedBean.selectedOrderId}" value="#{o.oid}" />
-                               <f:setPropertyActionListener target="#{orderManagedBean.newStatus}" value="CANCELLED" />
-                            </h:commandButton>
 
 
 

@@ -121,11 +121,14 @@ public class OrderBean implements Serializable {
 //                    keepRecord.getToken()
             );
             FacesContext.getCurrentInstance().addMessage(null,
-                new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Order placed successfully ✔"));
-            
+                new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Order placed successfully"));
+                
             loadUserOrders();
             
             System.out.println("Order placed successfully!");
+            // Redirect to orders.xhtml
+            FacesContext.getCurrentInstance().getExternalContext().redirect("Orders.jsf");
+
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null,
                 new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Failed to place order ❌"));

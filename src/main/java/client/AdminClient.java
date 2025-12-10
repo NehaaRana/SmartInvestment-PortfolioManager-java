@@ -244,11 +244,21 @@ public class AdminClient {
 //        return resource.request(jakarta.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
 //    }
 
+//    public Collection<Assets> getAllAssets() {
+//        WebTarget resource = webTarget.path("getAllAssets");
+//        return resource.request(MediaType.APPLICATION_JSON)
+//                       .get(new GenericType<Collection<Assets>>() {});
+//    }
+    
     public Collection<Assets> getAllAssets() {
+
         WebTarget resource = webTarget.path("getAllAssets");
+
         return resource.request(MediaType.APPLICATION_JSON)
-                       .get(new GenericType<Collection<Assets>>() {});
+                .header("Cache-Control", "no-cache, no-store")
+                .get(new GenericType<Collection<Assets>>() {});
     }
+
 
     public <T> T findAssetById(Class<T> responseType, String aid) throws ClientErrorException {
         WebTarget resource = webTarget;

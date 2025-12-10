@@ -33,6 +33,12 @@ public class PriceUpdaterService {
     // Runs every 1 minute
     @Schedule(hour="*", minute="*/1", persistent=false)
     public void updatePrices() {
+        
+         System.out.println("🔥 Scheduler running...");
+
+        // ✅ FORCE DB SYNC BEFORE READ
+        em.flush();
+        em.clear();
         List<Object[]> list = em.createNativeQuery(
             "SELECT aid, current_price, type FROM assets"
         ).getResultList();
@@ -50,13 +56,18 @@ public class PriceUpdaterService {
              .setParameter(2, aid)
              .executeUpdate();
         }
+        
+        //✅ FORCE DB WRITE
+        em.flush();
+        em.clear();
 
         // After price update, update portfolio value
         em.createNativeQuery(
             "UPDATE portfolio p JOIN assets a ON p.aid=a.aid " +
             "SET p.current_value = p.units * a.current_price"
         ).executeUpdate();
-
+        // ✅ HARD JPA CACHE RESET
+         em.getEntityManagerFactory().getCache().evictAll();
         System.out.println("✅ Asset prices auto updated.");
     }
 

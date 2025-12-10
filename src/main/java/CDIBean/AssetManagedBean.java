@@ -7,11 +7,10 @@ package CDIBean;
 import Entity.Assets;
 import client.AdminClient;
 import jakarta.annotation.PostConstruct;
-import jakarta.faces.context.ExternalContext;
 import jakarta.faces.context.FacesContext;
+import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;
 //import jakarta.faces.view.ViewScoped;
-import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.servlet.http.Part;
 import java.io.File;
@@ -31,7 +30,6 @@ import record.keepRecord;
  * @author Admin
  */
 @Named(value = "assetManagedBean")
-//@RequestScoped
 @ViewScoped
 public class AssetManagedBean implements Serializable {
     
@@ -239,39 +237,57 @@ public class AssetManagedBean implements Serializable {
     
    
 
+//    public void loadAssets() {
+//        try {
+//            System.out.println("=== Loading Assets ===");
+//
+//            AdminClient ac = new AdminClient(keepRecord.getToken());
+//
+//            assetsList = ac.getAllAssets();
+//            // Backup full list for searching
+//            originalList = new ArrayList<>(assetsList);
+//            System.out.println("Loaded " + assetsList.size() + " assets");
+//
+//        } catch (Exception e) {
+//            System.out.println("Error in loadAssets(): " + e.getMessage());
+//            e.printStackTrace();
+//        }finally {
+//            if (ac != null) ac.close();   // ✅ VERY IMPORTANT
+//        }
+//    }
+    
     public void loadAssets() {
+        
+        System.out.println("🔥 POLL TRIGGERED loadAssets()");
+
+        AdminClient ac = null;   // ✅ Declare first
+
         try {
             System.out.println("=== Loading Assets ===");
 
-            AdminClient ac = new AdminClient(keepRecord.getToken());
+            ac = new AdminClient(keepRecord.getToken());
 
             assetsList = ac.getAllAssets();
-            // Backup full list for searching
             originalList = new ArrayList<>(assetsList);
-            System.out.println("Loaded " + assetsList.size() + " assets");
 
+            System.out.println("Loaded " + assetsList.size() + " assets");
+            for (Assets a : assetsList) {
+                System.out.println(">> PRICE: " + a.getName() + " = " + a.getCurrentPrice());
+            }
         } catch (Exception e) {
             System.out.println("Error in loadAssets(): " + e.getMessage());
             e.printStackTrace();
+        } finally {
+            if (ac != null) {
+                ac.close();    // ✅ Now this works
+            }
         }
     }
+
 
     
     
     public Collection<Assets> getAssetsList() {
-          // Always reload from database when poll runs
-        loadAssets();
-         // Apply search filter AFTER reload if any
-            if (searchKeyword != null && !searchKeyword.trim().isEmpty()) {
-
-                String key = searchKeyword.toLowerCase();
-
-                return assetsList.stream()
-                        .filter(a -> a.getName().toLowerCase().contains(key)
-                                  || a.getType().toLowerCase().contains(key)
-                                  || String.valueOf(a.getAid()).contains(key))
-                        .collect(Collectors.toList());
-            }
 
         return assetsList;
     }

@@ -79,85 +79,85 @@
                 </h:inputText>
             </h:panelGroup>
             
-            <p:poll interval="60" update="assetPanel" />
+            <p:poll interval="60" listener="#{assetManagedBean.loadAssets}" update="assetPanel" />
 
             <h:panelGroup id="assetPanel">
 
-            <!-- ASSET TABLE -->
-            <h:dataTable id="assetTable"
-                         value="#{assetManagedBean.assetsList}"
-                         var="asset"
-                         styleClass="assetTable">
+                <!-- ASSET TABLE -->
+                <h:dataTable id="assetTable"
+                             value="#{assetManagedBean.assetsList}"
+                             var="asset"
+                             styleClass="assetTable">
 
-                <!-- ID -->
-                <h:column>
-                    <f:facet name="header">ID</f:facet>
-                    #{asset.aid}
-                </h:column>
+                    <!-- ID -->
+                    <h:column>
+                        <f:facet name="header">ID</f:facet>
+                        #{asset.aid}
+                    </h:column>
 
-                <!-- IMAGE -->
-                <h:column>
-                    <f:facet name="header">Image</f:facet>
-                    <h:graphicImage library="assets"
-                                    name="#{asset.symbol}"
-                                    width="60"
-                                    height="60"/>
-                </h:column>
+                    <!-- IMAGE -->
+                    <h:column>
+                        <f:facet name="header">Image</f:facet>
+                        <h:graphicImage library="assets"
+                                        name="#{asset.symbol}"
+                                        width="60"
+                                        height="60"/>
+                    </h:column>
 
-                <!-- NAME -->
-                <h:column>
-                    <f:facet name="header">Name</f:facet>
-                    #{asset.name}
-                </h:column>
+                    <!-- NAME -->
+                    <h:column>
+                        <f:facet name="header">Name</f:facet>
+                        #{asset.name}
+                    </h:column>
 
-                <!-- TYPE -->
-                <h:column>
-                    <f:facet name="header">Type</f:facet>
-                    #{asset.type}
-                </h:column>
+                    <!-- TYPE -->
+                    <h:column>
+                        <f:facet name="header">Type</f:facet>
+                        #{asset.type}
+                    </h:column>
 
-                <!-- PRICE -->
-                <h:column>
-                    <f:facet name="header">Price</f:facet>
-                    #{asset.currentPrice}
-                </h:column>
+                    <!-- PRICE -->
+                    <h:column>
+                        <f:facet name="header">Price</f:facet>
+                        #{asset.currentPrice}
+                    </h:column>
 
-                <!-- STATUS -->
-                <h:column>
-                    <f:facet name="header">Status</f:facet>
-                    #{asset.status}
-                </h:column>
+                    <!-- STATUS -->
+                    <h:column>
+                        <f:facet name="header">Status</f:facet>
+                        #{asset.status}
+                    </h:column>
 
-                <!-- RISK -->
-                <h:column>
-                    <f:facet name="header">Risk</f:facet>
-                    #{asset.risk}
-                </h:column>
+                    <!-- RISK -->
+                    <h:column>
+                        <f:facet name="header">Risk</f:facet>
+                        #{asset.risk}
+                    </h:column>
 
-                <!-- CREATED AT -->
-                <h:column>
-                    <f:facet name="header">Created</f:facet>
-                    <h:outputText value="#{asset.createdAt}">
-                        <f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"/>
-                    </h:outputText>
-                </h:column>
+                    <!-- CREATED AT -->
+                    <h:column>
+                        <f:facet name="header">Created</f:facet>
+                        <h:outputText value="#{asset.createdAt}">
+                            <f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"/>
+                        </h:outputText>
+                    </h:column>
 
-                <!-- ACTIONS -->
-                <h:column>
-                    <f:facet name="header">Action</f:facet>
+                    <!-- ACTIONS -->
+                    <h:column>
+                        <f:facet name="header">Action</f:facet>
 
-                    <h:commandButton value="Update"
-                                     action="#{assetManagedBean.edit(asset.aid)}"
-                                     styleClass="btn"/>
+                        <h:commandButton value="Update"
+                                         action="#{assetManagedBean.edit(asset.aid)}"
+                                         styleClass="btn"/>
 
-                    <h:commandButton value="Delete"
-                                     action="#{assetManagedBean.deleteAsset(asset.aid)}"
-                                     onclick="return confirm('Are you sure you want to delete this asset?');"
-                                     styleClass="btn delete"/>
+                        <h:commandButton value="Delete"
+                                         action="#{assetManagedBean.deleteAsset(asset.aid)}"
+                                         onclick="return confirm('Are you sure you want to delete this asset?');"
+                                         styleClass="btn delete"/>
 
-                </h:column>
+                    </h:column>
 
-            </h:dataTable>
+                </h:dataTable>
             </h:panelGroup>
 
         </h:form>

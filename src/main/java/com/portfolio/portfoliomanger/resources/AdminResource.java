@@ -25,6 +25,7 @@ import jakarta.enterprise.context.RequestScoped;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.core.Response;
 import java.math.BigDecimal;
 import java.util.Collection;
 
@@ -132,13 +133,29 @@ public class AdminResource {
         abl.updateAssetStatus(aid, status);
     }
 
+//    @RolesAllowed("ADMIN")
+//    @GET
+//    @Path("getAllAssets")
+//    @Produces("application/json")
+//    public Collection<Assets> getAllAssets() {
+//        return abl.getAllAssets();
+//    }
+    
     @RolesAllowed("ADMIN")
     @GET
     @Path("getAllAssets")
     @Produces("application/json")
-    public Collection<Assets> getAllAssets() {
-        return abl.getAllAssets();
+    public Response getAllAssets() {
+
+        Collection<Assets> list = abl.getAllAssets();
+
+        return Response.ok(list)
+            .header("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0")
+            .header("Pragma", "no-cache")
+            .header("Expires", "0")
+            .build();
     }
+
     
     
     @GET

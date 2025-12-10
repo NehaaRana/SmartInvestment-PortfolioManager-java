@@ -127,7 +127,12 @@ public class AdminBean implements AdminBeanLocal {
     @RolesAllowed("ADMIN")
     public Collection<Assets> getAllAssets() {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-          return em.createNamedQuery("Assets.findAll").getResultList();
+        em.flush();   // ✅ push pending changes
+
+        em.clear();  
+        em.getEntityManagerFactory().getCache().evictAll();  // ✅ remove all JPA cache
+
+        return em.createNamedQuery("Assets.findAll").getResultList();
     }
 
     @Override

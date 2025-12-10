@@ -111,6 +111,36 @@ public class PortfolioBean implements Serializable{
             e.printStackTrace();
         }
     }
+    
+    
+    public void loadPortfolio() {
+
+        try {
+            System.out.println("🔥 POLL TRIGGERED: reloading portfolio");
+
+            UserClient client = new UserClient(keepRecord.getToken());
+            String uid = keepRecord.getUid();
+
+            Portfolio[] pfArray = client.getUserPortfolio(Portfolio[].class, uid);
+            portfolioList = new ArrayList<>();
+
+            if (pfArray != null) {
+                for (Portfolio p : pfArray) {
+                    portfolioList.add(p);
+                }
+            }
+
+            // also refresh redemptions (for pending reset)
+            redemptionList = client.getUserRedemptions(
+                    new jakarta.ws.rs.core.GenericType<List<Redemptions>>() {}, uid
+            );
+
+            client.close();   // ✅ VERY IMPORTANT
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     
     

@@ -111,6 +111,13 @@
     </div>
     
    <h:form id="viewPlansForm">
+       <p:poll interval="10"
+            listener="#{assetManagedBean.loadAssetsForPlans}"
+            update="planGrid"
+            autoStart="true"
+            async="true"
+            global="false" />
+
     <!-- SEARCH BAR -->
      <div style="text-align:center; margin-bottom:20px;">
          <h:inputText value="#{assetManagedBean.searchKeyword}" 

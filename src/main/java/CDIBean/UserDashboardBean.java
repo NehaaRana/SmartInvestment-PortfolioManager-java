@@ -5,7 +5,6 @@
 package CDIBean;
 
 import Entity.Orders;
-import Entity.Payouts;
 import Entity.Portfolio;
 import Entity.Users;
 import client.UserClient;
@@ -17,10 +16,14 @@ import jakarta.inject.Inject;
 import jakarta.servlet.http.HttpSession;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import org.primefaces.model.charts.ChartData;
+import org.primefaces.model.charts.line.LineChartDataSet;
+import org.primefaces.model.charts.line.LineChartModel;
 import record.keepRecord;
 
 /**
@@ -54,6 +57,19 @@ public class UserDashboardBean implements  Serializable{
     private BigDecimal todayChange = BigDecimal.ZERO;
     private long completedOrders;
     private BigDecimal totalInvested;
+    private LineChartModel portfolioChart;
+
+    public LineChartModel getPortfolioChart() {
+        if (portfolioChart == null) {   // <-- FIX: Lazy initialize if null
+            createPortfolioChart();
+        }
+        return portfolioChart;
+    }
+
+    public void setPortfolioChart(LineChartModel portfolioChart) {
+        this.portfolioChart = portfolioChart;
+    }
+
 
     public BigDecimal getTotalInvested() {
         return totalInvested;
@@ -75,7 +91,7 @@ public class UserDashboardBean implements  Serializable{
     public BigDecimal getTotalPortfolioValue() {
         return totalPortfolioValue;
     }
-
+    
     public void setTotalPortfolioValue(BigDecimal totalPortfolioValue) {
         this.totalPortfolioValue = totalPortfolioValue;
     }
@@ -167,7 +183,7 @@ public class UserDashboardBean implements  Serializable{
             this.profile = u;
 
             calculateDashboard(); // <-- calculate totals from portfolioBean
-            
+            createPortfolioChart(); 
             
             if (keepRecord.getUid() != null) {
                 int uidInt = Integer.parseInt(keepRecord.getUid());
@@ -412,18 +428,98 @@ public class UserDashboardBean implements  Serializable{
     }
 
 
+    public void createPortfolioChart() {
+
+        portfolioChart = new LineChartModel();
+        ChartData data = new ChartData();
+
+        // DataSets for 4 lines
+        LineChartDataSet valueDataSet = new LineChartDataSet();        // Portfolio Value
+        LineChartDataSet profitDataSet = new LineChartDataSet();       // Profit/Loss
+        LineChartDataSet investedDataSet = new LineChartDataSet();     // Total Invested
+        LineChartDataSet percentDataSet = new LineChartDataSet();      // Percentage Return
+
+        valueDataSet.setLabel("Portfolio Value");
+        profitDataSet.setLabel("Profit / Loss");
+        investedDataSet.setLabel("Total Invested");
+        percentDataSet.setLabel("Percentage Return (%)");
+
+        List<Object> valueList = new ArrayList<>();
+        List<Object> profitList = new ArrayList<>();
+        List<Object> investedList = new ArrayList<>();
+        List<Object> percentList = new ArrayList<>();
+        List<String> labels = new ArrayList<>();
+
+        try {
+            List<Portfolio> list = portfolioBean.getPortfolioList();
+            if (list == null) list = new ArrayList<>();
+
+            for (Portfolio p : list) {
+
+                BigDecimal units = p.getUnits();
+                BigDecimal currentPrice = p.getAid().getCurrentPrice();
+                BigDecimal avgPrice = p.getAvgPrice();
+
+                // Calculations
+                BigDecimal currentValue = units.multiply(currentPrice);
+                BigDecimal invested = units.multiply(avgPrice);
+                BigDecimal profitLoss = currentValue.subtract(invested);
+
+                BigDecimal percentReturn = BigDecimal.ZERO;
+                if (invested.compareTo(BigDecimal.ZERO) > 0) {
+                    percentReturn = profitLoss
+                            .multiply(BigDecimal.valueOf(100))
+                            .divide(invested, 2, RoundingMode.HALF_UP);
+                }
+
+                // Add data
+                valueList.add(currentValue);
+                profitList.add(profitLoss);
+                investedList.add(invested);
+                percentList.add(percentReturn);
+
+                labels.add(p.getAid().getName());
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // Styling the lines
+        valueDataSet.setData(valueList);
+        valueDataSet.setFill(false);
+        valueDataSet.setBorderColor("rgb(75, 192, 192)");    // Blue
+        valueDataSet.setTension(0.3);
+
+        profitDataSet.setData(profitList);
+        profitDataSet.setFill(false);
+        profitDataSet.setBorderColor("rgb(255, 99, 132)");   // Red
+        profitDataSet.setTension(0.3);
+
+        investedDataSet.setData(investedList);
+        investedDataSet.setFill(false);
+        investedDataSet.setBorderColor("rgb(255, 206, 86)"); // Yellow
+        investedDataSet.setTension(0.3);
+
+        percentDataSet.setData(percentList);
+        percentDataSet.setFill(false);
+        percentDataSet.setBorderColor("rgb(54, 162, 235)");  // Dark Blue
+        percentDataSet.setTension(0.3);
+
+        // Add datasets to chart
+        data.addChartDataSet(valueDataSet);
+        data.addChartDataSet(profitDataSet);
+        data.addChartDataSet(investedDataSet);
+        data.addChartDataSet(percentDataSet);
+
+        data.setLabels(labels);
+
+        portfolioChart.setData(data);
+    }
+
+
+
     
-    
-//    public void loadDashboardData() {
-//        String uid = keepRecord.getUid();
-//
-//        profile = userClient.getProfile(Object.class, uid);
-//        portfolio = userClient.getUserPortfolio(Object.class, uid);
-//        goals = userClient.getUserGoals(Object.class, uid);
-//        orders = userClient.getUserOrders(Object[].class, uid);
-//        payments = userClient.getUserPayments(Object.class, uid);
-//        transactions = userClient.getUserTransactions(Object.class, uid);
-//    }
     
     public Object getProfile() {
         return profile;

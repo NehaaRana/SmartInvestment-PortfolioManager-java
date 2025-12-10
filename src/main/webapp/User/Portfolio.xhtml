@@ -97,6 +97,9 @@
                 <h:column>
                     <f:facet name="header">Units</f:facet>
                     #{p.units}
+                   <h:outputText value="(#{portfolioBean.pendingRedemptionUnits(p)} pending)" 
+              rendered="#{portfolioBean.hasPendingUnits(p)}" />
+
                 </h:column>
 
                 <h:column>
@@ -120,6 +123,11 @@
                 <!--    <p:tag 
                         value="#{portfolioBean.inProfit(p) ? 'Profit' : 'Loss'}"
                         severity="#{portfolioBean.inProfit(p) ? 'success' : 'danger'}" />-->
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Pending Redemption</f:facet>
+                    <h:outputText value="#{portfolioBean.pendingRedemptionUnits(p)}" />
                 </h:column>
 
                 <h:column>
@@ -175,7 +183,7 @@
 
         <p:commandButton value="Confirm Redemption"
                          action="#{portfolioBean.submitRedemption}"
-                         update="@form :globalMsg"
+                         update="@form :globalMsg :portfolioForm"
                          oncomplete="PF('redeemModal').hide()"
                          styleClass="p-button-success"/>
     </h:form>

@@ -6,6 +6,7 @@ package CDIBean;
 
 import Entity.Orders;
 import Entity.Portfolio;
+import Entity.Redemptions;
 import client.UserClient;
 import jakarta.annotation.PostConstruct;
 import jakarta.inject.Named;
@@ -14,6 +15,7 @@ import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
+import jakarta.ws.rs.core.GenericType;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -50,6 +52,7 @@ public class PortfolioBean implements Serializable{
     private String redemUnits;
     private Portfolio selectedPortfolio;
 
+    private List<Redemptions> redemptionList;
     public Portfolio getSelectedPortfolio() {
         return selectedPortfolio;
     }
@@ -67,16 +70,32 @@ public class PortfolioBean implements Serializable{
         try {
             UserClient client = new UserClient(keepRecord.getToken());
             String uid = keepRecord.getUid();
-
+            redemptionList = client.getUserRedemptions(new jakarta.ws.rs.core.GenericType<List<Redemptions>>() {}, uid);
+                    
             Orders[] orderArray = client.getUserOrders(Orders[].class, uid);
             Portfolio[] pfArray = client.getUserPortfolio(Portfolio[].class, uid);
 
             portfolioOrders = new ArrayList<>();
             if (orderArray != null) {
-                for (Orders o : orderArray) {
-                    if ("PAID".equalsIgnoreCase(o.getStatus())) {   // show only purchased orders
-                        portfolioOrders.add(o);
+                System.out.println("========= USER ORDERS =========");
+                    for (Orders o : orderArray) {
+                        System.out.println("OrderType: " + o.getOrderType()
+                                + " | Status: " + o.getStatus()
+                                + " | Units: " + o.getUnits()
+                                + " | Asset: " + o.getAid().getAid());
                     }
+                    System.out.println("===============================");
+
+                for (Orders o : orderArray) {
+//                    if ("PAID".equalsIgnoreCase(o.getStatus())) {   // show only purchased orders
+//                        portfolioOrders.add(o);
+//                    }
+                        if ("PAID".equalsIgnoreCase(o.getStatus()) 
+                            || ("REDEMPTION".equalsIgnoreCase(o.getOrderType()) 
+                                && "PENDING".equalsIgnoreCase(o.getStatus()))) {
+
+                            portfolioOrders.add(o);
+                        }
                 }
             }
             
@@ -148,6 +167,28 @@ public class PortfolioBean implements Serializable{
                     "PENDING"
             );
 
+            // 🔥 REFRESH ORDERS AFTER REDEMPTION
+        Orders[] orderArray = client.getUserOrders(Orders[].class, keepRecord.getUid());
+        portfolioOrders = new ArrayList<>();
+        if (orderArray != null) {
+            System.out.println("========= REFETCH AFTER REDEMPTION =========");
+            for (Orders o : orderArray) {
+                System.out.println("OrderType: " + o.getOrderType()
+                        + " | Status: " + o.getStatus()
+                        + " | Units: " + o.getUnits()
+                        + " | Asset: " + o.getAid().getAid());
+            }
+            System.out.println("=============================================");
+
+            for (Orders o : orderArray) {
+                if ("PAID".equalsIgnoreCase(o.getStatus())
+                        || ("REDEMPTION".equalsIgnoreCase(o.getOrderType())
+                        && "PENDING".equalsIgnoreCase(o.getStatus()))) {
+
+                    portfolioOrders.add(o);
+                }
+            }
+        }
             FacesContext.getCurrentInstance().addMessage(null,
                 new FacesMessage("Redemption request submitted successfully!")
             );
@@ -163,6 +204,60 @@ public class PortfolioBean implements Serializable{
         BigDecimal currentVal = p.getUnits().multiply(p.getAid().getCurrentPrice());
         return currentVal.subtract(invested);   // Can be +ve or -ve
     }
+
+    // Returns number of units pending redemption for a portfolio item
+//    public BigDecimal pendingRedemptionUnits(Portfolio p) {
+//        if (portfolioOrders == null || portfolioOrders.isEmpty()) {
+//            return BigDecimal.ZERO;
+//        }
+//
+//        BigDecimal pendingUnits = BigDecimal.ZERO;
+//
+//        for (Orders o : portfolioOrders) {
+//            // Check if order is a redemption and status is pending
+//            if ("REDEMPTION".equalsIgnoreCase(o.getOrderType()) &&
+//                "PENDING".equalsIgnoreCase(o.getStatus()) &&
+//                o.getAid().getAid().equals(p.getAid().getAid())) {
+//
+//                pendingUnits = pendingUnits.add(o.getUnits());
+//            }
+//        }
+//
+//        return pendingUnits;
+//    }
+    /**
+ * Returns the number of units currently pending redemption for a given portfolio item.
+ * Handles Long, Integer, BigDecimal, and other numeric types safely.
+ */
+    
+    public boolean hasPendingUnits(Portfolio p) {
+    return pendingRedemptionUnits(p).compareTo(BigDecimal.ZERO) > 0;
+}
+
+public BigDecimal pendingRedemptionUnits(Portfolio p) {
+    if (redemptionList == null) {
+        return BigDecimal.ZERO;
+    }
+
+    return redemptionList.stream()
+            .filter(r->r.getAid().getAid() == p.getAid().getAid())
+            .filter(r->r.getStatus().equalsIgnoreCase("PENDING"))
+            .map(Redemptions::getUnits)
+            .reduce(BigDecimal.ZERO, BigDecimal::add);
+            
+}
+
+    public List<Redemptions> getRedemptionList() {
+        return redemptionList;
+    }
+
+    public void setRedemptionList(List<Redemptions> redemptionList) {
+        this.redemptionList = redemptionList;
+    }
+
+
+
+    
 
     public void setRedemUnits(String redemUnits) {
         this.redemUnits = redemUnits;

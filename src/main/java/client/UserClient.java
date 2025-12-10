@@ -177,7 +177,7 @@ public class UserClient {
     }
 
 
-    public <T> T getUserRedemptions(Class<T> responseType, String uid) throws ClientErrorException {
+    public <T> T getUserRedemptions(jakarta.ws.rs.core.GenericType<T> responseType, String uid) throws ClientErrorException {
         WebTarget resource = webTarget;
         resource = resource.path(java.text.MessageFormat.format("getUserRedemptions/{0}", new Object[]{uid}));
         return resource.request(jakarta.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);

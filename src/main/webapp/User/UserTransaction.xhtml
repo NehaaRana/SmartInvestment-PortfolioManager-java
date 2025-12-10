@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="jakarta.faces.core">
+
+<h:head>
+    <title>Transactions</title>
+</h:head>
+
+<h:body>
+   <h:form>
+    <h2 style="text-align:center">My Transactions</h2>
+
+    <!-- BUY Orders -->
+    <h3>Buy Orders</h3>
+    <p:dataTable value="#{orderHistoryBean.ordersList}" var="o" paginator="true" rows="5">
+
+        <p:column headerText="Order ID"> #{o.oid} </p:column>
+        <p:column headerText="Asset"> #{o.aid.name} </p:column>
+        <p:column headerText="Type"> BUY </p:column>
+        <p:column headerText="Units"> #{o.units} </p:column>
+        <p:column headerText="Amount"> ₹#{o.amount} </p:column>
+        <p:column headerText="Status"> #{o.status} </p:column>
+        <p:column headerText="Date"> #{o.createdAt} </p:column>
+    </p:dataTable>
+
+    <!-- SELL / Redemption Table -->
+    <h3 style="margin-top:30px">Sell / Redemption Orders</h3>
+    <p:dataTable value="#{orderHistoryBean.redemptionList}" var="r" paginator="true" rows="5">
+
+        <p:column headerText="Redemption ID"> #{r.rid} </p:column>
+        <p:column headerText="Asset"> #{r.aid.name} </p:column>
+        <p:column headerText="Type"> SELL </p:column>
+        <p:column headerText="Units"> #{r.units} </p:column>
+        <p:column headerText="Exit Fee"> ₹#{r.exitFeeAmt} </p:column>
+        <p:column headerText="Status"> #{r.status} </p:column>
+        <p:column headerText="Requested At"> #{r.requestedAt} </p:column>
+        <p:column headerText="Paid At"> #{r.paidAt} </p:column>
+
+    </p:dataTable>
+
+    <p:button value="Back" outcome="UserDashboard" />
+</h:form>
+
+</h:body>
+</html>

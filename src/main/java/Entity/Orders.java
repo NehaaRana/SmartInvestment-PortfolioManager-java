@@ -62,9 +62,9 @@ public class Orders implements Serializable {
     @Column(name = "order_type")
     private String orderType;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Column(name = "units")
+    @Column(name = "units", precision = 18, scale = 2)
     private BigDecimal units;
-    @Column(name = "amount")
+    @Column(name = "amount", precision = 18, scale = 2)
     private BigDecimal amount;
     @Size(max = 20)
     @Column(name = "status")

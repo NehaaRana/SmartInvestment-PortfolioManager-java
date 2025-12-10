@@ -259,6 +259,20 @@ public class AssetManagedBean implements Serializable {
     
     
     public Collection<Assets> getAssetsList() {
+          // Always reload from database when poll runs
+        loadAssets();
+         // Apply search filter AFTER reload if any
+            if (searchKeyword != null && !searchKeyword.trim().isEmpty()) {
+
+                String key = searchKeyword.toLowerCase();
+
+                return assetsList.stream()
+                        .filter(a -> a.getName().toLowerCase().contains(key)
+                                  || a.getType().toLowerCase().contains(key)
+                                  || String.valueOf(a.getAid()).contains(key))
+                        .collect(Collectors.toList());
+            }
+
         return assetsList;
     }
     

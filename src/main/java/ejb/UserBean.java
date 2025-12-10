@@ -443,7 +443,7 @@ public class UserBean implements UserBeanLocal {
                 g.setCurrentAmt(BigDecimal.ZERO);
             }
 
-            g.setCurrentAmt(g.getCurrentAmt().add(addAmt));   // ✅ ADD, don't replace
+            g.setCurrentAmt(g.getCurrentAmt().add(addAmt));   //  ADD, don't replace
             em.merge(g);
         }
     }

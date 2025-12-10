@@ -82,7 +82,13 @@
 
     <div class="portfolio-card">
         <h:form id="portfolioForm">
-
+             <!-- AUTO REFRESH PORTFOLIO -->
+            <p:poll interval="10"
+                    listener="#{portfolioBean.loadPortfolio}"
+                    update=":portfolioForm"
+                    autoStart="true"
+                    async="true"
+                    global="false" />
             <p:growl id="globalMsg" showDetail="true" life="3000" />
             <!-- Portfolio Table -->
             <h:dataTable value="#{portfolioBean.portfolioList}" var="p"

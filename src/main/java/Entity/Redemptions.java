@@ -19,6 +19,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import jakarta.persistence.Transient;
 import jakarta.validation.constraints.Size;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import jakarta.xml.bind.annotation.XmlTransient;
@@ -165,6 +166,14 @@ public class Redemptions implements Serializable {
 
     public void setUid(Users uid) {
         this.uid = uid;
+    }
+
+    @Transient
+    public BigDecimal getRedemptionAmount() {
+        if (this.units != null && this.aid != null && this.aid.getCurrentPrice()!= null) {
+            return this.units.multiply(this.aid.getCurrentPrice());
+        }
+        return BigDecimal.ZERO;
     }
 
     @Override

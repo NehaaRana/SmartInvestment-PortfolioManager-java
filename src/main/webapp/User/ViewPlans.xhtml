@@ -126,6 +126,9 @@
     <h:panelGroup id="planGrid" layout="block" styleClass="plan-grid">
         
         <ui:repeat value="#{assetManagedBean.assetsList}" var="asset">
+<!--            <p style="color:red; font-weight:bold;">
+                #{asset.status == 'INACTIVE' ? 'Currently Unavailable' : '' }
+            </p>-->
 
     <div class="plan-card">
 
@@ -175,12 +178,14 @@
         <!-- SINGLE Start Button -->
         <p:commandButton value="Start Now"
                          icon="pi pi-check"
+                         disabled="#{asset.status == 'INACTIVE'}"
                          rendered="#{empty keepRecord.uid}" 
                          action="/Login.xhtml"
                          styleClass="p-button-rounded p-button-primary btn-start"/>
 
         <p:commandButton value="Start Now"
                          icon="pi pi-check"
+                         disabled="#{asset.status == 'INACTIVE'}"
                          rendered="#{not empty keepRecord.uid}"
                          actionListener="#{orderBean.openOrderDialog(asset.aid)}"
                          oncomplete="PF('orderModal').show()"

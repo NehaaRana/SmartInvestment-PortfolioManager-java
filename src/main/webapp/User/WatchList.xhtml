@@ -7,33 +7,97 @@
       xmlns:p="http://primefaces.org/ui">
 <h:head>
     <title>My Watchlist</title>
+       <!-- Bootstrap -->
+    <link rel="stylesheet" 
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
+
     <style>
+        body {
+            background: #f0f2f5;
+            font-family: "Poppins", sans-serif;
+        }
+
+        .page-container {
+            margin-top: 90px;
+            margin-left: 260px;   /* space for sidebar */
+            padding: 25px;
+            transition: margin-left 0.3s;
+        }
+
+        .collapsed-main {
+            margin-left: 80px;
+        }
+
+        .page-title {
+            font-size: 26px;
+            font-weight: bold;
+            margin-bottom: 25px;
+            color: #333;
+        }
+
+        .watchlist-card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 14px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
         .watchlist-table {
             width: 100%;
             border-collapse: collapse;
         }
+
         .watchlist-table th, .watchlist-table td {
             padding: 12px;
-            border: 1px solid #ddd;
+            border-bottom: 1px solid #e0e0e0;
+            text-align: center;
         }
+
         .watchlist-table th {
-            background-color: #0b69ff;
-            color: white;
+            background-color: #eef1f5;
+            font-weight: 600;
         }
-        .empty-msg {
-            color: #555;
-            margin-top: 20px;
-            font-size: 16px;
-        }
+
         .remove-btn {
             background: #ef4444;
-            color: white;
+            color: white !important;
             border: none;
             padding: 6px 12px;
             border-radius: 4px;
-            cursor: pointer;
+        }
+
+        .empty-msg {
+            color: #777;
+            font-size: 18px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .asset-img {
+            border-radius: 5px;
+            width: 50px;
+            height: 50px;
         }
     </style>
+
+    <script>
+        function adjustContent() {
+            var sidebar = document.getElementById("sidebar");
+            var content = document.querySelector(".page-container");
+
+            if (sidebar) {
+                if (sidebar.classList.contains("collapsed")) {
+                    content.classList.add("collapsed-main");
+                } else {
+                    content.classList.remove("collapsed-main");
+                }
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            setInterval(adjustContent, 200);
+        });
+    </script>
 </h:head>
 <h:body>
 
@@ -41,7 +105,11 @@
     <ui:include src="/Navbar.xhtml" />
      <!-- =============== SIDEBAR INCLUDE =============== -->
     <ui:include src="/Sidebar.xhtml"/>
-    <h2>My Watchlist</h2>
+    
+       <!-- MAIN CONTENT AREA -->
+    <div class="page-container">
+
+      <div class="page-title">My Watchlist</div>
 
     <!-- Load watchlist before rendering -->
     <f:metadata>
@@ -81,6 +149,8 @@
         </h:panelGroup>
 
     </h:form>
+    
+    </div>>
 </h:body>
 </html>
 

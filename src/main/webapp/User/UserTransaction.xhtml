@@ -3,52 +3,158 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="jakarta.faces.html"
       xmlns:p="http://primefaces.org/ui"
+      xmlns:f="jakarta.faces.core"
       xmlns:ui="jakarta.faces.facelets">
 
 <h:head>
-    <title>Transactions</title>
+    <title>My Transaction History</title>
+
+    <style>
+        .asset-header {
+            background: #f4f6f9;
+            padding: 12px;
+            border-radius: 6px;
+            margin-top: 25px;
+            font-size: 20px;
+            font-weight: 600;
+            border-left: 5px solid #1976d2;
+        }
+
+        .type-badge {
+            background: #4caf50;
+            padding: 6px 14px;
+            color: white;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .type-badge-sell {
+            background: #f44336;
+            padding: 6px 14px;
+            color: white;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .table-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        .divider {
+            margin: 25px 0;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .export-buttons {
+            margin-bottom: 10px;
+        }
+
+        .export-buttons p\:commandButton {
+            margin-right: 8px;
+        }
+    </style>
+
 </h:head>
 
-<h:body>
-    
-    <!-- =============== NAVBAR INCLUDE =============== -->
-    <ui:include src="/Navbar.xhtml"/>
+<h:body> 
+    <h:form>
 
-    <!-- =============== SIDEBAR INCLUDE =============== -->
-    <ui:include src="/Sidebar.xhtml"/>
-   <h:form>
-    
-    <h2 style="text-align:center">My Transactions</h2>
+    <h1 style="text-align:center; font-weight:700; margin-bottom:20px;">
+        Transaction History (Asset-wise)
+    </h1>
 
-    <!-- BUY Orders -->
-    <h3>Buy Orders</h3>
-    <p:dataTable value="#{orderHistoryBean.ordersList}" var="o" paginator="true" rows="5">
+    <!-- Export Buttons -->
+    <div style="text-align:right; margin-bottom:10px;">
+        <p:commandButton value="Export Excel" icon="pi pi-file-excel" ajax="false">
+            <p:dataExporter type="xlsx" target="allTransTable" fileName="TransactionHistory" />
+        </p:commandButton>
 
-        <p:column headerText="Order ID"> #{o.oid} </p:column>
-        <p:column headerText="Asset"> #{o.aid.name} </p:column>
-        <p:column headerText="Type"> BUY </p:column>
-        <p:column headerText="Units"> #{o.units} </p:column>
-        <p:column headerText="Amount"> ₹#{o.amount} </p:column>
-        <p:column headerText="Status"> #{o.status} </p:column>
-        <p:column headerText="Date"> #{o.createdAt} </p:column>
+        <p:commandButton value="Export PDF" icon="pi pi-file-pdf" ajax="false">
+            <p:dataExporter type="pdf" target="allTransTable" fileName="TransactionHistory" />
+        </p:commandButton>
+    </div>
+
+    <!-- Master Table (for export) -->
+    <p:dataTable id="allTransTable" value="#{orderHistoryBean.allTransactions}" var="t"
+                 paginator="true" rows="10" styleClass="p-datatable-striped p-datatable-gridlines">
+
+        <p:column headerText="Asset"> #{t.assetName} </p:column>
+        <p:column headerText="Type"> #{t.type} </p:column>
+        <p:column headerText="Units"> #{t.units} </p:column>
+        <p:column headerText="Amount"> ₹#{t.amount} </p:column>
+        <p:column headerText="Status"> #{t.status} </p:column>
+        <p:column headerText="Date">
+            <h:outputText value="#{t.date}">
+                <f:convertDateTime pattern="dd MMM yyyy, HH:mm"/>
+            </h:outputText>
+        </p:column>
     </p:dataTable>
 
-    <!-- SELL / Redemption Table -->
-    <h3 style="margin-top:30px">Sell / Redemption Orders</h3>
-    <p:dataTable value="#{orderHistoryBean.redemptionList}" var="r" paginator="true" rows="5">
+    <!-- Original UI: asset-wise repeat tables -->
+    <ui:repeat value="#{orderHistoryBean.uniqueAssets}" var="asset" varStatus="loop">
 
-        <p:column headerText="Redemption ID"> #{r.rid} </p:column>
-        <p:column headerText="Asset"> #{r.aid.name} </p:column>
-        <p:column headerText="Type"> SELL </p:column>
-        <p:column headerText="Units"> #{r.units} </p:column>
-        <p:column headerText="Exit Fee"> ₹#{r.exitFeeAmt} </p:column>
-        <p:column headerText="Status"> #{r.status} </p:column>
-        <p:column headerText="Requested At"> #{r.requestedAt} </p:column>
-        <p:column headerText="Paid At"> #{r.paidAt} </p:column>
+        <div class="asset-header">#{asset}</div>
 
-    </p:dataTable>
+        <!-- BUY ORDERS TABLE -->
+        <h:panelGroup rendered="#{not empty orderHistoryBean.getOrdersByAsset(asset)}">
+            <div class="table-title">Buy Transactions</div>
+            <p:dataTable value="#{orderHistoryBean.getOrdersByAsset(asset)}" var="o"
+                         paginator="true" rows="5"
+                         styleClass="p-datatable-striped p-datatable-gridlines"
+                         style="margin-bottom:20px">
 
-    <p:button value="Back" outcome="UserDashboard" />
+                <p:column headerText="Type" style="width: 120px;">
+                    <span class="type-badge">BUY</span>
+                </p:column>
+                <p:column headerText="Units"> #{o.units} </p:column>
+                <p:column headerText="Amount"> ₹#{o.amount} </p:column>
+                <p:column headerText="Status"> #{o.status} </p:column>
+                <p:column headerText="Date">
+                    <h:outputText value="#{o.createdAt}">
+                        <f:convertDateTime pattern="dd MMM yyyy, HH:mm"/>
+                    </h:outputText>
+                </p:column>
+            </p:dataTable>
+        </h:panelGroup>
+
+        <!-- SELL TABLE -->
+        <h:panelGroup rendered="#{not empty orderHistoryBean.getRedemptionsByAsset(asset)}">
+            <div class="table-title">Sell (Redemption) Transactions</div>
+            <p:dataTable value="#{orderHistoryBean.getRedemptionsByAsset(asset)}" var="r"
+                         paginator="true" rows="5"
+                         styleClass="p-datatable-striped p-datatable-gridlines">
+
+                <p:column headerText="Type" style="width: 120px;">
+                    <span class="type-badge-sell">SELL</span>
+                </p:column>
+                <p:column headerText="Units"> #{r.units} </p:column>
+                <p:column headerText="Amount"> ₹#{r.redemptionAmount} </p:column>
+                <p:column headerText="Status"> #{r.status} </p:column>
+                <p:column headerText="Date">
+                    <h:outputText value="#{r.requestedAt}">
+                        <f:convertDateTime pattern="dd MMM yyyy, HH:mm"/>
+                    </h:outputText>
+                </p:column>
+            </p:dataTable>
+        </h:panelGroup>
+
+        <div class="divider"></div>
+
+    </ui:repeat>
+
+    <div style="text-align:center; margin-top:30px;">
+        <p:button value="Back to Dashboard"
+                  outcome="UserDashboard"
+                  style="padding:10px 20px; font-weight:600;" />
+    </div>
+
 </h:form>
 
 </h:body>

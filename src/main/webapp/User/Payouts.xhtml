@@ -105,6 +105,12 @@
                     <p:column headerText="Amount">
                         ₹ #{p.amount}
                     </p:column>
+                     <p:column headerText="Assets">
+                          #{p.rid.aid.name}
+                    </p:column>
+                     <p:column headerText="Units">
+                          #{p.rid.units}
+                    </p:column>
 
                     <p:column headerText="Status">
                         <span class="#{p.status.toUpperCase() eq 'COMPLETED' or p.status.toUpperCase() eq 'SUCCESS' ? 'status-completed' : (p.status.toUpperCase() eq 'PENDING' ? 'status-pending' : 'status-failed')}">

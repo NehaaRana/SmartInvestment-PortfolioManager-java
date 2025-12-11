@@ -52,6 +52,57 @@
         .table-responsive {
             overflow-x: auto;
         }
+        
+        /* Remove internal scrollbars */
+        .redeem-dialog .ui-dialog-content {
+            overflow: hidden !important;
+            padding: 20px !important;
+        }
+
+        /* Layout container */
+        .dialog-content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+        }
+
+        /* Each row */
+        .form-row {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Label style */
+        .form-row label {
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        /* Value text style */
+        .value-text {
+            font-size: 16px;
+            padding: 10px 0;
+            color: #444;
+        }
+
+        /* Input field full width */
+        .input-full {
+            width: 100% !important;
+            height: 40px;
+            box-sizing: border-box;
+        }
+
+        /* Button style */
+        .redeem-btn {
+            width: 100%;
+            padding: 12px 0;
+            font-size: 16px;
+            border-radius: 6px !important;
+        }
+
 
     </style>
     <script>
@@ -180,35 +231,49 @@
     </div>
 </div>
     
-    
-<p:dialog id="redeemDialog"
+ <p:dialog id="redeemDialog"
           widgetVar="redeemModal"
           header="Redeem Units"
-          modal="true" closable="true" width="420">
+          modal="true"
+          closable="true"
+          resizable="false"
+          width="420"
+          styleClass="redeem-dialog">
 
     <h:form id="redeemForm">
-        <p:panelGrid columns="2" columnClasses="label,value">
 
-            <p:outputLabel value="Asset:" />
-            <p:outputLabel value="#{portfolioBean.selectedPortfolio.aid.name}" />
+        <div class="dialog-content">
 
-            <p:outputLabel value="Available Units:" />
-            <p:outputLabel value="#{portfolioBean.selectedPortfolio.units}" />
+            <div class="form-row">
+                <label>Asset:</label>
+                <span class="value-text">
+                    #{portfolioBean.selectedPortfolio.aid.name}
+                </span>
+            </div>
 
-            <p:outputLabel value="Units to Redeem:" />
-            <p:inputText value="#{portfolioBean.redemUnits}" />
+            <div class="form-row">
+                <label>Available Units:</label>
+                <span class="value-text">
+                    #{portfolioBean.selectedPortfolio.units}
+                </span>
+            </div>
 
-        </p:panelGrid>
+            <div class="form-row">
+                <label>Units to Redeem:</label>
+                <p:inputText value="#{portfolioBean.redemUnits}" styleClass="input-full" />
+            </div>
 
-        <p:separator />
+            <p:commandButton value="Confirm Redemption"
+                             action="#{portfolioBean.submitRedemption}"
+                             update="@form :globalMsg :portfolioForm"
+                             oncomplete="PF('redeemModal').hide()"
+                             styleClass="redeem-btn" />
 
-        <p:commandButton value="Confirm Redemption"
-                         action="#{portfolioBean.submitRedemption}"
-                         update="@form :globalMsg :portfolioForm"
-                         oncomplete="PF('redeemModal').hide()"
-                         styleClass="p-button-success"/>
+        </div>
+
     </h:form>
 </p:dialog>
+
 
 </h:body>
 </html>

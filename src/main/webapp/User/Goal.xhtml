@@ -9,33 +9,42 @@
 <h:head>
     <title>User Goals</title>
     
+     <!-- Bootstrap -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"/>
+
     <style>
-        /* PAGE WRAPPER */
-        .goal-container {
-            margin-left: 250px;      /* space for sidebar */
-            margin-top: 90px;        /* to keep away from navbar */
-            padding: 30px;
-            font-family: Poppins, sans-serif;
+        body {
+            background: #f5f7fa;
+            font-family: "Inter", "Poppins", sans-serif;
         }
 
-        /* TITLE */
+        .main-content {
+            margin-top: 80px;   /* space below navbar */
+            margin-left: 260px; /* space beside sidebar */
+            padding: 20px;
+            transition: margin-left 0.3s;
+        }
+
+        .collapsed-main {
+            margin-left: 80px;
+        }
+
         .page-title {
-            font-size: 26px;
+            font-size: 24px;
             font-weight: 700;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             color: #333;
         }
 
-        /* CARD BLOCK */
         .card-box {
             background: #fff;
             padding: 25px;
-            border-radius: 14px;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
-            margin-bottom: 40px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
         }
 
-        /* FORM GRID */
         .goal-form-grid .ui-panelgrid-cell {
             padding: 10px 0;
         }
@@ -51,20 +60,49 @@
             color: green;
             margin-left: 10px;
         }
+
+        .table thead {
+            background: #eef1f5;
+        }
+
+        .table td, .table th {
+            vertical-align: middle;
+        }
+
+        p:progressBar {
+            height: 25px;
+        }
     </style>
+
+    <script>
+        function adjustContent() {
+            const sidebar = document.getElementById("sidebar");
+            const content = document.getElementById("main-content");
+
+            if (sidebar.classList.contains("collapsed")) {
+                content.classList.add("collapsed-main");
+            } else {
+                content.classList.remove("collapsed-main");
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            setInterval(adjustContent, 200);
+        });
+    </script>
 </h:head>
 
 <h:body>
     <ui:include src="/Navbar.xhtml"/>
     <!-- =============== SIDEBAR INCLUDE =============== -->
     <ui:include src="/Sidebar.xhtml"/>
-    <div class="goal-container">
-            <div class="card-box">
-    
+    <div id="main-content" class="main-content">
+    <div class="card-box">
+        <h2 class="page-title">Create New Goal</h2>
+
     <!-- Create Goal Form -->
     <h:form id="goalForm">
         
-        <h2 class="page-title">Create New Goal</h2>
         
         <p:panelGrid columns="2" styleClass="goal-form-grid" style="width:50%">
             <p:outputLabel value="Goal Name:" />

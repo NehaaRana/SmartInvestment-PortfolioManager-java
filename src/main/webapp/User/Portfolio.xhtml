@@ -38,10 +38,15 @@
             font-size: 24px;
             font-weight: bold;
         }
-        .page-content, .main-content {
+        .main-content {
             margin-top: 80px;
             margin-left: 260px;
             padding: 20px;
+            transition: margin-left .3s;
+        }
+
+        .collapsed-main {
+            margin-left: 80px;
         }
 
         .table-responsive {
@@ -49,6 +54,23 @@
         }
 
     </style>
+    <script>
+    function adjustContent() {
+        const sidebar = document.getElementById("sidebar");
+        const content = document.getElementById("main-content");
+
+        if (sidebar.classList.contains("collapsed")) {
+            content.classList.add("collapsed-main");
+        } else {
+            content.classList.remove("collapsed-main");
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        setInterval(adjustContent, 200);
+    });
+</script>
+
 </h:head>
 
 <h:body>
@@ -57,7 +79,7 @@
     <ui:include src="/Sidebar.xhtml"/>
  
 
-<div class="main-content">
+<div  id="main-content" class="main-content">
     
    
     
@@ -157,6 +179,8 @@
 
     </div>
 </div>
+    
+    
 <p:dialog id="redeemDialog"
           widgetVar="redeemModal"
           header="Redeem Units"

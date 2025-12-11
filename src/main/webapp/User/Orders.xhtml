@@ -7,13 +7,39 @@
       xmlns:ui="jakarta.faces.facelets">
 
 <h:head>
-    <title>My Orders — Portfolio SIP Manager</title>
-    
+    <title>My Orders</title>
+     <!-- Bootstrap -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"/>
+
      <style>
-         .page-content {
+         body {
+            background: #f5f7fa;
+           font-family: "Inter", "Poppins", sans-serif;
+
+        }
+         
+        .main-content {
             margin-top: 80px;   /* space below navbar */
             margin-left: 260px; /* space beside sidebar */
             padding: 20px;
+            transition: margin-left 0.3s;
+        }
+
+        .collapsed-main {
+            margin-left: 80px;
+        }
+        .header-title {
+                font-size: 24px;
+                font-weight: bold;
+        }
+
+        .order-card {
+            background: #ffffff;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            margin-bottom: 20px;
         }
 
         .status-badge {
@@ -25,7 +51,32 @@
         .pending { background: orange; }
         .completed { background: green; }
         .cancelled { background: red; }
+        
+         .table thead {
+            background: #eef1f5;
+        }
+
+        .table td, .table th {
+            vertical-align: middle;
+        }
     </style>
+    
+    <script>
+        function adjustContent() {
+            const sidebar = document.getElementById("sidebar");
+            const content = document.getElementById("main-content");
+
+            if (sidebar.classList.contains("collapsed")) {
+                content.classList.add("collapsed-main");
+            } else {
+                content.classList.remove("collapsed-main");
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            setInterval(adjustContent, 200);
+        });
+    </script>
 </h:head>
 
 <h:body>
@@ -33,9 +84,12 @@
     <!-- =============== SIDEBAR INCLUDE =============== -->
     <ui:include src="/Sidebar.xhtml"/>
 <p:growl id="globalMsg" showDetail="true" life="3000" />
-<div class="page-content">
+<div  id="main-content" class="main-content">
 
-<h2 style="text-align:center">My Orders</h2>
+<div class="mb-4">
+            <span class="header-title">My Orders</span>
+            <p class="text-muted">Overview of all your orders</p>
+</div>
 <p:messages  />
 <h:form id="ordersForm">
 
@@ -116,16 +170,7 @@
         </h:panelGroup>
     </p:column>
 
-<!--    <p:column headerText="Action">
-        <h:panelGroup>
-            <p:commandButton value="Pay Now" 
-                             icon="pi pi-credit-card" 
-                             update="paymentDialog" 
-                             oncomplete="PF('paymentDlg').show()" 
-                             rendered="#{o.status eq 'COMPLETED'}"
-                             actionListener="#{orderBean.preparePayment(o)}" />
-        </h:panelGroup>
-    </p:column>-->
+
 
 
 </p:dataTable>

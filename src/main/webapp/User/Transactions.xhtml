@@ -7,92 +7,135 @@
       xmlns:f="jakarta.faces.core">
     <h:head>
         <title>My Transactions</title>
-         <style>
-        /* PAGE WRAPPER */
-        .transaction-container {
-            margin-left: 250px; /* space for sidebar */
-            padding: 30px;
-             margin-top: 90px;
-            font-family: Poppins, sans-serif;
+          <!-- Bootstrap -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"/>
+
+    <style>
+        body {
+            background: #f5f7fa;
+            font-family: "Inter", "Poppins", sans-serif;
         }
 
-        /* TITLE */
-        .page-title {
-            font-size: 26px;
-            font-weight: 700;
-            margin-bottom: 25px;
-            color: #333;
+        .main-content {
+            margin-top: 80px;
+            margin-left: 260px;
+            padding: 20px;
+            transition: margin-left 0.3s;
         }
 
-        /* CARD */
+        .collapsed-main {
+            margin-left: 80px;
+        }
+
+        .header-title {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
         .card-box {
-            background: #fff;
+            background: #ffffff;
+            border-radius: 15px;
             padding: 25px;
-            border-radius: 14px;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            margin-bottom: 20px;
         }
 
-        /* STATUS COLORS */
         .status-success {
-            color: green;
+            color: #0abf53;
             font-weight: bold;
         }
+
         .status-failed {
-            color: red;
+            color: #d93025;
             font-weight: bold;
         }
+
         .status-pending {
             color: orange;
             font-weight: bold;
         }
+
+        .table thead {
+            background: #eef1f5;
+        }
+
+        .table td, .table th {
+            vertical-align: middle;
+        }
     </style>
+
+    <script>
+        function adjustContent() {
+            const sidebar = document.getElementById("sidebar");
+            const content = document.getElementById("main-content");
+
+            if (sidebar.classList.contains("collapsed")) {
+                content.classList.add("collapsed-main");
+            } else {
+                content.classList.remove("collapsed-main");
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            setInterval(adjustContent, 200);
+        });
+    </script>
     </h:head>
     <h:body>
         <ui:include src="/Navbar.xhtml"/>
         <!-- =============== SIDEBAR INCLUDE =============== -->
         <ui:include src="/Sidebar.xhtml"/>
-        <div class="transaction-container">
+    <div id="main-content" class="main-content">
 
-        <h2>My Transactions</h2>
+                 <div class="mb-4">
+                    <span class="header-title">My Transactions</span>
+                    <p class="text-muted">Overview of all your transactions</p>
+                </div>
+        
         <div class="card-box">
 
-        <h:form id="txForm">
+            <h:form id="txForm">
 
-        <p:dataTable value="#{transactionBean.transactionList}" var="t"
-                     paginator="true" rows="10"
-                     emptyMessage="No Transactions Found">
+            <p:dataTable value="#{transactionBean.transactionList}" var="t"
+                         paginator="true" rows="10"
+                         emptyMessage="No Transactions Found">
 
-            <p:column headerText="Txn ID">
-                #{t.tid}
-            </p:column>
+                <p:column headerText="Txn ID">
+                    #{t.tid}
+                </p:column>
 
-            <p:column headerText="Order ID">
-                #{t.oid.oid}
-            </p:column>
+                <p:column headerText="Order ID">
+                    #{t.oid.oid}
+                </p:column>
 
-            <p:column headerText="Amount">
-                #{t.amount}
-            </p:column>
+                <p:column headerText="Amount">
+                    #{t.amount}
+                </p:column>
 
-            <p:column headerText="Type">
-                #{t.txnType}
-            </p:column>
+                <p:column headerText="Type">
+                    #{t.txnType}
+                </p:column>
 
-            <p:column headerText="Status">
-                #{t.status}
-            </p:column>
+                <p:column headerText="Status">
+                        <span class="#{t.status eq 'SUCCESS' ? 'status-success' :
+                                      t.status eq 'PENDING' ? 'status-pending' :
+                                      'status-failed'}">
+                            #{t.status}
+                        </span>
+                    </p:column>
 
-            <p:column headerText="Date">
-                         <h:outputText value="#{t.createdAt}">
-                             <f:convertDateTime pattern="dd-MM-yyyy hh:mm a"/>
-                         </h:outputText>
-            </p:column>
+                <p:column headerText="Date">
+                             <h:outputText value="#{t.createdAt}">
+                                 <f:convertDateTime pattern="dd-MM-yyyy hh:mm a"/>
+                             </h:outputText>
+                </p:column>
 
-        </p:dataTable>
+            </p:dataTable>
 
-    </h:form>
+        </h:form>
+        </div>
     </div>
 
-    </div>
     </h:body>
 </html>

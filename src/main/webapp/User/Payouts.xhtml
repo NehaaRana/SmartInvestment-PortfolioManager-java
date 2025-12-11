@@ -1,85 +1,126 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="jakarta.faces.html"
-      xmlns:ui="jakarta.faces.facelets"
-      xmlns:f="jakarta.faces.core">
-    <h:head>
-          <title>My Payouts</title>
-
-    <!-- Bootstrap -->
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"/>
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="jakarta.faces.core"
+      xmlns:ui="jakarta.faces.facelets">
+    
+<h:head>
+    <title>My Payouts</title>
+    <link rel="stylesheet" 
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
 
     <style>
         body {
-            background: #f5f7fa;
+            font-family: "Poppins", sans-serif;
+            background: #f0f2f5;
         }
-        .payout-card {
-            border-radius: 15px;
-            background: #ffffff;
+
+        .page-container {
+            margin-left: 260px;
+            margin-top: 90px;
             padding: 25px;
-            box-shadow: 0px 4px 15px rgba(0,0,0,0.08);
+            transition: margin-left 0.3s;
         }
-        .table thead {
-            background: #eef1f5;
+
+        .collapsed-main {
+            margin-left: 80px;
         }
-        .header-title {
-            font-size: 24px;
+
+        .page-title {
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .card-box {
+            background: #fff;
+            padding: 25px;
+            border-radius: 14px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        /* STATUS COLORS */
+        .status-completed {
             font-weight: bold;
+            color: green;
+        }
+        .status-pending {
+            font-weight: bold;
+            color: orange;
+        }
+        .status-failed {
+            font-weight: bold;
+            color: red;
+        }
+
+        /* TABLE HEADER */
+        .p-dataTable th {
+            background: #eef1f5 !important;
         }
     </style>
+
+    <script>
+        function adjustContent() {
+            var sidebar = document.getElementById("sidebar");
+            var content = document.querySelector(".page-container");
+
+            if (sidebar) {
+                if (sidebar.classList.contains("collapsed")) {
+                    content.classList.add("collapsed-main");
+                } else {
+                    content.classList.remove("collapsed-main");
+                }
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            setInterval(adjustContent, 200);
+        });
+    </script>
 </h:head>
 
 <h:body>
     <ui:include src="/Navbar.xhtml"/>
-    <!-- =============== SIDEBAR INCLUDE =============== -->
     <ui:include src="/Sidebar.xhtml"/>
-    <div class="container mt-4">
 
-        <!-- PAGE HEADER -->
-        <div class="mb-4">
-            <span class="header-title"> Your Payouts</span>
-            <p class="text-muted">Overview of your completed payouts</p>
-        </div>
+    <div class="page-container">
+        <div class="page-title">Your Payouts</div>
+        <p class="text-muted mb-4">Overview of your completed payouts</p>
 
-        <div class="payout-card">
+        <div class="card-box">
+            <h:form id="payoutForm">
+                <p:dataTable value="#{payoutBean.userPayoutList}" var="p"
+                             paginator="true" rows="10" 
+                             emptyMessage="No payouts found" 
+                             styleClass="p-dataTable">
 
-            <!-- Payout Table -->
-            <h:dataTable value="#{payoutBean.userPayoutList}" var="p"
-                         styleClass="table table-bordered table-hover">
+                    <p:column headerText="Payout ID">
+                        #{p.payId}
+                    </p:column>
 
-                <h:column>
-                    <f:facet name="header">Payout ID</f:facet>
-                    #{p.payId}
-                </h:column>
+                    <p:column headerText="Amount">
+                        ₹ #{p.amount}
+                    </p:column>
 
-                <h:column>
-                    <f:facet name="header">Amount</f:facet>
-                    ₹ #{p.amount}
-                </h:column>
+                    <p:column headerText="Status">
+                        <span class="#{p.status.toUpperCase() eq 'COMPLETED' or p.status.toUpperCase() eq 'SUCCESS' ? 'status-completed' : (p.status.toUpperCase() eq 'PENDING' ? 'status-pending' : 'status-failed')}">
+                            #{p.status}
+                        </span>
 
-                <h:column>
-                    <f:facet name="header">Status</f:facet>
-                    #{p.status}
-                </h:column>
+                    </p:column>
 
-                <h:column>
-                    <f:facet name="header">Date</f:facet>
-                    <h:outputText value="#{p.createdAt}">
-                        <f:convertDateTime pattern="dd MMM yyyy"/>
-                    </h:outputText>
-                </h:column>
+                    <p:column headerText="Date">
+                        <h:outputText value="#{p.createdAt}">
+                            <f:convertDateTime pattern="dd-MM-yyyy hh:mm a"/>
+                        </h:outputText>
+                    </p:column>
 
-            </h:dataTable>
-
-            <!-- No Data Message -->
-            <h:panelGroup rendered="#{empty payoutBean.userPayoutList}">
-                <div class="alert alert-info text-center mt-3">
-                    No payouts found.
-                </div>
-            </h:panelGroup>
-
+                </p:dataTable>
+            </h:form>
         </div>
     </div>
 </h:body>

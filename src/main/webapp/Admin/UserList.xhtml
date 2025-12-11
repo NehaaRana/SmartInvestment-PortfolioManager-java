@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="jakarta.faces.html"
       xmlns:f="jakarta.faces.core"
-      xmlns:ui="jakarta.faces.facelets">
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:p="http://primefaces.org/ui">
 <ui:composition template="/Admin/AdminLayout.xhtml">
 
     <!-- PAGE TITLE -->
@@ -12,108 +13,109 @@
     </ui:define>
 
     <!-- MAIN CONTENT -->
-    <ui:define name="content">
+<ui:define name="content">
 
-        <style>
-            .userTable {
-                width: 100%;
-                border-collapse: collapse;
-                margin-top: 15px;
-            }
+    <style>
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
 
-            .userTable th {
-                background-color: #1e2a47;
-                color: #fff;
-                padding: 10px;
-                border: 1px solid #444;
-            }
+        .page-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: #1e2a47;
+        }
 
-            .userTable td {
-                padding: 10px;
-                border: 1px solid #ccc;
-            }
+        .user-badge {
+            background: #0b76d1;
+            padding: 6px 12px;
+            border-radius: 6px;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+        }
 
-            .btn {
-                background-color: #0b76d1;
-                padding: 6px 12px;
-                color: white;
-                border: none;
-                border-radius: 5px;
-                margin-right: 4px;
-                cursor: pointer;
-                transition: .2s;
-            }
+        .search-input {
+            width: 260px;
+        }
+    </style>
 
-            .btn:hover {
-                background-color: #095fa8;
-            }
+    <h:form id="userForm">
 
-            .btn.delete {
-                background-color: #d33;
-            }
+        <!-- HEADER + BADGE -->
+        <div class="page-header">
+            <div class="page-title">User List</div>
+            <span class="user-badge">
+                Total Users: #{userManagedBean.userList.size()}
+            </span>
+        </div>
 
-            .btn.delete:hover {
-                background-color: #b22;
-            }
-        </style>
+        <!-- SEARCH BAR -->
+        <p:inputText id="globalFilter"
+                     placeholder="Search users..."
+                     styleClass="search-input"
+                     onkeyup="PF('userTable').filter()" />
 
-        <h2 style="margin-bottom:20px;">User List</h2>
+        <br/><br/>
 
-        <h:form>
+        <!-- PRIMEFACES DATATABLE -->
+        <p:dataTable id="userTable"
+                     var="u"
+                     widgetVar="userTable"
+                     value="#{userManagedBean.userList}"
+                     paginator="true"
+                     rows="10"
+                     rowsPerPageTemplate="5,10,20"
+                     stripedRows="true"
+                     rowKey="#{u.uid}"
+                     emptyMessage="No users found">
 
-            <!-- SEARCH BAR -->
-            <div style="margin-bottom:15px;">
-                <h:inputText value="#{userManagedBean.searchKeyword}"
-                             style="padding:6px; width:250px; border-radius:4px; border:1px solid #777;">
-                    <f:ajax event="keyup"
-                            listener="#{userManagedBean.searchUsersAjax}"
-                            render="userTableWrapper" />
-                </h:inputText>
-            </div>
+            <!-- UID -->
+            <p:column headerText="UID"
+                      sortBy="#{u.uid}"
+                      filterBy="#{u.uid}">
+                #{u.uid}
+            </p:column>
 
-            <h:panelGroup id="userTableWrapper">
-                <h:dataTable value="#{userManagedBean.userList}"
-                             var="u"
-                             styleClass="userTable">
+            <!-- Full Name -->
+            <p:column headerText="Full Name"
+                      sortBy="#{u.fullName}"
+                      filterBy="#{u.fullName}">
+                #{u.fullName}
+            </p:column>
 
-                    <!-- UID -->
-                    <h:column>
-                        <f:facet name="header">UID</f:facet>
-                        #{u.uid}
-                    </h:column>
+            <!-- Email -->
+            <p:column headerText="Email"
+                      sortBy="#{u.email}"
+                      filterBy="#{u.email}">
+                #{u.email}
+            </p:column>
 
-                    <!-- FULL NAME -->
-                    <h:column>
-                        <f:facet name="header">Full Name</f:facet>
-                        #{u.fullName}
-                    </h:column>
+            <!-- Actions -->
+            <p:column headerText="Action" style="width:180px;">
+                <p:commandButton value="View"
+                                 icon="pi pi-eye"
+                                 action="#{userManagedBean.viewUser(u.uid)}"
+                                 styleClass="btn btn-primary"
+                                 update="@form" />
 
-                    <!-- EMAIL -->
-                    <h:column>
-                        <f:facet name="header">Email</f:facet>
-                        #{u.email}
-                    </h:column>
+                <p:commandButton value="Delete"
+                                 icon="pi pi-trash"
+                                 action="#{userManagedBean.deleteUser(u.uid)}"
+                                 update="@form"
+                                 styleClass="btn btn-danger"
+                                 onclick="return confirm('Delete this user?')"/>
+            </p:column>
 
-                    <!-- ACTION -->
-                    <h:column>
-                        <f:facet name="header">Action</f:facet>
+        </p:dataTable>
 
-                        <h:commandButton value="View"
-                                         action="#{userManagedBean.viewUser(u.uid)}"
-                                         styleClass="btn" />
+    </h:form>
 
-                        <h:commandButton value="Delete"
-                                         action="#{userManagedBean.deleteUser(u.uid)}"
-                                         onclick="return confirm('Are you sure you want to delete this user?');"
-                                         styleClass="btn delete"/>
-                    </h:column>
+</ui:define>
 
-                </h:dataTable>
-            </h:panelGroup>
-
-        </h:form>
-
-    </ui:define>
 
 </ui:composition>
 </html>

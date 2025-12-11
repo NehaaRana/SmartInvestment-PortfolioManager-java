@@ -12,106 +12,163 @@
     </ui:define>
 
     <!-- MAIN PAGE CONTENT -->
-    <ui:define name="content">
+<ui:define name="content">
 
-        <style>
-            .stats-grid {
-                display: grid;
-                grid-template-columns: repeat(4, 1fr);
-                gap: 25px;
-                margin-top: 20px;
-            }
+    <style>
+        body {
+            background: linear-gradient(120deg, #f7faff 0%, #eef3ff 100%);
+            font-family: 'Segoe UI', sans-serif;
+        }
 
-            .card {
-                background: white;
-                padding: 25px;
-                border-radius: 14px;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-                transition: transform .2s, box-shadow .2s;
-                text-align: center;
-            }
+        /* Stats Cards Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+            margin-top: 25px;
+            padding: 0 25px;
+        }
 
-            .card:hover {
-                transform: translateY(-4px);
-                box-shadow: 0 8px 20px rgba(0,0,0,0.12);
-            }
+        /* Card Style */
+        .card {
+            background: linear-gradient(155deg, #ffffff, #f0f4ff);
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.10);
+            border: 1px solid #e1e7f5;
+            transition: 0.25s ease;
+            text-align: center;
+        }
 
-            .card h3 {
-                margin: 0;
-                font-size: 18px;
-                color: #1e2a47;
-            }
+        .card:hover {
+            transform: translateY(-5px);
+            background: linear-gradient(155deg, #fbfbff, #e7ecff);
+            box-shadow: 0 12px 28px rgba(0,0,0,0.12);
+        }
 
-            .value {
-                margin-top: 12px;
-                font-size: 32px;
-                font-weight: bold;
-                color: #0077ff;
-            }
-            
-            
-            .chart-container {
-                display: flex;
-                justify-content: space-between;
-                align-items: flex-start;
-                margin-top: 30px;
-                gap: 20px;
-            }
+        .card h3 {
+            margin: 0;
+            font-size: 18px;
+            color: #1e293b;
+            font-weight: 600;
+        }
 
-            .chart-box {
-                width: 42%;
-                background: white;
-                padding: 15px;
-                border-radius: 14px;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            }
-        </style>
+        .value {
+            margin-top: 10px;
+            font-size: 34px;
+            font-weight: 700;
+            color: #0077ff;
+        }
 
-        <div class="stats-grid">
+        /* ICON */
+        .icon-circle {
+            width: 50px;
+            height: 50px;
+            margin: 0 auto 12px auto;
+            border-radius: 50%;
+            background: rgba(0,119,255,0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            color: #0077ff;
+        }
 
-            <div class="card">
-                <h3>Total Users</h3>
-                <div class="value">#{adminDashboardBean.totalUsers}</div>
+        /* Charts Area */
+        .chart-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 45px;
+            padding: 0 25px;
+            gap: 28px;
+        }
+
+        .chart-box {
+            flex: 1;
+            background: linear-gradient(145deg, #ffffff, #f3f6ff);
+            padding: 22px;
+            border-radius: 20px;
+            border: 1px solid #d9e2f3;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.10);
+            transition: 0.25s ease;
+        }
+
+        .chart-box:hover {
+            box-shadow: 0 12px 26px rgba(0,0,0,0.14);
+            background: linear-gradient(145deg, #fafaff, #e9eeff);
+        }
+
+        .chart-title {
+            font-size: 18px;
+            margin-bottom: 12px;
+            font-weight: 600;
+            color: #1e293b;
+            border-left: 4px solid #0077ff;
+            padding-left: 10px;
+        }
+    </style>
+
+    <!-- STAT CARDS -->
+    <div class="stats-grid">
+        <div class="card">
+            <div class="icon-circle">
+                <i class="pi pi-users"></i>
             </div>
-
-            <div class="card">
-                <h3>Total Assets</h3>
-                <div class="value">#{adminDashboardBean.totalAssets}</div>
-            </div>
-
-            <div class="card">
-                <h3>Total Invested</h3>
-                <div class="value">#{adminDashboardBean.totalInvestmentAmount}</div>
-            </div>
-
-            <div class="card">
-                <h3>Total Payouts</h3>
-                <div class="value">#{adminDashboardBean.totalPayouts}</div>
-            </div>
-
+            <h3>Total Users</h3>
+            <div class="value">#{adminDashboardBean.totalUsers}</div>
         </div>
-        
 
-       <div class="chart-container">
-
-            <div class="chart-box" style="margin-left:50px">
-                <p:pieChart 
-                    model="#{adminDashboardBean.pieModel}" 
-                    style="width:100%; height:200px;" 
-                />
+        <div class="card">
+            <div class="icon-circle">
+                <i class="pi pi-briefcase"></i>
             </div>
-
-           <div class="chart-box" style="margin-right:50px">
-                <p:barChart 
-                    model="#{adminDashboardBean.barModel}" 
-                    style="width:100%; height:365px;" 
-                />
-            </div>
-
+            <h3>Total Assets</h3>
+            <div class="value">#{adminDashboardBean.totalAssets}</div>
         </div>
 
+        <div class="card">
+            <div class="icon-circle">
+                <i class="pi pi-chart-line"></i>
+            </div>
+            <h3>Total Invested</h3>
+            <div class="value">#{adminDashboardBean.totalInvestmentAmount}</div>
+        </div>
 
-    </ui:define>
+        <div class="card">
+            <div class="icon-circle">
+                <i class="pi pi-wallet"></i>
+            </div>
+            <h3>Total Payouts</h3>
+            <div class="value">#{adminDashboardBean.totalPayouts}</div>
+        </div>
+    </div>
+
+    <!-- CHARTS -->
+    <div class="chart-container">
+
+        <div class="chart-box" style="margin-left: 30px;">
+            <div class="chart-title">Investment Breakdown</div>
+
+            <p:pieChart 
+                model="#{adminDashboardBean.pieModel}" 
+                style="width:100%; height:260px;"
+            />
+        </div>
+
+        <div class="chart-box" style="margin-right: 30px;">
+            <div class="chart-title">Monthly Investments</div>
+
+            <p:barChart 
+                model="#{adminDashboardBean.barModel}" 
+                style="width:100%; height:360px;"
+            />
+        </div>
+
+    </div>
+
+</ui:define>
+
+
 
 </ui:composition>
 

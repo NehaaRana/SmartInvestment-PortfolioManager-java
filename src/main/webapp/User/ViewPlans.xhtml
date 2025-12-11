@@ -181,6 +181,40 @@
         padding: 10px;
         border-radius: 25px !important;
     }
+.purchase-dialog .ui-dialog-content {
+    overflow: hidden !important;
+    padding: 20px !important;
+}
+
+.dialog-content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+}
+
+.form-row {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-row label {
+    font-weight: 600;
+    margin-bottom: 5px;
+    font-size: 15px;
+}
+
+.input-full {
+    width: 100% !important;
+    box-sizing: border-box;
+}
+
+.order-btn {
+    width: 100%;
+    margin-top: 10px;
+    background-color: #007bff !important;
+    border-radius: 6px !important;
+}
 </style>
 
 
@@ -346,27 +380,42 @@
     </h:panelGroup>
 
 </h:form>   
-<p:dialog id="orderDialog" widgetVar="orderModal" header="Purchase Plan"
-          modal="true" closable="true" width="400">
+<p:dialog id="orderDialog" 
+          widgetVar="orderModal" 
+          header="Purchase Plan"
+          modal="true" 
+          closable="true"
+          resizable="false"
+          draggable="false"
+          styleClass="purchase-dialog">
 
     <h:form id="orderForm">
-        <p:panelGrid columns="2" columnClasses="label,value">
-            <p:outputLabel value="Units:"/>
-            <p:inputText value="#{orderBean.units}">
-                <p:ajax event="keyup" listener="#{orderBean.calculateAmount}" update="amountField"/>
-            </p:inputText>
+        
+        <div class="dialog-content">
 
+            <div class="form-row">
+                <label>Units:</label>
+                <p:inputText value="#{orderBean.units}" styleClass="input-full">
+                    <p:ajax event="keyup" listener="#{orderBean.calculateAmount}" update="amountField"/>
+                </p:inputText>
+            </div>
 
-            <p:outputLabel value="Amount:"/>
-            <p:inputText id="amountField" value="#{orderBean.amount}" disabled="true"/>
-
-        </p:panelGrid>
-
+            <div class="form-row">
+                <label>Amount:</label>
+                <p:inputText id="amountField"
+                             value="#{orderBean.amount}"
+                             disabled="true"
+                             styleClass="input-full"/>
+            </div>
 
             <p:commandButton value="Place Order"
-                         action="#{orderBean.placeOrder}"
-                         update="globalMsg :viewPlansForm:planGrid"
-                         oncomplete="PF('orderModal').hide()" />
+                             styleClass="order-btn"
+                             action="#{orderBean.placeOrder}"
+                             update="globalMsg :viewPlansForm:planGrid"
+                             oncomplete="PF('orderModal').hide()" />
+
+        </div>
+
     </h:form>
 </p:dialog>
 

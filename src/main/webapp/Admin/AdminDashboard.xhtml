@@ -59,7 +59,7 @@
             }
 
             .chart-box {
-                width: 48%;
+                width: 42%;
                 background: white;
                 padding: 15px;
                 border-radius: 14px;
@@ -94,17 +94,17 @@
 
        <div class="chart-container">
 
-            <div class="chart-box">
+            <div class="chart-box" style="margin-left:50px">
                 <p:pieChart 
                     model="#{adminDashboardBean.pieModel}" 
-                    style="width:100%; height:300px;" 
+                    style="width:100%; height:200px;" 
                 />
             </div>
 
-            <div class="chart-box">
+           <div class="chart-box" style="margin-right:50px">
                 <p:barChart 
                     model="#{adminDashboardBean.barModel}" 
-                    style="width:100%; height:400px;" 
+                    style="width:100%; height:365px;" 
                 />
             </div>
 

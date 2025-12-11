@@ -36,7 +36,21 @@ public class AssetManagedBean implements Serializable {
     @Inject
     private keepRecord keepRecord;
     private Part symbolImage;
+    
+    private String selectedType = "ALL";
 
+    
+    
+    public String getSelectedType() {
+        return selectedType;
+    }
+
+    public void setSelectedType(String selectedType) {
+        this.selectedType = selectedType;
+    }
+
+
+    
     public Part getSymbolImage() {
         return symbolImage;
     }
@@ -423,6 +437,24 @@ public class AssetManagedBean implements Serializable {
         return "AllAssets?faces-redirect=true";
     }
     
+   public void filterByType(String type) {
+    System.out.println("FILTER CLICKED: " + type);
+
+    this.selectedType = type;
+
+    // Reset to full list if ALL
+    if (type.equals("ALL")) {
+        assetsList = new ArrayList<>(originalList);
+        return;
+    }
+
+    // Filter only matching type
+    assetsList = originalList.stream()
+            .filter(a -> a.getType().equalsIgnoreCase(type))
+            .collect(Collectors.toList());
+}
+
+
     
     public void searchAssetsAjax() {
 

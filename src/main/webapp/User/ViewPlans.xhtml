@@ -10,118 +10,259 @@
     <title>View SIP Plans — Portfolio SIP Manager</title>
 
     <style>
-        body {
-            margin:0;
-            font-family: "Inter", "Poppins", sans-serif;
-            background: linear-gradient(180deg, #e9f2ff 0%, #f6fbff 60%);
-            color:#05203a;
-        }
+    body {
+        margin: 0;
+        font-family: "Inter", sans-serif;
+        background: #f4f7fb;
+        color: #062142;
+    }
 
-        .topbar {
-            display:flex;
-            justify-content:space-between;
-            align-items:center;
-            padding:12px 28px;
-            background: linear-gradient(90deg, rgba(255,255,255,0.7), rgba(255,255,255,0.5));
-            box-shadow: 0 6px 20px rgba(6,30,63,0.06);
-        }
-        .brand {
-            font-weight:800;
-            font-size:20px;
-            color:#042a52;
-            background: linear-gradient(90deg,#0b69ff,#00a8ff);
-            -webkit-background-clip:text;
-            -webkit-text-fill-color:transparent;
-        }
+    /* PAGE HEADER */
+    .page-header {
+        text-align: center;
+        padding: 40px 0 10px 0;
+    }
+    .page-header h2 {
+        font-size: 36px;
+        font-weight: 800;
+        color: #022e57;
+        margin-bottom: 6px;
+    }
+    .page-header p {
+        font-size: 15px;
+        color: #60738c;
+    }
 
-        .page-title {
-            text-align:center;
-            margin-top:32px;
-            font-size:36px;
-            font-weight:800;
-            color:#042a52;
-        }
-        .page-sub {
-            text-align:center;
-            font-size:16px;
-            color:#345678;
-            margin-bottom:26px;
-        }
+    /* FILTER BAR */
+    .filter-bar {
+        margin: 20px auto 28px;
+        text-align: center;
+        padding: 10px 20px;
+    }
 
-        .plan-grid {
-            display:grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap:22px;
-            padding: 20px 6%;
-        }
+    .filter-btn {
+        padding: 10px 22px;
+        border-radius: 30px;
+        margin: 6px;
+        border: 1px solid #0b69ff;
+        font-size: 14px;
+        cursor: pointer;
+        background: #ffffff;
+        color: #0b69ff;
+        font-weight: 600;
+        transition: all 0.25s ease-in-out;
+        box-shadow: 0 3px 8px rgba(11,105,255,0.08);
+    }
 
-        .plan-card {
-            border-radius:16px !important;
-            box-shadow:0 8px 22px rgba(10, 50, 120, 0.08);
-            border:1px solid rgba(11,105,255,0.12);
-            padding:20px;
-            background:white;
-        }
+    .filter-btn:hover {
+        background: #e9f2ff;
+    }
 
-        .plan-price {
-            font-size:32px;
-            font-weight:900;
-            margin:0;
-            background: linear-gradient(90deg,#0b69ff,#00a8ff);
-            -webkit-background-clip:text;
-            -webkit-text-fill-color:transparent;
-        }
+    .filter-btn-active {
+        background: linear-gradient(90deg,#0b69ff,#00a8ff);
+        color: white !important;
+        box-shadow: 0 4px 14px rgba(0,0,0,0.18);
+        transform: translateY(-2px);
+    }
 
-        .btn-start {
-            margin-top:16px;
-            width:100%;
-        }
-        
-        .heart-btn, .heart-btn-selected {
-            border: none;
-            background: none;
-            cursor: pointer;
-            font-size: 22px;
-        }
+    /* SEARCH BAR */
+    .search-bar {
+        text-align: center;
+        margin-bottom: 25px;
+    }
 
-        .heart-btn:before {
-            font-family: 'primeicons';
-            content: "\e9da"; /* pi-heart */
-            color: grey;
-        }
+    .search-input {
+        padding: 10px 16px;
+        width: 340px;
+        border-radius: 25px;
+        border: 1px solid #b5c5d6;
+        outline: none;
+        transition: 0.2s ease;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
 
-        .heart-btn-selected:before {
-            font-family: 'primeicons';
-            content: "\e9d8"; /* pi-heart-fill */
-            color: red;
-        }
+    .search-input:focus {
+        border-color: #0b69ff;
+        box-shadow: 0 4px 12px rgba(11,105,255,0.15);
+    }
 
-    </style>
+    /* GRID */
+    .plan-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 26px;
+        padding: 0 6%;
+        margin-bottom: 60px;
+    }
+
+    /* CARD */
+    .plan-card {
+        background: white;
+        border-radius: 20px;
+        padding: 25px;
+        box-shadow: 0 10px 28px rgba(12,50,110,0.1);
+        border: 1px solid rgba(0,0,0,0.04);
+        transition: all .25s ease-in-out;
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Top subtle gradient */
+    .plan-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 5px;
+        width: 100%;
+        background: linear-gradient(90deg,#0b69ff,#00a8ff);
+    }
+
+    .plan-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 14px 30px rgba(12,50,110,0.16);
+    }
+
+    /* WATCH ICON */
+    .watch-icon {
+        font-size: 22px;
+        transition: 0.2s ease;
+    }
+
+    .watch-icon:hover {
+        transform: scale(1.2);
+    }
+
+    /* IMAGE */
+    .asset-image {
+        border-radius: 14px;
+        margin-bottom: 12px;
+        box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+    }
+
+    /* NAME */
+    .asset-title {
+        font-size: 20px;
+        font-weight: 700;
+        margin: 5px 0 3px 0;
+        color: #042a52;
+    }
+
+    /* PRICE */
+    .plan-price {
+        font-size: 28px;
+        font-weight: 900;
+        margin: 12px 0;
+        background: linear-gradient(90deg,#0b69ff,#00a8ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    /* DETAILS */
+    .details {
+        font-size: 14px;
+        color: #3e4a59;
+        margin-bottom: 8px;
+    }
+
+    ul {
+        padding-left: 18px;
+        font-size: 14px;
+        margin: 6px 0 0;
+        color: #4f5d6a;
+    }
+
+    /* BUTTON */
+    .btn-start {
+        margin-top: 18px;
+        width: 100%;
+        font-size: 15px;
+        font-weight: 600;
+        padding: 10px;
+        border-radius: 25px !important;
+    }
+</style>
+
+
 </h:head>
 
 <h:body>
     <ui:include src="/Navbar.xhtml"/>
      <!-- =============== SIDEBAR INCLUDE =============== -->
-    <ui:include src="/Sidebar.xhtml"/> 
+    <!--<ui:include src="/Sidebar.xhtml"/>--> 
     <p:growl id="globalMsg" showDetail="true" sticky="false" life="4000"/>
     
-    <!-- PAGE TITLE -->
-    <h2 class="page-title">Our SIP Plans</h2>
-    <div class="page-sub">
-        Choose the plan that matches your investment strategy and future goals.
+   <!-- PAGE HEADER -->
+    <div class="page-header">
+        <h2>Explore Investment Plans</h2>
+        <p>Choose the perfect SIP or one-time plan to start your investment journey.</p>
     </div>
     
    <h:form id="viewPlansForm">
-       <p:poll interval="10"
+       <p:poll interval="60"
             listener="#{assetManagedBean.loadAssetsForPlans}"
             update="planGrid"
             autoStart="true"
             async="true"
             global="false" />
 
+       
+       <!-- FILTER BAR -->
+<h:panelGroup id="filterBar" class="filter-bar" layout="block">
+
+    <h:commandLink action="#{assetManagedBean.filterByType('ALL')}"
+                   styleClass="#{assetManagedBean.selectedType eq 'ALL' 
+                                ? 'filter-btn filter-btn-active' 
+                                : 'filter-btn'}">
+        All
+        <f:ajax execute="@this" render=":viewPlansForm:planGrid :viewPlansForm:filterBar" />
+    </h:commandLink>
+
+    <h:commandLink action="#{assetManagedBean.filterByType('STOCK')}"
+                   styleClass="#{assetManagedBean.selectedType eq 'STOCK' 
+                                ? 'filter-btn filter-btn-active' 
+                                : 'filter-btn'}">
+        Stock
+        <f:ajax execute="@this" render=":viewPlansForm:planGrid :viewPlansForm:filterBar" />
+    </h:commandLink>
+
+    <h:commandLink action="#{assetManagedBean.filterByType('MUTUAL')}"
+                   styleClass="#{assetManagedBean.selectedType eq 'MUTUAL' 
+                                ? 'filter-btn filter-btn-active' 
+                                : 'filter-btn'}">
+        Mutual Fund
+        <f:ajax execute="@this" render=":viewPlansForm:planGrid :viewPlansForm:filterBar" />
+    </h:commandLink>
+
+    <h:commandLink action="#{assetManagedBean.filterByType('COMMODITY')}"
+                   styleClass="#{assetManagedBean.selectedType eq 'COMMODITY' 
+                                ? 'filter-btn filter-btn-active' 
+                                : 'filter-btn'}">
+        Commodity
+        <f:ajax execute="@this" render=":viewPlansForm:planGrid :viewPlansForm:filterBar" />
+    </h:commandLink>
+
+    <h:commandLink action="#{assetManagedBean.filterByType('BOND')}"
+                   styleClass="#{assetManagedBean.selectedType eq 'BOND' 
+                                ? 'filter-btn filter-btn-active' 
+                                : 'filter-btn'}">
+        Bond
+        <f:ajax execute="@this" render=":viewPlansForm:planGrid :viewPlansForm:filterBar" />
+    </h:commandLink>
+
+    <h:commandLink action="#{assetManagedBean.filterByType('CRYPTO')}"
+                   styleClass="#{assetManagedBean.selectedType eq 'CRYPTO' 
+                                ? 'filter-btn filter-btn-active' 
+                                : 'filter-btn'}">
+        Cryptocurrency
+        <f:ajax execute="@this" render=":viewPlansForm:planGrid :viewPlansForm:filterBar" />
+    </h:commandLink>
+
+</h:panelGroup>
+
     <!-- SEARCH BAR -->
-     <div style="text-align:center; margin-bottom:20px;">
-         <h:inputText value="#{assetManagedBean.searchKeyword}" 
+     <div  class="search-bar" style="text-align:center; margin-bottom:20px;">
+         <h:inputText value="#{assetManagedBean.searchKeyword}" styleClass="search-input" 
                       style="padding:8px; width:300px; border-radius:5px; border:1px solid #777;">
 
              <f:ajax event="keyup" 
@@ -131,7 +272,7 @@
          </h:inputText>
     </div>
    
-    <h:panelGroup id="planGrid" layout="block" styleClass="plan-grid">
+    <h:panelGroup id="planGrid" class="plan-grid" layout="block" styleClass="plan-grid">
         
         <ui:repeat value="#{assetManagedBean.assetsList}" var="asset">
 <!--            <p style="color:red; font-weight:bold;">
@@ -147,9 +288,9 @@
                 update=":viewPlansForm:planGrid"
                 style="border:none; background:none;">
 
-                <i class="#{watchListBean.isInWatchlist(asset.aid) 
+                <i class="pi #{watchListBean.isInWatchlist(asset.aid) 
                               ? 'pi pi-heart-fill' 
-                              : 'pi pi-heart'}"
+                              : 'pi pi-heart'} watch-icon"
                    style="font-size:20px;
                           color:#{watchListBean.isInWatchlist(asset.aid) ? 'red' : 'grey'};">
                 </i>
@@ -157,22 +298,21 @@
             </p:commandLink>
         </div>
 
-        <!-- Asset Image -->
-        <h:graphicImage library="assets" name="#{asset.symbol}" 
-                        width="60" height="60"
-                        style="display:block; margin-bottom:10px;" />
+         <!-- IMAGE -->
+            <h:graphicImage library="assets" name="#{asset.symbol}"
+                        class="asset-image" width="60" height="60" />
 
         <!-- Asset Name -->
-        <h3>#{asset.name}</h3>
+        <h3 class="asset-title">#{asset.name}</h3>
 
         <!-- Price -->
         <p class="plan-price">
-            ₹#{asset.currentPrice} / month
+            ₹#{asset.currentPrice} / unit
         </p>
 
         <!-- Details -->
-        <p>Type: #{asset.type}</p>
-        <p>Risk: #{asset.risk}</p>
+        <p style="font-size:14px; margin:6px 0;">Type: #{asset.type}</p>
+        <p style="font-size:14px; margin:0;">Risk: #{asset.risk}</p>
 
         <ul>
             <li>Status: #{asset.status}</li>

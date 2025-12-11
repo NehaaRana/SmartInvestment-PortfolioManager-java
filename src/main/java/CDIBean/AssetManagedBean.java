@@ -19,6 +19,7 @@ import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -306,31 +307,89 @@ public class AssetManagedBean implements Serializable {
         return assetsList;
     }
     
+    
+    private void saveImageToBothLocations(Part file, String fileName) throws Exception {
+
+        // Read file into bytes ONCE
+        byte[] imageBytes = file.getInputStream().readAllBytes();
+
+        // ------------------------------------------------
+        // 1. Save in PROJECT folder
+        // ------------------------------------------------
+        String projectPath = "D:/java-ENTERPRISE/ICT-1-Project/PortfolioManager/src/main/webapp/resources/assets/";
+        File projectFolder = new File(projectPath);
+        if (!projectFolder.exists()) projectFolder.mkdirs();
+
+        Files.write(
+            Paths.get(projectPath + fileName),
+            imageBytes,
+            StandardOpenOption.CREATE,
+            StandardOpenOption.TRUNCATE_EXISTING
+        );
+
+        System.out.println("✔ Saved to PROJECT: " + projectPath + fileName);
+
+
+        // ------------------------------------------------
+        // 2. Save in DEPLOYED (WAR) folder
+        // ------------------------------------------------
+        String deployedDir = FacesContext.getCurrentInstance()
+                .getExternalContext()
+                .getRealPath("/resources/assets/");
+
+        if (deployedDir != null) {
+
+            File deployedFolder = new File(deployedDir);
+            if (!deployedFolder.exists()) deployedFolder.mkdirs();
+
+            Files.write(
+                Paths.get(deployedDir + fileName),
+                imageBytes,
+                StandardOpenOption.CREATE,
+                StandardOpenOption.TRUNCATE_EXISTING
+            );
+
+            System.out.println("✔ Saved to DEPLOYED: " + deployedDir + fileName);
+
+        } else {
+            System.out.println("⚠ deployedDir = null (running from IDE, not WAR)");
+        }
+    }
+
+
+
 
          public String addAsset() {
             try {
                 AdminClient ac = new AdminClient(keepRecord.getToken());
 
+//                if (symbolImage != null) {
+//
+//                    String fileName = Paths.get(symbolImage.getSubmittedFileName())
+//                                           .getFileName().toString();
+//
+//                       String uploadDir = "D:/java-ENTERPRISE/ICT-1-Project/PortfolioManager/src/main/webapp/resources/assets";
+//                    System.out.println("UPLOAD FOLDER = " + uploadDir);
+//
+//                    File folder = new File(uploadDir);
+//                    if (!folder.exists()) {
+//                        folder.mkdirs();
+//                    }
+//
+//                    Files.copy(
+//                        symbolImage.getInputStream(),
+//                        Paths.get(uploadDir + fileName),
+//                        StandardCopyOption.REPLACE_EXISTING
+//                    );
+//
+//                    this.symbol = fileName;
+//                }
                 if (symbolImage != null) {
 
                     String fileName = Paths.get(symbolImage.getSubmittedFileName())
                                            .getFileName().toString();
 
-                    // FIXED ABSOLUTE PATH TO SRC FOLDER
-//                    String uploadDir = "E:/PortfolioManager/src/main/webapp/resources/assets/";
-                    String uploadDir = "D:/java-ENTERPRISE/ICT-1-Project/PortfolioManager/src/main/webapp/resources/assets";
-                    System.out.println("UPLOAD FOLDER = " + uploadDir);
-
-                    File folder = new File(uploadDir);
-                    if (!folder.exists()) {
-                        folder.mkdirs();
-                    }
-
-                    Files.copy(
-                        symbolImage.getInputStream(),
-                        Paths.get(uploadDir + fileName),
-                        StandardCopyOption.REPLACE_EXISTING
-                    );
+                    saveImageToBothLocations(symbolImage, fileName);
 
                     this.symbol = fileName;
                 }
@@ -375,25 +434,34 @@ public class AssetManagedBean implements Serializable {
         try {
             AdminClient ac = new AdminClient(keepRecord.getToken());
 
-            // Check if a new file was uploaded
+//            // Check if a new file was uploaded
+//            if (symbolImage != null && symbolImage.getSize() > 0) {
+//                String fileName = Paths.get(symbolImage.getSubmittedFileName()).getFileName().toString();
+//
+//                // Upload directory
+//                String uploadDir = "D:/java-ENTERPRISE/ICT-1-Project/PortfolioManager/src/main/webapp/resources/assets/";
+//                File folder = new File(uploadDir);
+//                if (!folder.exists()) folder.mkdirs();
+//
+//                // Copy file
+//                Files.copy(
+//                    symbolImage.getInputStream(),
+//                    Paths.get(uploadDir + fileName),
+//                    StandardCopyOption.REPLACE_EXISTING
+//                );
+//
+//                this.symbol = fileName;  // update symbol field
+//            }
             if (symbolImage != null && symbolImage.getSize() > 0) {
-                String fileName = Paths.get(symbolImage.getSubmittedFileName()).getFileName().toString();
 
-                // Upload directory
-                String uploadDir = "D:/java-ENTERPRISE/ICT-1-Project/PortfolioManager/src/main/webapp/resources/assets/";
-                File folder = new File(uploadDir);
-                if (!folder.exists()) folder.mkdirs();
+                String fileName = Paths.get(symbolImage.getSubmittedFileName())
+                                       .getFileName().toString();
 
-                // Copy file
-                Files.copy(
-                    symbolImage.getInputStream(),
-                    Paths.get(uploadDir + fileName),
-                    StandardCopyOption.REPLACE_EXISTING
-                );
+                saveImageToBothLocations(symbolImage, fileName);
 
-                this.symbol = fileName;  // update symbol field
+                this.symbol = fileName;
             }
-            
+
 
             ac.updateAsset(
                     aid,
@@ -413,22 +481,6 @@ public class AssetManagedBean implements Serializable {
             return null;
         }
     }
-
-//    public void searchAssetsAjax() {
-//    if (searchKeyword == null || searchKeyword.trim().isEmpty()) {
-//        loadAssets();   // show all assets when field is empty
-//            return;
-//        }
-//
-//        String key = searchKeyword.toLowerCase();
-//
-//        assetsList = originalList.stream() // keep originalList for full backup
-//                .filter(a -> a.getName().toLowerCase().contains(key)
-//                          || a.getType().toLowerCase().contains(key)
-//                          || String.valueOf(a.getAid()).contains(key))
-//                .collect(Collectors.toList());
-//    }
-//    
     
     public String deleteAsset(int aid) {
         AdminClient ac = new AdminClient(keepRecord.getToken());
@@ -484,30 +536,6 @@ public class AssetManagedBean implements Serializable {
 
 
 
-
-    
-//    public void loadAssetsForPlans() {
-//        try {
-//            System.out.println("=== Loading Assets for SIP Plans ===");
-//
-//            AdminClient ac;
-//            if (keepRecord.getToken() != null && !keepRecord.getToken().isEmpty()) {
-//                // Logged-in user → use token
-//                ac = new AdminClient(keepRecord.getToken());
-//                assetsList = ac.getAllAssets();  // secured endpoint
-//            } else {
-//                // Guest → public access
-//                ac = new AdminClient();
-//                assetsList = ac.getAllAssetsPublic();  // public endpoint
-//            }
-//
-//            originalList = new ArrayList<>(assetsList);
-//            System.out.println("Loaded " + assetsList.size() + " assets for SIP Plans");
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
 
     
     public void loadAssetsForPlans() {

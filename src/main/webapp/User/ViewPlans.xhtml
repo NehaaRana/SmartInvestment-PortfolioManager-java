@@ -89,105 +89,162 @@
             box-shadow: 0 0 12px rgba(14,99,255,0.2);
         }
 
-        /* GRID */
-        .plan-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 20px;
-            padding: 0 6%;
-        }
+            .plan-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+    gap: 25px;
+    padding: 0 6%;
+}
 
-   /* FINAL PROFESSIONAL CARD */
+/* CARD */
 .plan-card {
     background: #ffffff;
-    border-radius: 20px;
-    padding: 22px 20px;
-    border: 1px solid rgba(0,0,0,0.06);
-    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-    transition: all .25s ease-in-out;
+    border-radius: 22px;
+    padding: 24px 22px;
+    border: none;                          /* REMOVE ALL LINES */
+    box-shadow: 0 10px 26px rgba(0,0,0,0.06);
+    transition: .25s ease;
     position: relative;
+    overflow: hidden;
 }
 
+/* Hover Lift Effect */
 .plan-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 26px rgba(0,0,0,0.10);
+    transform: translateY(-7px);
+    box-shadow: 0 18px 34px rgba(0,0,0,0.12);
 }
 
-/* Top Line */
+/* TOP GRADIENT BAR */
 .plan-card::before {
     content: "";
     position: absolute;
     top: 0;
     left: 0;
-    height: 3px;
+    height: 4px;
     width: 100%;
-    background: linear-gradient(90deg,#0b69ff,#00a8ff);
-    border-radius: 20px 20px 0 0;
+    background: linear-gradient(90deg,#006bff,#00c8ff);
 }
 
-/* BIG, CLEAN ASSET NAME */
+/* WATCHLIST ICON */
+.watch-icon {
+    font-size: 22px;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.watch-icon:hover {
+    transform: scale(1.15);
+}
+
+/* IMAGE */
+.asset-image {
+    width: 70px;
+    height: 70px;
+    border-radius: 14px;
+    margin: 18px auto 14px;
+    display: block;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.10);
+}
+
+/* NAME */
 .asset-title {
-    font-size: 22px;               /* bigger font */
-    font-weight: 800;              /* bold like pricing card */
-    color: #0d2e57;
-    margin: 10px 0;
-    letter-spacing: 0.5px;
+    font-size: 20px;
+    font-weight: 800;
+    text-align: center;
+    color: #0a2a4d;
+    margin-bottom: 10px;
 }
 
-/* BIG PRICE LIKE HIPRE */
+/* PRICE */
 .plan-price {
-    font-size: 34px;               /* bigger */
+    font-size: 28px;
     font-weight: 900;
-    color: #0a2a4d;
-    margin: 12px 0 16px 0;
+    text-align: center;
+    background: linear-gradient(90deg,#006eff,#00b7ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 14px;
 }
 
 /* STATUS BADGE */
 .status-badge {
     display: inline-block;
-    padding: 3px 10px;
     font-size: 12px;
+    padding: 4px 12px;
     font-weight: 700;
-    border-radius: 12px;
-    margin-bottom: 5px;
+    border-radius: 20px;
+    margin: 6px auto 12px;
+    display: block;
+    width: fit-content;
 }
 
 .status-active {
-    background: #d9f7e8;
-    color: #0f9d58;
+    background: #d8f8e6;
+    color: #0e9d57;
 }
 
 .status-inactive {
-    background: #ffe1e1;
-    color: #d93025;
+    background: #ffe2e2;
+    color: #e53935;
 }
 
-/* Details Text */
+/* DETAILS LIST */
 .plan-details {
     font-size: 14px;
-    color: #4a5662;
+    color: #475569;
+    text-align: center;
     line-height: 20px;
-    margin-bottom: 8px;
+    margin-top: 10px;
 }
-
-/* Start Button */
+/* GLASS PREMIUM BUTTON */
 .btn-start {
-    margin-top: 18px;
     width: 100%;
-    padding: 10px 0 !important;       /* FIXED perfect button height */
-    border-radius: 22px !important;
-    font-size: 15px !important;
-    font-weight: 700 !important;
-    background: #0b69ff !important;
-    color: #ffffff !important;
+    padding: 9px 0 !important;
+    margin-top: 16px;
+
     border: none !important;
-    transition: 0.2s ease;
+    border-radius: 18px !important;
+
+    background: rgba(0, 126, 255, .9) !important;
+    backdrop-filter: blur(6px);
+    color: white !important;
+
+    font-size: 14px !important;
+    font-weight: 700 !important;
+
+    position: relative;
+    overflow: hidden;
+
+    transition: .3s ease;
 }
 
-.btn-start:hover {
-    background: #005ae0 !important;
-    transform: translateY(-2px);
+/* Shine line */
+.btn-start::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -120%;
+    width: 120%;
+    height: 100%;
+    background: linear-gradient(
+        115deg,
+        transparent,
+        rgba(255,255,255,0.4),
+        transparent
+    );
+    transition: .5s ease;
 }
+
+/* Hover — shine + lift + glow */
+.btn-start:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 28px rgba(0,140,255,0.55);
+}
+
+.btn-start:hover::after {
+    left: 120%;
+}
+
 
 /* Better Image (Spacing Fixed) */
 .asset-image {

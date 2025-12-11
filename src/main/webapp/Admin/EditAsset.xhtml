@@ -106,17 +106,22 @@
         </style>
 
         <script>
-            function previewImage(input) {
-                const preview = document.getElementById("previewImg");
-                const file = input.files[0];
+            function previewImage(event) {
+                const input = event.target;
+                const preview = document.getElementById('previewImg');
 
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = e => preview.src = e.target.result;
-                    reader.readAsDataURL(file);
+                if (input.files) {
+                    if (input.files[0]) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            preview.src = e.target.result; // show selected file
+                        };
+                        reader.readAsDataURL(input.files[0]);
+                    }
                 }
             }
         </script>
+
 
         <div class="page-container">
 
@@ -130,14 +135,14 @@
                     <div>
                         <label>Symbol Image:</label>
 
-                        <h:inputFile value="#{assetManagedBean.symbolImage}"
-                                     onchange="previewImage(this)" />
+                        <h:inputFile id="symbolFile" value="#{assetManagedBean.symbolImage}" onchange="previewImage(event)" />
 
-                        <div class="image-preview-box">
-                            <img id="previewImg"
-                                 src="/resources/assets/#{assetManagedBean.symbol}"
-                                 alt="Asset Preview" />
-                        </div>
+                            <div class="image-preview-box">
+                                <img id="previewImg"
+                                     src="#{request.contextPath}/resources/assets/#{assetManagedBean.symbol}"
+                                     alt="Asset Preview" 
+                                     style="max-width:150px; max-height:150px;"/>
+                            </div>
                     </div>
 
                     <!-- ASSET NAME -->

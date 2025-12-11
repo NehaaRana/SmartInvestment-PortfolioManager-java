@@ -3,19 +3,70 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="jakarta.faces.html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:ui="jakarta.faces.facelets">
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:f="jakarta.faces.core">
 
 <h:head>
     <title>User Goals</title>
+    
+    <style>
+        /* PAGE WRAPPER */
+        .goal-container {
+            margin-left: 250px;      /* space for sidebar */
+            margin-top: 90px;        /* to keep away from navbar */
+            padding: 30px;
+            font-family: Poppins, sans-serif;
+        }
+
+        /* TITLE */
+        .page-title {
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: #333;
+        }
+
+        /* CARD BLOCK */
+        .card-box {
+            background: #fff;
+            padding: 25px;
+            border-radius: 14px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            margin-bottom: 40px;
+        }
+
+        /* FORM GRID */
+        .goal-form-grid .ui-panelgrid-cell {
+            padding: 10px 0;
+        }
+
+        .add-money-box {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .progress-done {
+            font-weight: bold;
+            color: green;
+            margin-left: 10px;
+        }
+    </style>
 </h:head>
 
 <h:body>
     <ui:include src="/Navbar.xhtml"/>
+    <!-- =============== SIDEBAR INCLUDE =============== -->
+    <ui:include src="/Sidebar.xhtml"/>
+    <div class="goal-container">
+            <div class="card-box">
+    
     <!-- Create Goal Form -->
     <h:form id="goalForm">
-        <h2>Create New Goal</h2>
         
-        <p:panelGrid columns="2" style="width:50%">
+        <h2 class="page-title">Create New Goal</h2>
+        
+        <p:panelGrid columns="2" styleClass="goal-form-grid" style="width:50%">
             <p:outputLabel value="Goal Name:" />
             <p:inputText value="#{goalBean.goalName}" required="true" requiredMessage="Goal Name is required"/>
 
@@ -35,14 +86,18 @@
        
     </h:form>
 
-
+    
+    </div>
     <!-- Display Goals -->
-    <h2>My Goals</h2>
+    <div class="card-box">
+
+    <h2 class="page-title">My Goals</h2>
 
     <h:form id="goalTableForm">
         <p:growl id="goalMessages" showDetail="true" life="3000"/>
 
-        <p:dataTable id="goalTable" value="#{goalBean.goalList}" var="g" style="width:100%">
+        <p:dataTable id="goalTable" value="#{goalBean.goalList}" var="g" style="width:100%"
+                     emptyMessage="No Goals Found">
             <p:column headerText="Goal Name">
                 #{g.goalName}
             </p:column>
@@ -63,17 +118,17 @@
                     labelTemplate="{value}%"
                 />
 
-                <h:outputText 
-                    value="Completed" 
-                    rendered="#{goalBean.calculateProgress(g) == 100}"
-                    style="font-weight:bold;color:green;margin-left:10px"
-                />
+                <h:outputText value="Completed"
+                            rendered="#{goalBean.calculateProgress(g) == 100}"
+                            styleClass="progress-done"/>
             </p:column>
 
 
 
             <p:column headerText="Target Date">
-                #{g.targetDate}
+                <h:outputText value="#{g.targetDate}">
+                   <f:convertDateTime pattern="dd-MM-yyyy"/>
+                </h:outputText>            
             </p:column>
                  <p:column headerText="Add Money">
                     <p:inputText value="#{goalBean.updateAmounts[g.goalId]}" style="width:70px"/>
@@ -89,6 +144,10 @@
             
         </p:dataTable>
     </h:form>
+    
+    </div>
+
+    </div>
 
 </h:body>
 </html>

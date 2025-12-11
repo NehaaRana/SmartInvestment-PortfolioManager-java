@@ -10,6 +10,12 @@
     <title>My Orders — Portfolio SIP Manager</title>
     
      <style>
+         .page-content {
+            margin-top: 80px;   /* space below navbar */
+            margin-left: 260px; /* space beside sidebar */
+            padding: 20px;
+        }
+
         .status-badge {
             padding: 5px 10px;
             border-radius: 6px;
@@ -24,8 +30,10 @@
 
 <h:body>
     <ui:include src="/Navbar.xhtml"/>
-
+    <!-- =============== SIDEBAR INCLUDE =============== -->
+    <ui:include src="/Sidebar.xhtml"/>
 <p:growl id="globalMsg" showDetail="true" life="3000" />
+<div class="page-content">
 
 <h2 style="text-align:center">My Orders</h2>
 <p:messages  />
@@ -122,7 +130,7 @@
 
 </p:dataTable>
 </h:form>
-
+</div>
 <!-- Payment Dialog -->
 <!-- Payment Dialog -->
 <p:dialog id="paymentDialog" widgetVar="paymentDlg"

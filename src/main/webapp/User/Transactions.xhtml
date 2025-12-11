@@ -3,13 +3,58 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="jakarta.faces.html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:ui="jakarta.faces.facelets">
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:f="jakarta.faces.core">
     <h:head>
         <title>My Transactions</title>
+         <style>
+        /* PAGE WRAPPER */
+        .transaction-container {
+            margin-left: 250px; /* space for sidebar */
+            padding: 30px;
+             margin-top: 90px;
+            font-family: Poppins, sans-serif;
+        }
+
+        /* TITLE */
+        .page-title {
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: #333;
+        }
+
+        /* CARD */
+        .card-box {
+            background: #fff;
+            padding: 25px;
+            border-radius: 14px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+        }
+
+        /* STATUS COLORS */
+        .status-success {
+            color: green;
+            font-weight: bold;
+        }
+        .status-failed {
+            color: red;
+            font-weight: bold;
+        }
+        .status-pending {
+            color: orange;
+            font-weight: bold;
+        }
+    </style>
     </h:head>
     <h:body>
         <ui:include src="/Navbar.xhtml"/>
+        <!-- =============== SIDEBAR INCLUDE =============== -->
+        <ui:include src="/Sidebar.xhtml"/>
+        <div class="transaction-container">
+
         <h2>My Transactions</h2>
+        <div class="card-box">
 
         <h:form id="txForm">
 
@@ -38,11 +83,16 @@
             </p:column>
 
             <p:column headerText="Date">
-                #{t.createdAt}
+                         <h:outputText value="#{t.createdAt}">
+                             <f:convertDateTime pattern="dd-MM-yyyy hh:mm a"/>
+                         </h:outputText>
             </p:column>
 
         </p:dataTable>
 
     </h:form>
+    </div>
+
+    </div>
     </h:body>
 </html>

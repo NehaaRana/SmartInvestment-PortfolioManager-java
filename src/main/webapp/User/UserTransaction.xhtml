@@ -3,14 +3,21 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="jakarta.faces.html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="jakarta.faces.core">
+      xmlns:ui="jakarta.faces.facelets">
 
 <h:head>
     <title>Transactions</title>
 </h:head>
 
 <h:body>
+    
+    <!-- =============== NAVBAR INCLUDE =============== -->
+    <ui:include src="/Navbar.xhtml"/>
+
+    <!-- =============== SIDEBAR INCLUDE =============== -->
+    <ui:include src="/Sidebar.xhtml"/>
    <h:form>
+    
     <h2 style="text-align:center">My Transactions</h2>
 
     <!-- BUY Orders -->

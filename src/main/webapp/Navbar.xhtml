@@ -46,6 +46,22 @@
             color:#083560;
             margin-right: 10px;
         }
+        
+          .user-icon {
+        font-size: 22px;
+        color: white;
+        background: linear-gradient(135deg, #0b69ff, #00a8ff);
+        padding: 10px;
+        border-radius: 50%;
+        box-shadow: 0 4px 15px rgba(0, 136, 255, 0.35);
+        transition: 0.3s ease;
+        cursor: pointer;
+    }
+
+    .user-icon:hover {
+        transform: scale(1.12);
+        box-shadow: 0 8px 20px rgba(0, 136, 255, 0.45);
+    }
     </style>
 </h:head>
 
@@ -64,23 +80,27 @@
         <h:link value="SIP Plans" outcome="/User/ViewPlans" />
         <h:link value="About" outcome="/About" />
 
-        <!-- LOGGED-IN VIEW -->
-        <h:panelGroup rendered="#{not empty keepRecord.email}" layout="inline">
+        <!-- LOGGED-IN VIEW (ATTRACTIVE NEW UI) -->
+        <!-- LOGGED-IN VIEW (Final Clean Version) -->
+        <h:panelGroup rendered="#{not empty keepRecord.email}" layout="inline" style="display:flex; align-items:center; gap:15px;">
 
-            <!-- Avatar + Email -->
-            <p:avatar label="#{keepRecord.email.substring(0,1).toUpperCase()}"
-                      size="midium"
-                      style="background:#0b69ff; color:white;" />
+            <!-- USER ICON (DASHBOARD LINK) -->
+            <h:link outcome="/User/UserDashboard" style="text-decoration:none;">
+                <i class="pi pi-user user-icon"></i>
+            </h:link>
 
-            <span class="user-email">#{keepRecord.email}</span>
-
+            <!-- LOGOUT BUTTON -->
             <h:form>
                 <p:commandButton value="Logout"
                                  action="#{userDashboardBean.logout}"
                                  icon="pi pi-sign-out"
                                  styleClass="p-button-danger p-button-sm" />
             </h:form>
+
         </h:panelGroup>
+
+
+
 
         <!-- LOGGED-OUT VIEW -->
         <h:panelGroup rendered="#{empty keepRecord.email}" layout="inline">

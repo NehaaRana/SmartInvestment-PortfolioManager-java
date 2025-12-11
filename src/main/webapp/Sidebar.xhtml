@@ -10,18 +10,18 @@
     </div>
 
     <ul class="menu">
-        <li><h:link outcome="UserDashboard" value="Dashboard"/></li>
-        <li><h:link outcome="Portfolio" value="Portfolio"/></li>
-        <li><h:link outcome="Orders" value="Orders"/></li>
-        <li><h:link outcome="Payments" value="Payments"/></li>
-        <li><h:link outcome="Transactions" value="Transactions"/></li>
-        <li><h:link outcome="Goal" value="Goals"/></li>
-        <li><h:link outcome="UserTransaction" value="User Transaction History"/></li>
-        <li><h:link outcome="Profile" value="Profile"/></li>
-        <li><h:link outcome="WatchList" value="Watchlist"/></li>        
-        <li><h:link outcome="Payouts" value="Payouts"/></li>
-
+        <li><h:link outcome="UserDashboard"><i class="pi pi-home"></i> Dashboard</h:link></li>
+        <li><h:link outcome="Portfolio"><i class="pi pi-briefcase"></i> Portfolio</h:link></li>
+        <li><h:link outcome="Orders"><i class="pi pi-shopping-cart"></i> Orders</h:link></li>
+        <li><h:link outcome="Payments"><i class="pi pi-credit-card"></i> Payments</h:link></li>
+        <li><h:link outcome="Transactions"><i class="pi pi-chart-line"></i> Transactions</h:link></li>
+        <li><h:link outcome="Goal"><i class="pi pi-bullseye"></i> Goals</h:link></li>
+        <li><h:link outcome="UserTransaction"><i class="pi pi-history"></i> History</h:link></li>
+        <li><h:link outcome="Profile"><i class="pi pi-user"></i> Profile</h:link></li>
+        <li><h:link outcome="WatchList"><i class="pi pi-star"></i> Watchlist</h:link></li>
+        <li><h:link outcome="Payouts"><i class="pi pi-wallet"></i> Payouts</h:link></li>
     </ul>
+
 
     <h:form style="padding:20px;">
         <h:commandButton value="Logout"
@@ -40,80 +40,121 @@ function toggleSidebar() {
 </script>
 
 <style>
-    .sidebar {
-    background: #111827;
+/* MAIN SIDEBAR */
+.sidebar {
+    background: #0B1220 !important;   /* Blue Neon Finance Look */
     color: white;
-    height: calc(100vh - 70px); /* reduce height because top:70px */
-    width: 230px;
+    height: calc(100vh - 70px);
+    width: 240px;
     position: fixed;
     top: 70px;
     left: 0;
     transition: transform .3s ease-in-out;
     padding-top: 10px;
-    box-shadow: 2px 0 10px rgba(0,0,0,0.4);
-
-    overflow-y: auto;   /* Enable vertical scroll */
-    overflow-x: hidden; /* prevent side scroll */
+    box-shadow: 3px 0 20px rgba(0,0,0,0.5);
+    overflow-y: auto;
+    overflow-x: hidden;
+    border-right: 1px solid rgba(255,255,255,0.05);
 }
+
+/* Scrollbar */
 .sidebar::-webkit-scrollbar {
     width: 6px;
 }
-
 .sidebar::-webkit-scrollbar-thumb {
-    background: #4b5563;
+    background: #334155;
     border-radius: 10px;
 }
 
-
+/* COLLAPSED MODE */
 .sidebar.collapsed {
-    transform: translateX(-230px);
+    transform: translateX(-240px);
 }
 
+/* TOGGLE BUTTON */
 #toggleBtn {
     position: fixed;
     top: 90px;
-    left: 180px;
+    left: 200px;
     z-index: 999;
-    background: palevioletred;
+    background: #3B82F6 !important;  /* Blue Neon Button */
     border: none;
     font-size: 22px;
     color: white;
-    padding: 8px 12px;
+    padding: 10px 14px;
     cursor: pointer;
-    border-radius: 6px;
-    transition: left .3s ease-in-out;
+    border-radius: 10px;
+    transition: .3s ease;
+    box-shadow: 0 4px 12px rgba(59,130,246,0.45);
 }
 
+#toggleBtn:hover {
+    background: #2563EB !important; /* Darker blue hover */
+}
 #toggleBtn.move {
     left: 10px;
 }
 
+/* MENU LIST */
 .menu {
     list-style: none;
     padding: 0;
+    margin-top: 15px;
+    font-family: "Inter", sans-serif;
 }
 .menu li {
     padding: 12px 20px;
+    margin: 4px 8px;
+    border-radius: 8px;
+    transition: .25s;
+    cursor: pointer;
 }
 .menu li a {
-    color:#cfd3d8;
-    text-decoration:none;
-    font-size:16px;
-    display:block;
+    color: #d1d5db;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 .menu li:hover {
-    background:#0b69ff;
-    border-radius:6px;
+    background: rgba(59,130,246,0.15);
+    color: white;
+    transform: translateX(6px);
+    box-shadow: inset 3px 0 0 #3b82f6;
+}
+.menu li:hover a {
+    color: #fff;
 }
 
+/* ACTIVE MENU (OPTIONAL) */
+.menu li.active {
+    background: rgba(59,130,246,0.3);
+    box-shadow: inset 3px 0 0 #3b82f6;
+}
+.menu li.active a {
+    color: #fff;
+}
+
+/* LOGOUT BUTTON */
 .logout-btn {
-    width: 100%;
+    width: 88%;
     background: #ef4444;
     border: none;
-    padding: 10px;
-    border-radius: 6px;
-    cursor:pointer;
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
     font-weight: bold;
+    color: white;
+    margin: 20px auto 10px auto;
+    display: block;
+    transition: .25s;
+}
+.logout-btn:hover {
+    background: #dc2626;
+    transform: translateY(-2px);
 }
 </style>
+
 </html>

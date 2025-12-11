@@ -27,16 +27,16 @@ public class PriceUpdaterService {
     Random random = new Random();
     @PostConstruct
     public void init() {
-        System.out.println("🚀 PriceUpdaterService LOADED");
+        System.out.println(" PriceUpdaterService LOADED");
     }
 
     // Runs every 1 minute
     @Schedule(hour="*", minute="*/1", persistent=false)
     public void updatePrices() {
         
-         System.out.println("🔥 Scheduler running...");
+         System.out.println(" Scheduler running...");
 
-        // ✅ FORCE DB SYNC BEFORE READ
+        //  FORCE DB SYNC BEFORE READ
         em.flush();
         em.clear();
         List<Object[]> list = em.createNativeQuery(

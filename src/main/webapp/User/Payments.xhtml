@@ -7,12 +7,56 @@
       xmlns:ui="jakarta.faces.facelets">
     <h:head>
         <title>My Payments</title>
+        
+         <style>
+           .payment-container {
+                margin-left: 250px; /* sidebar */
+                margin-top: 90px;   /* FIX: push below navbar */
+                padding: 30px;
+                font-family: Poppins, sans-serif;
+            }
+
+
+            /* PAGE TITLE */
+            .page-title {
+                font-size: 26px;
+                font-weight: 700;
+                margin-bottom: 25px;
+                color: #333;
+            }
+
+            /* CARD WRAPPER */
+            .card-box {
+                background: #fff;
+                padding: 25px;
+                border-radius: 14px;
+                box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            }
+
+            /* STATUS COLORS */
+            .status-paid {
+                font-weight: bold;
+                color: green;
+            }
+            .status-pending {
+                font-weight: bold;
+                color: orange;
+            }
+            .status-failed {
+                font-weight: bold;
+                color: red;
+            }
+        </style>
     </h:head>
     <h:body>
         <ui:include src="/Navbar.xhtml"/>
+        <!-- =============== SIDEBAR INCLUDE =============== -->
+        <ui:include src="/Sidebar.xhtml"/>
+            <div class="payment-container">
 
         <h2>My Payments</h2>
-
+        
+        <div class="card-box">
         <h:form id="paymentForm">
 
         <p:dataTable value="#{paymentBean.paymentsList}" var="p"
@@ -42,12 +86,17 @@
             </p:column>
 
             <p:column headerText="Date">
-                #{p.createdAt}
-            </p:column>
+                        <h:outputText value="#{p.createdAt}">
+                            <f:convertDateTime pattern="dd-MM-yyyy hh:mm a"/>
+                        </h:outputText>
+                    </p:column>
 
         </p:dataTable>
 
         </h:form>
+        </div>
+
+    </div>
 
     </h:body>
 </html>

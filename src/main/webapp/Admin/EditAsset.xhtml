@@ -8,179 +8,200 @@
     <ui:define name="title">
         Edit Asset
     </ui:define>
-    <ui:define name="content">
+       <ui:define name="content">
 
-        <h:head>
-            <title>Edit Asset</title>
+        <style>
 
-            <style>
-                body {
-                    background: #f0f2f5;
-                    font-family: Arial;
-                }
+            .page-container {
+                max-width: 900px;
+                margin: 30px auto;
+                padding: 30px;
+                background: white;
+                border-radius: 12px;
+                box-shadow: 0 6px 20px rgba(10, 30, 60, 0.08);
+                animation: fadeIn 0.4s ease-in-out;
+            }
 
-                .form-container {
-                    width: 60%;
-                    margin: 40px auto;
-                    background: white;
-                    padding: 40px;
-                    border-radius: 12px;
-                    box-shadow: 0px 4px 20px rgba(0,0,0,0.1);
-                }
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
 
-                h1 {
-                    text-align: center;
-                    color: #0f1c3f;
-                    margin-bottom: 30px;
-                }
+            .page-title {
+                text-align: center;
+                font-size: 26px;
+                color: #1e2a47;
+                font-weight: 700;
+                margin-bottom: 25px;
+            }
 
-                .grid {
-                    display: grid;
-                    grid-template-columns: 1fr 1fr;
-                    column-gap: 35px;
-                    row-gap: 25px;
-                }
+            .form-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 25px;
+            }
 
-                label {
-                    font-weight: bold;
-                    font-size: 16px;
-                }
+            label {
+                font-size: 15px;
+                font-weight: 600;
+                color: #1e2a47;
+                margin-bottom: 6px;
+                display: block;
+            }
 
-                input, select {
-                    width: 100%;
-                    padding: 10px;
-                    border-radius: 6px;
-                    border: 1px solid #ccc;
-                    font-size: 15px;
-                }
+            input, select {
+                width: 100%;
+                padding: 12px;
+                border-radius: 6px;
+                border: 1px solid #cfd4da;
+                background: #fafbfd;
+                font-size: 15px;
+                transition: border 0.3s ease;
+            }
 
-                .btn {
-                    margin-top: 30px;
-                    width: 100%;
-                    background: #0f1c3f;
-                    color: white;
-                    padding: 12px;
-                    font-size: 18px;
-                    border-radius: 6px;
-                    border: none;
-                    cursor: pointer;
-                }
+            input:focus, select:focus {
+                border-color: #0b76d1;
+                outline: none;
+                background: white;
+            }
 
-                .btn:hover {
-                    background: #1d2e63;
-                }
+            .image-preview-box {
+                width: 150px;
+                height: 150px;
+                border: 2px dashed #b5bfd0;
+                border-radius: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: #f4f6f9;
+                margin-top: 10px;
+            }
 
-                .preview-box {
-                    width: 100%;
-                    text-align: center;
-                    margin-top: 10px;
-                }
+            #previewImg {
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+            }
 
-                #previewImg {
-                    width: 80px;
-                    height: 80px;
-                    border-radius: 6px;
-                    object-fit: cover;
-                    border: 1px solid #ccc;
-                }
-            </style>
+            .btn-submit {
+                margin-top: 30px;
+                padding: 14px;
+                width: 100%;
+                font-size: 18px;
+                background: #0b76d1;
+                color: white;
+                border-radius: 8px;
+                border: none;
+                cursor: pointer;
+                transition: 0.25s;
+                font-weight: 600;
+            }
 
-            <script>
-                function previewImage(input) {
-                    const preview = document.getElementById("previewImg");
-                    const file = input.files[0];
+            .btn-submit:hover {
+                background: #095c9c;
+                transform: translateY(-2px);
+                box-shadow: 0px 6px 12px rgba(0,0,0,0.15);
+            }
 
-                    if (file) {
+        </style>
+
+        <script>
+            function previewImage(event) {
+                const input = event.target;
+                const preview = document.getElementById('previewImg');
+
+                if (input.files) {
+                    if (input.files[0]) {
                         const reader = new FileReader();
-                        reader.onload = e => preview.src = e.target.result;
-                        reader.readAsDataURL(file);
+                        reader.onload = function(e) {
+                            preview.src = e.target.result; // show selected file
+                        };
+                        reader.readAsDataURL(input.files[0]);
                     }
                 }
-            </script>
-        </h:head>
+            }
+        </script>
 
-        <h:body>
 
-            <div class="form-container">
+        <div class="page-container">
 
-                <h:form enctype="multipart/form-data">
+            <h:form enctype="multipart/form-data">
 
-                    <h1>Edit Asset</h1>
+                <div class="page-title">Edit Asset</div>
 
-                    <div class="grid">
+                <div class="form-grid">
 
-                        <!-- SYMBOL IMAGE UPLOAD -->
-                        <div>
-                            <label>Symbol Image:</label>
+                    <!-- SYMBOL IMAGE -->
+                    <div>
+                        <label>Symbol Image:</label>
 
-                            <h:inputFile value="#{assetManagedBean.symbolImage}"
-                                         onchange="previewImage(this)" />
+                        <h:inputFile id="symbolFile" value="#{assetManagedBean.symbolImage}" onchange="previewImage(event)" />
 
-                            <!-- CURRENT IMAGE PREVIEW -->
-                            <div class="preview-box">
-                                <h:graphicImage id="previewImg"
-                                    value="/resources/assets/#{assetManagedBean.symbol}"
-                                    alt="Image Preview" />
+                            <div class="image-preview-box">
+                                <img id="previewImg"
+                                     src="#{request.contextPath}/resources/assets/#{assetManagedBean.symbol}"
+                                     alt="Asset Preview" 
+                                     style="max-width:150px; max-height:150px;"/>
                             </div>
-                        </div>
-
-                        <!-- ASSET NAME -->
-                        <div>
-                            <label>Asset Name:</label>
-                            <h:inputText value="#{assetManagedBean.name}" required="true" />
-                        </div>
-
-                        <!-- ASSET TYPE -->
-                        <div>
-                            <label>Asset Type:</label>
-                            <h:selectOneMenu value="#{assetManagedBean.type}">
-                                <f:selectItem itemLabel="-- Select Type --" itemValue="" />
-                                <f:selectItem itemLabel="Stock" itemValue="STOCK"/>
-                                <f:selectItem itemLabel="Cryptocurrency" itemValue="CRYPTO"/>
-                                <f:selectItem itemLabel="Mutual Fund" itemValue="MUTUAL"/>
-                                <f:selectItem itemLabel="Commodity" itemValue="COMMODITY"/>
-                                <f:selectItem itemLabel="Bond" itemValue="BOND"/>
-                            </h:selectOneMenu>
-                        </div>
-
-                        <!-- CURRENT PRICE -->
-                        <div>
-                            <label>Current Price:</label>
-                            <h:inputText value="#{assetManagedBean.current_price}" required="true" />
-                        </div>
-
-                        <!-- STATUS -->
-                        <div>
-                            <label>Status:</label>
-                            <h:selectOneMenu value="#{assetManagedBean.status}">
-                                <f:selectItem itemValue="ACTIVE" itemLabel="ACTIVE"/>
-                                <f:selectItem itemValue="INACTIVE" itemLabel="INACTIVE"/>
-                            </h:selectOneMenu>
-                        </div>
-
-                        <!-- RISK LEVEL -->
-                        <div>
-                            <label>Risk Level:</label>
-                            <h:selectOneMenu value="#{assetManagedBean.risk}">
-                                <f:selectItem itemValue="LOW" itemLabel="LOW"/>
-                                <f:selectItem itemValue="MEDIUM" itemLabel="MEDIUM"/>
-                                <f:selectItem itemValue="HIGH" itemLabel="HIGH"/>
-                            </h:selectOneMenu>
-                        </div>
-
                     </div>
 
-                    <h:commandButton value="Save Changes"
-                                     action="#{assetManagedBean.update}"
-                                     styleClass="btn" />
+                    <!-- ASSET NAME -->
+                    <div>
+                        <label>Asset Name:</label>
+                        <h:inputText value="#{assetManagedBean.name}" required="true" />
+                    </div>
 
-                </h:form>
+                    <!-- TYPE -->
+                    <div>
+                        <label>Asset Type:</label>
+                        <h:selectOneMenu value="#{assetManagedBean.type}">
+                            <f:selectItem itemLabel="-- Select Type --" itemValue="" />
+                            <f:selectItem itemLabel="Stock" itemValue="STOCK"/>
+                            <f:selectItem itemLabel="Cryptocurrency" itemValue="CRYPTO"/>
+                            <f:selectItem itemLabel="Mutual Fund" itemValue="MUTUAL"/>
+                            <f:selectItem itemLabel="Commodity" itemValue="COMMODITY"/>
+                            <f:selectItem itemLabel="Bond" itemValue="BOND"/>
+                        </h:selectOneMenu>
+                    </div>
 
-            </div>
+                    <!-- PRICE -->
+                    <div>
+                        <label>Current Price:</label>
+                        <h:inputText value="#{assetManagedBean.current_price}" required="true" />
+                    </div>
 
-        </h:body>
+                    <!-- STATUS -->
+                    <div>
+                        <label>Status:</label>
+                        <h:selectOneMenu value="#{assetManagedBean.status}">
+                            <f:selectItem itemValue="ACTIVE" itemLabel="ACTIVE"/>
+                            <f:selectItem itemValue="INACTIVE" itemLabel="INACTIVE"/>
+                        </h:selectOneMenu>
+                    </div>
+
+                    <!-- RISK -->
+                    <div>
+                        <label>Risk Level:</label>
+                        <h:selectOneMenu value="#{assetManagedBean.risk}">
+                            <f:selectItem itemValue="LOW" itemLabel="LOW"/>
+                            <f:selectItem itemValue="MEDIUM" itemLabel="MEDIUM"/>
+                            <f:selectItem itemValue="HIGH" itemLabel="HIGH"/>
+                        </h:selectOneMenu>
+                    </div>
+
+                </div>
+
+                <!-- SUBMIT BUTTON -->
+                <h:commandButton value="Save Changes"
+                                 action="#{assetManagedBean.update}"
+                                 styleClass="btn-submit" />
+
+            </h:form>
+
+        </div>
 
     </ui:define>
+
 
 </ui:composition>
 

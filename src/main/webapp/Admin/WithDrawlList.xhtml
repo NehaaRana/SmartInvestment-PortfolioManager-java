@@ -8,65 +8,155 @@
     <ui:define name="title">
         WithDrawl List
     </ui:define>
-    <ui:define name="content">
+      <ui:define name="content">
 
-        <h:head>
-            <title>Withdrawals</title>
-            <style>
-                body {
-                    font-family: Arial, sans-serif;
-                    padding: 20px;
+        <style>
+            .page-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-bottom: 20px;
+            }
+
+            .page-title {
+                font-size: 22px;
+                font-weight: 600;
+                color: #1e2a47;
+            }
+
+            .withdraw-badge {
+                background: #0b76d1;
+                padding: 4px 10px;
+                border-radius: 6px;
+                color: white;
+                font-weight: 500;
+                font-size: 12px;
+            }
+
+            .search-input {
+                width: 260px;
+            }
+
+           .status-badge {
+                    padding: 4px 10px;
+                    border-radius: 6px;
+                    color: #fff;
+                    font-weight: 600;
+                    font-size: 13px;       /* bigger text */
+                    white-space: nowrap;
+                    display: inline-block;
                 }
 
-                .placeholder {
-                    margin-top: 50px;
-                    text-align: center;
-                    color: #555;
-                    font-size: 18px;
+                .action-container {
+                    display: flex;
+                    gap: 2px;              /* spacing between buttons */
                 }
-            </style>
-        </h:head>
 
-        <h:body>
-        <p:growl id="msg" showDetail="true" life="3000" sticky="false" globalOnly="true" />
+                .action-btn {
+                    padding: 1px 4px !important;
+                    font-size: 10px !important;
+                    font-weight:600;
+                }
+            .pending { background: orange; }
+            .approved { background: #28a745; }
+            .rejected { background: #d9534f; }
 
-            <h2>Withdrawals</h2>
-            <h:form id="redemptionForm">
-                <p:growl id="msg" showDetail="true"/>
-                
-                <p:dataTable value="#{redemptionBean.redemptionList}" var="r" paginator="true" rows="10" style="width: 100%">
-                    <p:column headerText="ID">
-                        #{r.rid}
-                    </p:column>
-                    <p:column headerText=" UserID">
-                        #{r.uid.fullName}
-                    </p:column>
-                    <p:column headerText="Asset ID">
-                        #{r.aid.name}
-                    </p:column>
-                    <p:column headerText="Units">
-                        #{r.units}
-                    </p:column>
-                    <p:column headerText="Amount">
-                        #{r.redemptionAmount}
-                    </p:column>
-                    <p:column headerText="Status">
+           
+        </style>
+
+        <h:form id="withdrawForm">
+
+            <p:growl id="msg" showDetail="true" life="3000" globalOnly="true" />
+
+            <!-- HEADER -->
+            <div class="page-header">
+                <div class="page-title">Withdrawals</div>
+                <span class="withdraw-badge">
+                    Total Withdrawals: #{redemptionBean.redemptionList.size()}
+                </span>
+            </div>
+
+            <!-- SEARCH BAR -->
+<!--            <p:inputText id="globalFilter"
+                         placeholder="Search withdrawals..."
+                         styleClass="search-input"
+                         onkeyup="PF('withdrawTable').filter()" />-->
+
+            <br/><br/>
+
+            <!-- WITHDRAWAL TABLE -->
+            <p:dataTable id="withdrawTable"
+                         var="r"
+                         widgetVar="withdrawTable"
+                         value="#{redemptionBean.redemptionList}"
+                         paginator="true"
+                         rows="10"
+                         rowsPerPageTemplate="5,10,20"
+                         stripedRows="true"
+                         rowKey="#{r.rid}"
+                         emptyMessage="No withdrawal requests found">
+
+                <!-- ID -->
+                <p:column headerText="ID" sortBy="#{r.rid}" filterBy="#{r.rid}">
+                    #{r.rid}
+                </p:column>
+
+                <!-- USER -->
+                <p:column headerText="User" sortBy="#{r.uid.fullName}" filterBy="#{r.uid.fullName}">
+                    #{r.uid.fullName}
+                </p:column>
+
+                <!-- ASSET -->
+                <p:column headerText="Asset" sortBy="#{r.aid.name}" filterBy="#{r.aid.name}">
+                    #{r.aid.name}
+                </p:column>
+
+                <!-- UNITS -->
+                <p:column headerText="Units" sortBy="#{r.units}">
+                    #{r.units}
+                </p:column>
+
+                <!-- AMOUNT -->
+                <p:column headerText="Amount" sortBy="#{r.redemptionAmount}">
+                    ₹ #{r.redemptionAmount}
+                </p:column>
+
+                <!-- STATUS -->
+                <p:column headerText="Status" filterBy="#{r.status}">
+                    <span class="status-badge
+                           #{r.status eq 'PENDING' ? 'pending' :
+                             r.status eq 'APPROVED' ? 'approved' :
+                             'rejected'}">
                         #{r.status}
+                    </span>
+                </p:column>
+
+                <!-- ACTIONS -->
+               <p:column headerText="Actions" style="width:170px;">
+
+                        <div class="action-container">
+
+                            <p:commandButton value="Approve"
+                                             icon="pi pi-check"
+                                             styleClass="btn btn-success action-btn"
+                                             update="@form msg"
+                                             actionListener="#{redemptionBean.approve(r)}"
+                                             rendered="#{r.status eq 'PENDING'}"/>
+
+                            <p:commandButton value="Reject"
+                                             icon="pi pi-times"
+                                             styleClass="btn btn-danger action-btn"
+                                             update="@form msg"
+                                             actionListener="#{redemptionBean.reject(r)}"
+                                             rendered="#{r.status eq 'PENDING'}"/>
+
+                        </div>
+
                     </p:column>
-                    <p:column headerText="Actions">
-                        <p:commandButton value="Approve" icon="pi pi-check"
-                                         update="msg redemptionForm" 
-                                         actionListener="#{redemptionBean.approve(r)}"
-                                         rendered="#{r.status eq 'PENDING'}"/>
-                        <p:commandButton value="Reject" icon="pi pi-check"
-                                         update="msg redemptionForm" 
-                                         actionListener="#{redemptionBean.reject(r)}"
-                                         style="margin-left: 5px"
-                                         rendered="#{r.status eq 'PENDING'}"/>
-                    </p:column>
-                </p:dataTable>
-            </h:form>
-        </h:body>
+
+            </p:dataTable>
+
+        </h:form>
 
     </ui:define>
 

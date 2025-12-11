@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="jakarta.faces.html"
       xmlns:ui="jakarta.faces.facelets"
-      xmlns:f="jakarta.faces.core">
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="http://primefaces.org/ui">
    <ui:composition template="/Admin/AdminLayout.xhtml">
 
     <!-- PAGE TITLE -->
@@ -12,103 +13,131 @@
     </ui:define>
 
     <!-- MAIN CONTENT -->
-    <ui:define name="content">
+   <ui:define name="content">
 
         <style>
-            .payoutTable {
-                width: 100%;
-                border-collapse: collapse;
-                margin-top: 15px;
+            .page-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-bottom: 20px;
             }
 
-            .payoutTable th {
-                background-color: #1e2a47;
-                color: #fff;
-                padding: 10px;
-                border: 1px solid #444;
+            .page-title {
+                font-size: 22px;
+                font-weight: 600;
+                color: #1e2a47;
             }
 
-            .payoutTable td {
-                padding: 10px;
-                border: 1px solid #ccc;
+            .payout-badge {
+                background: #0b76d1;
+                padding: 4px 10px;
+                border-radius: 6px;
+                color: white;
+                font-weight: 600;
+                font-size: 14px;
+            }
+
+            .search-input {
+                width: 260px;
             }
 
             .status-badge {
-                padding: 5px 10px;
-                border-radius: 4px;
-                color: white;
+                padding: 6px 12px;
+                border-radius: 6px;
+                color: #fff;
                 font-weight: bold;
+                white-space: nowrap;
+                display: inline-block;
             }
 
-            .status-SUCCESS { background-color: #28a745; }
-            .status-FAILED { background-color: #dc3545; }
-            .status-PENDING { background-color: #ffc107; color: #000; }
+            .SUCCESS { background: #28a745; }
+            .FAILED  { background: #d9534f; }
+            .PENDING { background: #ffc107; color: #000; }
         </style>
 
-        <h2 style="margin-bottom:20px;">Payouts List</h2>
+        <h:form id="payoutForm">
 
-        <h:form>
+            <!-- HEADER -->
+            <div class="page-header">
+                <div class="page-title">Payouts List</div>
 
-            <h:panelGroup id="payoutWrapper">
+                <span class="payout-badge">
+                    Total Payouts: #{payoutBean.payoutList.size()}
+                </span>
+            </div>
 
-                <h:dataTable value="#{payoutBean.payoutList}"
-                             var="p"
-                             styleClass="payoutTable">
+<!--             SEARCH BAR 
+            <p:inputText id="globalFilter"
+                         placeholder="Search payouts..."
+                         styleClass="search-input"
+                         onkeyup="PF('payoutTable').filter()" />-->
 
-                    <!-- PID -->
-                    <h:column>
-                        <f:facet name="header">Payout ID</f:facet>
-                        #{p.payId}
-                    </h:column>
+            <br/><br/>
 
-                    <!-- USER -->
-                    <h:column>
-                        <f:facet name="header">User</f:facet>
-                        #{p.uid.fullName} <br/>
-                        <small>(UID: #{p.uid.uid})</small>
-                    </h:column>
+            <!-- PAYOUTS TABLE -->
+            <p:dataTable id="payoutTable"
+                         var="p"
+                         widgetVar="payoutTable"
+                         value="#{payoutBean.payoutList}"
+                         paginator="true"
+                         rows="10"
+                         rowsPerPageTemplate="5,10,20"
+                         stripedRows="true"
+                         rowKey="#{p.payId}"
+                         emptyMessage="No payout records found">
 
-                    <!-- REDEMPTION ID -->
-                    <h:column>
-                        <f:facet name="header">Redemption ID</f:facet>
-                        #{p.rid.rid}
-                    </h:column>
+                <!-- PAYOUT ID -->
+                <p:column headerText="Payout ID" sortBy="#{p.payId}" filterBy="#{p.payId}">
+                    #{p.payId}
+                </p:column>
 
-                    <!-- AMOUNT -->
-                    <h:column>
-                        <f:facet name="header">Amount</f:facet>
-                        ₹ #{p.amount}
-                    </h:column>
+                <!-- USER -->
+                <p:column headerText="User" sortBy="#{p.uid.fullName}" filterBy="#{p.uid.fullName}">
+                    #{p.uid.fullName} <br/>
+                    <small>(UID: #{p.uid.uid})</small>
+                </p:column>
 
-                    <!-- REFERENCE NO -->
-                    <h:column>
-                        <f:facet name="header">Reference No</f:facet>
-                        #{p.referenceNo}
-                    </h:column>
+                <!-- REDEMPTION ID -->
+                <p:column headerText="Redemption ID" sortBy="#{p.rid.rid}" filterBy="#{p.rid.rid}">
+                    #{p.rid.rid}
+                </p:column>
+                
+                 <!-- REDEMPTION ID -->
+                <p:column headerText="Asset" sortBy="#{p.rid.aid.name}" filterBy="#{p.rid.aid.name}">
+                    #{p.rid.aid.name}
+                </p:column>
 
-                    <!-- STATUS -->
-                    <h:column>
-                        <f:facet name="header">Status</f:facet>
+                <!-- AMOUNT -->
+                <p:column headerText="Amount" sortBy="#{p.amount}">
+                    ₹ #{p.amount}
+                </p:column>
 
-                        <span class="status-badge status-#{p.status}">
-                            #{p.status}
-                        </span>
+                <!-- REFERENCE NUMBER -->
+                <p:column headerText="Reference No" sortBy="#{p.referenceNo}" filterBy="#{p.referenceNo}">
+                    #{p.referenceNo}
+                </p:column>
 
-                    </h:column>
+                <!-- STATUS -->
+                <p:column headerText="Status" filterBy="#{p.status}">
+                    <span class="status-badge #{p.status}">
+                        #{p.status}
+                    </span>
+                </p:column>
 
-                    <!-- CREATED AT -->
-                    <h:column>
-                        <f:facet name="header">Date</f:facet>
-                        #{p.createdAt}
-                    </h:column>
+                <!-- DATE -->
+                <p:column headerText="Date" sortBy="#{p.createdAt}">
+                    <h:outputText value="#{p.createdAt}">
+                        <f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"/>
+                    </h:outputText>
+                </p:column>
 
-                </h:dataTable>
-
-            </h:panelGroup>
+            </p:dataTable>
 
         </h:form>
 
     </ui:define>
+
 
 </ui:composition>
 </html>

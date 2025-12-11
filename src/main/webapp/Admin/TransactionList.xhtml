@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="jakarta.faces.html"
       xmlns:ui="jakarta.faces.facelets"
-      xmlns:f="jakarta.faces.core">
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="http://primefaces.org/ui">
   <ui:composition template="/Admin/AdminLayout.xhtml">
     <ui:define name="title">
         Transactions List
@@ -11,99 +12,130 @@
 
     <ui:define name="content">
 
-        <h:head>
-            <title>All Transactions</title>
+        <style>
+            .page-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-bottom: 20px;
+            }
 
-            <style>
-                .table {
-                    width: 100%;
-                    border-collapse: collapse;
-                    margin-top: 15px;
-                }
+            .page-title {
+                font-size: 22px;
+                font-weight: 600;
+                color: #1e2a47;
+            }
 
-                .table th {
-                    background-color: #333;
-                    color: #fff;
-                    padding: 10px;
-                    border: 1px solid #555;
-                }
+            .txn-badge {
+                background: #0b76d1;
+                padding: 6px 12px;
+                border-radius: 6px;
+                color: white;
+                font-weight: 600;
+                font-size: 14px;
+            }
 
-                .table td {
-                    padding: 10px;
-                    border: 1px solid #aaa;
-                }
+            .search-input {
+                width: 260px;
+            }
 
-                .badge {
-                    padding: 6px 10px;
-                    border-radius: 6px;
-                    color: white;
-                    font-weight: bold;
-                }
+            .status-badge {
+                padding: 6px 12px;
+                border-radius: 6px;
+                color: #fff;
+                font-weight: bold;
+                white-space: nowrap;     /* ⬅ prevents breaking into 2 lines */
+                display: inline-block;   /* ⬅ ensures proper auto-width */
+            }
 
-                .credit { background: green; }
-                .debit { background: red; }
-                .completed { background: #28a745; }
-                .pending { background: orange; }
-                .failed { background: red; }
-            </style>
-        </h:head>
 
-        <h:body>
+            .credit { background: #28a745; }
+            .debit { background: #d9534f; }
 
-            <h2>Transactions List</h2>
+            .completed { background: green; }
+            .pending { background: orange; }
+            .failed { background: red; }
 
-            <h:form>
+        </style>
 
-                <h:dataTable value="#{adminPaymentTransaction.transactionList}" 
-                             var="t" 
-                             styleClass="table">
+        <h:form id="txnForm">
 
-                    <h:column>
-                        <f:facet name="header">Txn ID</f:facet>
-                        #{t.tid}
-                    </h:column>
+            <!-- ===== HEADER ===== -->
+            <div class="page-header">
+                <div class="page-title">Transactions List</div>
 
-                    <h:column>
-                        <f:facet name="header">Order ID</f:facet>
-                        #{t.oid.oid}
-                    </h:column>
+                <span class="txn-badge">
+                    Total Transactions: #{adminPaymentTransaction.transactionList.size()}
+                </span>
+            </div>
 
-                    <h:column>
-                        <f:facet name="header">User</f:facet>
-                        #{t.uid.fullName}
-                    </h:column>
+<!--             ===== SEARCH BAR ===== 
+            <p:inputText id="globalFilter"
+                         placeholder="Search transactions..."
+                         styleClass="search-input"
+                         onkeyup="PF('txnTable').filter()" />-->
 
-                    <h:column>
-                        <f:facet name="header">Amount</f:facet>
-                        ₹ #{t.amount}
-                    </h:column>
+            <br/><br/>
 
-                    <h:column>
-                        <f:facet name="header">Type</f:facet>
-                       
-                            #{t.txnType.toUpperCase()}
-                      
-                    </h:column>
+            <!-- ===== TRANSACTION TABLE ===== -->
+            <p:dataTable id="txnTable"
+                         var="t"
+                         widgetVar="txnTable"
+                         value="#{adminPaymentTransaction.transactionList}"
+                         paginator="true"
+                         rows="10"
+                         rowsPerPageTemplate="5,10,20"
+                         stripedRows="true"
+                         rowKey="#{t.tid}"
+                         emptyMessage="No transactions found">
 
-                    <h:column>
-                        <f:facet name="header">Status</f:facet>
-                     
-                            #{t.status}
-                     
-                    </h:column>
+                <!-- Txn ID -->
+                <p:column headerText="Txn ID" sortBy="#{t.tid}" filterBy="#{t.tid}">
+                    #{t.tid}
+                </p:column>
 
-                    <h:column>
-                        <f:facet name="header">Date</f:facet>
-                        <h:outputText value="#{t.createdAt}">
-                            <f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"/>
-                        </h:outputText>
-                    </h:column>
+                <!-- Order ID -->
+                <p:column headerText="Order ID" sortBy="#{t.oid.oid}" filterBy="#{t.oid.oid}">
+                    #{t.oid.oid}
+                </p:column>
 
-                </h:dataTable>
+                <!-- USER NAME -->
+                <p:column headerText="User" sortBy="#{t.uid.fullName}" filterBy="#{t.uid.fullName}">
+                    #{t.uid.fullName}
+                </p:column>
 
-            </h:form>
+                <!-- AMOUNT -->
+                <p:column headerText="Amount" sortBy="#{t.amount}">
+                    ₹ #{t.amount}
+                </p:column>
 
-        </h:body>
+                <!-- TYPE -->
+                <p:column headerText="Type" filterBy="#{t.txnType}">
+                    <span class="status-badge #{t.txnType eq 'CREDIT' ? 'credit' : 'debit'}">
+                        #{t.txnType.toUpperCase()}
+                    </span>
+                </p:column>
+
+                <!-- STATUS -->
+                <p:column headerText="Status" filterBy="#{t.status}">
+                    <span class="status-badge 
+                          #{t.status eq 'COMPLETED' ? 'completed' :
+                            t.status eq 'PENDING' ? 'pending' :
+                            t.status eq 'FAILED' ? 'failed' : ''}">
+                        #{t.status}
+                    </span>
+                </p:column>
+
+                <!-- DATE -->
+                <p:column headerText="Date" sortBy="#{t.createdAt}">
+                    <h:outputText value="#{t.createdAt}">
+                        <f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"/>
+                    </h:outputText>
+                </p:column>
+
+            </p:dataTable>
+
+        </h:form>
 
     </ui:define>
 </ui:composition>

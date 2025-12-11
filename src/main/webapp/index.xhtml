@@ -7,186 +7,885 @@
       xmlns:ui="jakarta.faces.facelets">
 
 <h:head>
-    <title>Portfolio SIP Manager</title>
+    <title>Smart Investment Portfolio</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&amp;display=swap" rel="stylesheet"/>
 
     <style>
-        /* Base */
         body {
             margin:0;
-            font-family: "Inter", "Poppins", sans-serif;
-            background: linear-gradient(180deg, #e9f2ff 0%, #f6fbff 60%);
-            color:#05203a;
+            font-family:'Poppins', sans-serif;
+            background:#f7faff;
+            color:#0d1b2a;
         }
 
-        /* Topbar */
-        .topbar {
-            display:flex;
-            justify-content:space-between;
-            align-items:center;
-            padding:12px 28px;
-            background: linear-gradient(90deg, rgba(255,255,255,0.7), rgba(255,255,255,0.5));
-            box-shadow: 0 6px 20px rgba(6,30,63,0.06);
-            border-bottom-left-radius: 0;
-        }
-        .brand {
-            font-weight:800;
-            font-size:20px;
-            color:#042a52;
-            background: linear-gradient(90deg,#0b69ff,#00a8ff);
-            -webkit-background-clip:text; -webkit-text-fill-color:transparent;
-        }
+        /* ---------- GLOBAL ANIMATIONS ---------- */
+        .reveal { opacity:0; transform:translateY(20px); transition:.7s; }
+        .reveal.in-view { opacity:1; transform:translateY(0); }
 
-        /* Hero */
+        /* ---------- HERO SECTION ---------- */
         .hero {
-            text-align:left;
-            padding:64px 6% 40px 6%;
-            display:flex;
-            gap:36px;
-            align-items:center;
+            background:linear-gradient(135deg,#eaf1ff 0%, #f4f9ff 40%, #ffffff 100%);
+            padding:90px 60px 70px;
+            position:relative;
+            overflow:hidden;
         }
-        .hero-left { flex:1; }
-        .hero-right { flex:1; display:flex; justify-content:center; }
 
-        .hero-title { font-size:44px; margin:0; color:#042a52; font-weight:800; }
-        .hero-sub { margin-top:12px; color:#334e68; font-size:17px; }
+        /* Soft floating shapes like Hipre */
+        .hero::before {
+            content:"";
+            position:absolute;
+            width:280px;
+            height:280px;
+            background:rgba(100,160,255,0.18);
+            filter:blur(90px);
+            top:-20px;
+            left:-40px;
+            border-radius:40% 60% 70% 40%;
+        }
+        .hero::after {
+            content:"";
+            position:absolute;
+            width:240px;
+            height:240px;
+            background:rgba(140,180,255,0.14);
+            filter:blur(90px);
+            bottom:-20px;
+            right:-40px;
+            border-radius:60% 40% 50% 70%;
+        }
 
-        /* Glass card */
-        .glass {
-            width:92%;
-            max-width:980px;
-            margin: 24px auto;
-            border-radius:18px;
-            padding:24px;
-            background: linear-gradient(180deg, rgba(255,255,255,0.75), rgba(255,255,255,0.65));
-            box-shadow: 0 10px 34px rgba(10,50,120,0.08);
-            border: 1px solid rgba(11,105,255,0.12);
+        .hero-container {
+            max-width:1300px;
+            margin:auto;
             display:flex;
-            gap:20px;
-            align-items:center;
             justify-content:space-between;
+            align-items:center;
+            gap:60px;
         }
 
-        .glass .col { flex:1; }
+        .hero-title {
+            font-size:54px;
+            font-weight:800;
+            line-height:1.2;
+            color:#022e57;
+        }
 
+        .hero-sub {
+            color:#53627c;
+            font-size:18px;
+            margin-top:12px;
+            line-height:1.75;
+            max-width:520px;
+        }
+
+        .hero-buttons {
+            margin-top:22px;
+        }
+
+        /* HERO POLYGON IMAGE */
+       /* --- ROUND SVG-STYLE BACKGROUND BEHIND IMAGE --- */
+
+.hero-img-wrapper {
+    position: relative;
+    width: 460px;
+    height: 390px;
+    border-radius: 30px;
+    overflow: visible;
+    background: #ffffff;
+    box-shadow: 0 18px 40px rgba(0,0,0,0.15);
+}
+
+/* LARGE GLOW CIRCLE */
+.hero-bg-circle {
+    position: absolute;
+    width: 520px;
+    height: 520px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, rgba(100, 160, 255, 0.18));
+    top: -120px;
+    right: -160px;
+    filter: blur(40px);
+    z-index: 0;
+}
+
+/* SMALL CIRCLE */
+.hero-bg-circle-small {
+    position: absolute;
+    width: 190px;
+    height: 190px;
+    border-radius: 50%;
+    background: rgba(100, 160, 255,0.30);
+    bottom: -50px;
+    left: -50px;
+    filter: blur(20px);
+    z-index: 0;
+}
+
+.hero-img {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    overflow: hidden;
+    border-radius: 26px;
+}
+
+        /* ---------- WAVE DIVIDER ---------- */
+        .wave-divider {
+            margin-top:-90px;
+            margin-bottom:0;
+        }
+
+        /* ---------- STATS SECTION ---------- */
+        .stats-section {
+            margin-top:-10px;
+            margin-bottom: 40px;
+            padding:25px 60px 40px;
+            background:white;
+            display:flex;
+            justify-content:space-around;
+            flex-wrap:wrap;
+            gap:25px;
+            max-width:1150px;
+            margin-left:auto;
+            margin-right:auto;
+        }
+
+        .stat-box {
+            text-align:center;
+            min-width:200px;
+            margin-bottom: 0px;
+        }
+        .stat-number {
+            font-size:36px;
+            font-weight:800;
+            color:#0a58ff;
+            text-shadow:0 0 6px rgba(10,88,255,0.3);
+        }
+        .stat-label {
+            color:#5e6d85;
+            margin-top:4px;
+            font-size:15px;
+        }
+
+        /* ---------- SECTION WRAPPER ---------- */
+        .section-wrap {
+            max-width:1300px;
+            margin:auto;
+            padding:60px 60px;
+        }
+
+        .section-title {
+            text-align:center;
+            font-size:32px;
+            font-weight:800;
+            margin-top: -70px;
+            margin-bottom:15px;
+            color:#022e57;
+        }
+
+        /* ---------- CARD SECTIONS (Why + Services) ---------- */
+        .card-grid {
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+            gap:28px;
+        }
+
+        .card {
+            background:white;
+            padding:28px 22px;
+            border-radius:20px;
+            box-shadow:0 10px 26px rgba(15,23,42,0.06);
+            border:1px solid rgba(0,110,255,0.08);
+            position:relative;
+            transition:all .3s;
+        }
+        .card:hover {
+            transform:translateY(-6px);
+            box-shadow:0 16px 36px rgba(15,23,42,0.14);
+            border-color:rgba(0,110,255,0.2);
+        }
         .card-icon {
-            width:72px; height:72px; border-radius:12px;
-            display:flex; align-items:center; justify-content:center;
-            background:linear-gradient(45deg,#eaf6ff,#e6f8ff);
-            box-shadow: 0 6px 18px rgba(11,105,255,0.06);
-            color:#0b69ff; font-size:28px;
+            font-size:32px;
+            color:#0a58ff;
+        }
+        .card-bg-icon {
+            position:absolute;
+            right:12px;
+            top:12px;
+            font-size:70px;
+            opacity:0.05;
+            color:#0a58ff;
+        }
+        .card h3 {
+            margin:12px 0 8px;
+            font-size:18px;
+            font-weight:700;
+            color:#0b1324;
+        }
+        .card p {
+            margin:0;
+            color:#5b6b80;
+            font-size:15px;
+            line-height:1.65;
         }
 
-        .cta-row { margin-top:18px; }
+        /* ---------- IMPORTANCE SECTION ---------- */
+        .importance-section {
+            background:#eef4ff;
+            padding:50px 60px;
+        }
+        .importance-text {
+            text-align:center;
+            color:#475569;
+            font-size:17px;
+            line-height:1.9;
+            max-width:900px;
+            margin:auto;
+        }
 
-        /* feature grid */
-        .features { display:grid; grid-template-columns: repeat(auto-fit,minmax(240px,1fr)); gap:20px; padding:26px 6%; }
+        /* ---------- TESTIMONIALS ---------- */
+        .testimonials-section {
+            max-width:1100px;
+            margin:auto;
+            padding:50px 60px;
+        }
 
-        .p-card { border-radius:14px !important; }
+        .testimonials-grid {
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+            gap:22px;
+        }
 
-        /* responsive */
+        .testimonial {
+            background:white;
+            padding:22px;
+            border-radius:20px;
+            position:relative;
+            box-shadow:0 10px 28px rgba(15,23,42,0.07);
+            border:1px solid rgba(0,110,255,0.08);
+        }
+
+        .testimonial::before {
+            content:"“";
+            position:absolute;
+            font-size:60px;
+            color:rgba(15,23,42,0.05);
+            top:-8px;
+            left:16px;
+        }
+
+        .avatar {
+            width:42px;
+            height:42px;
+            border-radius:50%;
+            background:linear-gradient(135deg,#0a58ff,#00aaff);
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            color:white;
+            font-size:20px;
+        }
+
+        .testimonial-header {
+            display:flex;
+            align-items:center;
+            gap:12px;
+            margin-bottom:10px;
+        }
+
+        .testimonial-name {
+            font-weight:700;
+            color:#0b1324;
+        }
+        .testimonial-role {
+            font-size:13px;
+            color:#6b7280;
+        }
+        .testimonial-quote {
+            color:#4b5563;
+            font-size:15px;
+            line-height:1.7;
+            margin-top:4px;
+        }
+
+        /* ---------- CTA SECTION ---------- */
+        .cta-section {
+            /*background:linear-gradient(90deg,#0a58ff,#00a7ff);*/
+            padding:45px 26px;
+            border-radius:20px;
+            color:black;
+            text-align:center;
+            box-shadow:0 12px 34px rgba(0,80,200,0.3);
+            max-width:900px;
+            margin:40px auto;
+        }
+
+        /* ---------- FOOTER ---------- */
+        .footer {
+            background:#0d1b2a;
+            padding:40px 60px;
+            color:#dbe2ef;
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+            gap:30px;
+        }
+        .footer-title {
+            font-size:17px;
+            font-weight:700;
+            margin-bottom:10px;
+        }
+        .footer a {
+            color:#bcd0e6;
+            font-size:14px;
+            text-decoration:none;
+            display:block;
+            margin-bottom:6px;
+        }
+        .footer a:hover { color:white; }
+        .footer-bottom {
+            text-align:center;
+            background:#0a1526;
+            padding:12px;
+            font-size:13px;
+            color:#8ba0b9;
+        }
+
+        /* ------------------ New Hipre Style Sections ------------------ */
+
+        /* SECTION TAG LABEL */
+        .tag {
+            background:#dff0ff;
+            color:#0a58ff;
+            padding:6px 14px;
+            border-radius:8px;
+            font-weight:600;
+            font-size:13px;
+            display:inline-block;
+            margin-bottom:10px;
+        }
+
+        /* ADVISORY SERVICES */
+        .advisory-grid {
+            display:grid;
+            grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));
+            gap:28px;
+        }
+        .adv-card {
+            background:white;
+            padding:30px 24px;
+            border-radius:22px;
+            box-shadow:0 14px 32px rgba(0,0,0,0.08);
+            transition:.3s;
+            border:1px solid rgba(0,110,255,0.08);
+        }
+        .adv-card:hover {
+            transform:translateY(-6px);
+            box-shadow:0 18px 40px rgba(0,0,0,0.12);
+        }
+        .adv-icon {
+            width:60px;
+            height:60px;
+            border-radius:16px;
+            background:linear-gradient(135deg,#eaf3ff,#cfe4ff);
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-size:26px;
+            color:#0a58ff;
+            margin-bottom:14px;
+        }
+        .adv-card h3 {
+            font-size:20px;
+            font-weight:700;
+            color:#022e57;
+        }
+        .adv-card p {
+            font-size:15px;
+            color:#5b6b80;
+            margin-bottom:10px;
+        }
+        .adv-link {
+            font-size:14px;
+            font-weight:600;
+            color:#0a58ff;
+            cursor:pointer;
+        }
+
+        /* SUCCESS TRACK RECORD SECTION */
+        .why-text {
+            text-align:center;
+            max-width:700px;
+            margin:auto;
+            margin-bottom:22px;
+            font-size:16px;
+            color:#5e6d85;
+        }
+        .why-boxes {
+            display:flex;
+            justify-content:center;
+            gap:24px;
+            margin-bottom:20px;
+            flex-wrap:wrap;
+        }
+        .why-box {
+            background:white;
+            padding:20px 30px;
+            border-radius:16px;
+            box-shadow:0 10px 24px rgba(0,0,0,0.06);
+        }
+        .why-number {
+            font-size:20px;
+            font-weight:800;
+            color:#0a58ff;
+        }
+        .why-label {
+            font-size:15px;
+            color:#45546c;
+        }
+
+        /* PRICING CARDS */
+        .pricing-grid {
+            display:grid;
+            grid-template-columns:repeat(auto-fit, minmax(260px,1fr));
+            gap:28px;
+        }
+        .price-card {
+            background:white;
+            padding:30px;
+            border-radius:22px;
+            text-align:center;
+            box-shadow:0 14px 28px rgba(0,0,0,0.08);
+            transition:.3s;
+        }
+        .price-card:hover {
+            transform:translateY(-6px);
+            box-shadow:0 20px 36px rgba(0,0,0,0.12);
+        }
+        .price-card h4 {
+            font-size:18px;
+            font-weight:700;
+            color:#022e57;
+        }
+        .price {
+            font-size:40px;
+            font-weight:800;
+            color:#0a58ff;
+            margin:15px 0;
+        }
+        .feature-list {
+            list-style:none;
+            padding:0;
+            margin-top:20px;
+        }
+        .feature-list li {
+            padding:6px 0;
+            color:#46556f;
+            font-size:14px;
+        }
+
+        /* FAQ SECTION */
+        .faq-section {
+            background:#f4f8ff;
+            border-radius:20px;
+        }
+        .faq-grid {
+            margin-top:20px;
+        }
+        .faq-title {
+            background:white;
+            padding:16px 20px;
+            border-radius:14px;
+            color:#022e57;
+            font-size:16px;
+            font-weight:700;
+            box-shadow:0 10px 24px rgba(0,0,0,0.05);
+            margin-bottom:6px;
+        }
+        .faq-text {
+            padding:0 20px 16px;
+            color:#4e5d73;
+            font-size:15px;
+            margin-bottom:18px;
+        }
+
+        /* ---------- RESPONSIVE ---------- */
         @media (max-width:900px){
-            .hero { flex-direction:column; text-align:center; padding:48px 6%;}
-            .hero-right{ order: -1; margin-bottom:18px; }
+            .hero-container { flex-direction:column; text-align:center; }
+            .hero { padding:60px 20px 40px; }
+            .section-wrap, .testimonials-section { padding:40px 20px; }
+            .hero-img-wrapper { width:320px; height:320px; margin:auto; }
         }
     </style>
 </h:head>
 
 <h:body>
+
+    <!-- NAVBAR -->
     <ui:include src="/Navbar.xhtml"/>
 
-<!--     NAV 
-    <div class="topbar">
-        <div class="brand">Portfolio SIP Manager</div>
+    <!-- HERO -->
+    <section class="hero reveal">
+        <div class="hero-container">
+            <div>
+                <h1 class="hero-title">Invest Smarter. Grow Faster.</h1>
+                <p class="hero-sub">
+                    A modern SIP and Portfolio Manager that helps you analyze returns,
+                    automate tracking, and grow long-term wealth with confidence.
+                </p>
 
-        <div style="display:flex; align-items:center; gap:14px;">
-            <a href="index.jsf" style="text-decoration:none; color:#05203a; font-weight:600;">Home</a>
-            <a href="User/ViewPlans.jsf" style="text-decoration:none; color:#05203a; font-weight:600;">SIP Plans</a>
-            <a href="About.jsf" style="text-decoration:none; color:#05203a; font-weight:600;">About</a>
-             <h:link value="Home" outcome="/index" 
-                     style="text-decoration:none; color:#05203a; font-weight:600;" />
+                <div class="hero-buttons">
+                    <p:button value="Start Now" outcome="Login.jsf"
+                              styleClass="p-button-lg p-button-rounded p-button-primary"
+                              icon="pi pi-arrow-right" />
+                
+                    <p:button value="View Plans" outcome="/User/ViewPlans.jsf"
+                              styleClass="p-button-lg p-button-rounded p-button-outlined p-ml-2"
+                              icon="pi pi-chart-line" />
+                </div>
+            </div>
 
-             <h:link value="SIP Plans" outcome="/User/ViewPlans"
-                     style="text-decoration:none; color:#05203a; font-weight:600;" />
+            <!-- HERO IMAGE HEXAGON -->
+           <!-- HERO IMAGE AREA -->
+<div class="hero-img-wrapper">
+    <div class="hero-bg-circle"></div>
+    <div class="hero-bg-circle-small"></div>
 
-             <h:link value="About" outcome="/About"
-                     style="text-decoration:none; color:#05203a; font-weight:600;" />
-            <p:button value="Login" outcome="/Login" icon="pi pi-sign-in"
-                      styleClass="p-button-text" />
-            <p:button value="Register" outcome="Register.jsf" icon="pi pi-user-plus"
-                      styleClass="p-button-outlined p-button-rounded" />
+    <h:graphicImage library="images" name="home1.avif" styleClass="hero-img" />
+</div>
+
         </div>
-    </div>-->
+    </section>
 
-    <!-- HERO + CARD -->
-    <section class="hero">
-        <div class="hero-left">
-            <h1 class="hero-title">Premium SIP  Portfolio Manager</h1>
-            <div class="hero-sub">Beautiful dashboards, accurate SIP projections and secure account controls for serious investors.</div>
+    <!-- STATS -->
+    <div class="stats-section reveal">
+        <div class="stat-box">
+            <div class="stat-number">12,000+</div>
+            <div class="stat-label">Active Investors</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-number">₹50 Cr+</div>
+            <div class="stat-label">Assets Tracked</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-number">250,000+</div>
+            <div class="stat-label">SIP Entries Recorded</div>
+        </div>
+    </div>
 
-            <div class="cta-row">
-                <p:commandButton value="Get Started" action="Login.xhtml" icon="pi pi-arrow-right"
-                                 styleClass="p-button-lg p-button-rounded p-button-primary" />
-                <p:button value="View Plans" outcome="User/ViewPlans.jsf"
-                          styleClass="p-button-rounded p-button-secondary p-ml-3" icon="pi pi-chart-line" />
+    <!-- WHY CHOOSE -->
+    <section class="section-wrap reveal">
+        <h2 class="section-title">Why Choose Smart Investment Portfolio?</h2>
+
+        <div class="card-grid">
+            <div class="card">
+                <i class="pi pi-shield card-icon"></i>
+                <i class="pi pi-shield card-bg-icon"></i>
+                <h3>Bank-Level Security</h3>
+                <p>Your financial data is encrypted and stored with strict protection.</p>
+            </div>
+
+            <div class="card">
+                <i class="pi pi-chart-line card-icon"></i>
+                <i class="pi pi-chart-line card-bg-icon"></i>
+                <h3>Accurate Insights</h3>
+                <p>Powerful SIP analytics help you make smarter financial decisions.</p>
+            </div>
+
+            <div class="card">
+                <i class="pi pi-wallet card-icon"></i>
+                <i class="pi pi-wallet card-bg-icon"></i>
+                <h3>Track Everything</h3>
+                <p>SIP, goals, holdings, portfolio — all in one dashboard.</p>
+            </div>
+
+            <div class="card">
+                <i class="pi pi-users card-icon"></i>
+                <i class="pi pi-users card-bg-icon"></i>
+                <h3>Trusted Platform</h3>
+                <p>Designed for investors who want clarity and long-term growth.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section class="section-wrap reveal">
+        <!--<h2 class="section-title">Our Services</h2>-->
+
+        <div class="card-grid">
+            <div class="card">
+                <i class="pi pi-calculator card-icon"></i>
+                <i class="pi pi-calculator card-bg-icon"></i>
+                <h3>SIP Calculator</h3>
+                <p>Project future values with accurate compounding and tax options.</p>
+            </div>
+
+            <div class="card">
+                <i class="pi pi-chart-bar card-icon"></i>
+                <i class="pi pi-chart-bar card-bg-icon"></i>
+                <h3>Portfolio Analytics</h3>
+                <p>Evaluate diversification, allocation, and long-term performance.</p>
+            </div>
+
+            <div class="card">
+                <i class="pi pi-bell card-icon"></i>
+                <i class="pi pi-bell card-bg-icon"></i>
+                <h3>Smart Alerts</h3>
+                <p>Receive alerts for SIP dates, limits, goals, and market changes.</p>
+            </div>
+
+            <div class="card">
+                <i class="pi pi-file card-icon"></i>
+                <i class="pi pi-file card-bg-icon"></i>
+                <h3>Financial Reports</h3>
+                <p>Download elegant PDF/Excel reports for audits or advisors.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ADVISORY SERVICES (Hipre style) -->
+    <section class="section-wrap reveal">
+        <!--<span class="tag">Our Services</span>-->
+        <h2 class="section-title">Our Advisory Services</h2>
+
+        <div class="advisory-grid">
+            <div class="adv-card">
+                <div class="adv-icon"><i class="pi pi-chart-line"></i></div>
+                <h3>Investment Plans</h3>
+                <p>Structured investment plans with long-term growth.</p>
+                <a class="adv-link">View Details →</a>
+            </div>
+
+            <div class="adv-card">
+                <div class="adv-icon"><i class="pi pi-wallet"></i></div>
+                <h3>Portfolio Management</h3>
+                <p>Professional portfolio balancing and monitoring.</p>
+                <a class="adv-link">View Details →</a>
+            </div>
+
+            <div class="adv-card">
+                <div class="adv-icon"><i class="pi pi-shield"></i></div>
+                <h3>Risk Analysis</h3>
+                <p>Protect your wealth with smart risk evaluation.</p>
+                <a class="adv-link">View Details →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- TRACK RECORD SECTION -->
+    <section class="section-wrap reveal" style="background:#f5f9ff; border-radius:20px;">
+        <!--<span class="tag">Why Choose Us</span>-->
+        <h2 class="section-title">Proven Track Record of Success</h2>
+
+        <p class="why-text">
+            Built for high performance, transparency, and long-term wealth creation.
+        </p>
+
+        <div class="why-boxes">
+            <div class="why-box">
+                <div class="why-number">No. 1</div>
+                <div class="why-label">Transparent Reporting</div>
+            </div>
+
+            <div class="why-box">
+                <div class="why-number">No. 2</div>
+                <div class="why-label">Flexible Withdrawals</div>
             </div>
         </div>
 
-        <div class="hero-right">
-            <div class="glass" role="region" aria-label="summary">
-                <div class="col">
-                    <div style="display:flex; gap:12px; align-items:center;">
-                        <div class="card-icon"><span class="pi pi-wallet"></span></div>
-                        <div>
-                            <div style="font-weight:700; color:#042a52;">Total SIPs</div>
-                            <div style="color:#49708e; margin-top:4px;">Track active SIPs  history</div>
-                        </div>
+        <p:button value="More Details" styleClass="p-button-rounded p-button-primary" />
+    </section>
+
+    <!-- PRICING PLAN -->
+    <section class="section-wrap reveal">
+        <!--<span class="tag">Pricing Plan</span>-->
+        <h2 class="section-title">Choose Your Best Plan</h2>
+
+        <div class="pricing-grid">
+            <div class="price-card">
+                <h4>Starter Plan</h4>
+                <div class="price">$100</div>
+                <p:button value="Get It Now" styleClass="p-button-rounded p-button-primary" />
+                <ul class="feature-list">
+                    <li>1 Business Account</li>
+                    <li>30 Days Long</li>
+                    <li>5%–7% Expected Returns</li>
+                </ul>
+            </div>
+
+            <div class="price-card">
+                <h4>Standard Plan</h4>
+                <div class="price">$500</div>
+                <p:button value="Get It Now" styleClass="p-button-rounded p-button-primary" />
+                <ul class="feature-list">
+                    <li>5 Business Accounts</li>
+                    <li>60 Days Long</li>
+                    <li>8%–10% Expected Returns</li>
+                </ul>
+            </div>
+
+            <div class="price-card">
+                <h4>Advanced Plan</h4>
+                <div class="price">$1000</div>
+                <p:button value="Get It Now" styleClass="p-button-rounded p-button-primary" />
+                <ul class="feature-list">
+                    <li>10 Business Accounts</li>
+                    <li>90 Days Long</li>
+                    <li>12%–15% Expected Returns</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ SECTION -->
+    <section class="section-wrap reveal faq-section">
+        <!--<span class="tag">FAQ</span>-->
+        <h2 class="section-title">Frequently Asked Questions</h2>
+
+        <div class="faq-grid">
+            <div>
+                <h3 class="faq-title">How Can I Pay?</h3>
+                <p class="faq-text">Payments available via UPI, bank transfer and debit card.</p>
+            </div>
+
+            <div>
+                <h3 class="faq-title">How Does It Work?</h3>
+                <p class="faq-text">Track SIPs, monitor growth and receive smart insights.</p>
+            </div>
+
+            <div>
+                <h3 class="faq-title">How Can I Get Support?</h3>
+                <p class="faq-text">Our team is available via email and WhatsApp.</p>
+            </div>
+        </div>
+
+        <p:button value="Contact Us" styleClass="p-button-rounded p-button-primary p-mt-3" />
+    </section>
+
+    <!-- IMPORTANCE -->
+<!--    <section class="importance-section reveal">
+        <h2 class="section-title">Why This Platform Matters</h2>
+        <p class="importance-text">
+            Managing SIPs manually is time-consuming and risky.
+            Smart Investment Portfolio centralizes everything — SIPs, holdings, reports —
+            giving you clarity and confidence in every financial decision.
+        </p>
+    </section>-->
+
+    <!-- TESTIMONIALS -->
+    <section class="testimonials-section reveal">
+        <h2 class="section-title">What Our Investors Say</h2>
+
+        <div class="testimonials-grid">
+            <div class="testimonial">
+                <div class="testimonial-header">
+                    <div class="avatar"><i class="pi pi-briefcase"></i></div>
+                    <div>
+                        <div class="testimonial-name">Rohit Mehta</div>
+                        <div class="testimonial-role">Long-term Investor</div>
                     </div>
                 </div>
+                <div class="testimonial-quote">
+                    “Rebalancing with this tool improved my returns without adding risk.”
+                </div>
+            </div>
 
-                <div class="col">
-                    <div style="display:flex; gap:12px; align-items:center;">
-                        <div class="card-icon"><span class="pi pi-chart-line"></span></div>
-                        <div>
-                            <div style="font-weight:700; color:#042a52;">Portfolio Value</div>
-                            <div style="color:#49708e; margin-top:4px;">See real-time valuations</div>
-                        </div>
+            <div class="testimonial">
+                <div class="testimonial-header">
+                    <div class="avatar"><i class="pi pi-graduation-cap"></i></div>
+                    <div>
+                        <div class="testimonial-name">Ayesha Khan</div>
+                        <div class="testimonial-role">Young Professional</div>
                     </div>
                 </div>
+                <div class="testimonial-quote">
+                    “This platform helped me understand SIPs and track my wealth growth easily.”
+                </div>
+            </div>
 
-                <div class="col" style="text-align:right;">
-                    <div style="font-weight:700; color:#042a52;">Secure</div>
-                    <div style="color:#49708e; margin-top:6px;">Encrypted sessions  role access</div>
+            <div class="testimonial">
+                <div class="testimonial-header">
+                    <div class="avatar"><i class="pi pi-user"></i></div>
+                    <div>
+                        <div class="testimonial-name">Karan Patel</div>
+                        <div class="testimonial-role">First-time Investor</div>
+                    </div>
+                </div>
+                <div class="testimonial-quote">
+                    “One dashboard gives me instant clarity. I love the clean UI!”
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- FEATURES GRID -->
-    <div class="features">
-        <p:card styleClass="p-card">
-            <f:facet name="title">SIP Calculator</f:facet>
-            <p>Quickly model SIP returns with ease — monthly/quarterly/yearly options.</p>
-        </p:card>
-
-        <p:card styleClass="p-card">
-            <f:facet name="title">Analytics</f:facet>
-            <p>Charts and breakdowns that make portfolio decisions simple and clear.</p>
-        </p:card>
-
-        <p:card styleClass="p-card">
-            <f:facet name="title">Secure Access</f:facet>
-            <p>JWT-based sessions, encrypted storage and admin controls.</p>
-        </p:card>
-
-        <p:card styleClass="p-card">
-            <f:facet name="title">Export Reports</f:facet>
-            <p>Download investment summaries and statements as PDF/CSV.</p>
-        </p:card>
+    <!-- CTA -->
+    <div class="cta-section">
+        <h2>Start Your Wealth Journey Today</h2>
+        <p>Experience smart investing with automation and powerful analytics.</p>
+        <br/>
+        <p:button value="Create Account" outcome="/Register.jsf"
+                  icon="pi pi-user-plus"
+                  styleClass="p-button-lg p-button-rounded p-button-info" />
     </div>
 
-    <p:divider />
+    <!-- FOOTER -->
+    <div class="footer">
+        <div>
+            <div class="footer-title">Smart Investment Portfolio</div>
+            <p>Track, analyse, and grow your wealth with confidence.</p>
+        </div>
 
-    <div style="text-align:center; padding:20px 12px; color:#6b7b8a;">© 2025 Portfolio SIP Manager — All Rights Reserved</div>
+        <div>
+            <div class="footer-title">Quick Links</div>
+            <a href="index.jsf">Home</a>
+            <a href="/User/ViewPlans.jsf">SIP Plans</a>
+            <a href="/About.jsf">About</a>
+            <a href="/Login.jsf">Login</a>
+        </div>
+
+        <div>
+            <div class="footer-title">Support</div>
+            <a>Help Center</a>
+            <a>support@portfolio.com</a>
+            <a>Privacy Policy</a>
+            <a>Terms of Use</a>
+        </div>
+
+        <div>
+            <div class="footer-title">Follow Us</div>
+            <a><i class="pi pi-facebook"></i> Facebook</a>
+            <a><i class="pi pi-twitter"></i> Twitter</a>
+            <a><i class="pi pi-instagram"></i> Instagram</a>
+            <a><i class="pi pi-linkedin"></i> LinkedIn</a>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        © 2025 Smart Investment Portfolio — All Rights Reserved
+    </div>
+
+    <!-- Reveal Animation Script -->
+    <script type="text/javascript">
+        (function() {
+            var els = document.querySelectorAll('.reveal');
+            if (!window.IntersectionObserver) {
+                els.forEach(function(e){ e.classList.add('in-view'); });
+                return;
+            }
+            var obs = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('in-view');
+                        obs.unobserve(entry.target);
+                    }
+                });
+            }, {threshold:0.12});
+            els.forEach(function(e){ obs.observe(e); });
+        })();
+    </script>
 
 </h:body>
 </html>

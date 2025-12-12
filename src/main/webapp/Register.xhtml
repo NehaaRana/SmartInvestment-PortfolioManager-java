@@ -9,79 +9,114 @@
 <h:head>
     <title>Create Account — Portfolio SIP Manager</title>
 
-    <style>
-        body {
-            margin:0;
-            font-family: "Inter", "Poppins", sans-serif;
-            background: linear-gradient(180deg, #e9f2ff 0%, #f6fbff 60%);
-            color:#05203a;
-        }
+   <style>
+    body {
+        margin:0;
+        font-family: "Inter", "Poppins", sans-serif;
+        background: linear-gradient(180deg, #e9f2ff 0%, #f6fbff 60%);
+        color:#05203a;
+    }
 
-        /* topbar same as index */
-        .topbar {
-            display:flex;
-            justify-content:space-between;
-            align-items:center;
-            padding:12px 28px;
-            background: linear-gradient(90deg, rgba(255,255,255,0.7), rgba(255,255,255,0.5));
-            box-shadow: 0 6px 20px rgba(6,30,63,0.06);
-        }
+    /* Smaller centered glass form box */
+    .register-box {
+        max-width: 440px;  /* smaller width */
+        margin: 80px auto;
+        padding: 28px 30px; /* reduced padding */
+        border-radius:20px;
+        background: rgba(255,255,255,0.78);
+        backdrop-filter: blur(12px);
+        box-shadow: 0 14px 34px rgba(10,50,120,0.10);
+        border: 1px solid rgba(11,105,255,0.10);
+        animation: fadeIn 0.7s ease;
+        transition: all 0.4s ease;
+    }
 
-        .brand {
-            font-weight:800;
-            font-size:20px;
-            color:#042a52;
-            background: linear-gradient(90deg,#0b69ff,#00a8ff);
-            -webkit-background-clip:text;
-            -webkit-text-fill-color:transparent;
-        }
+    .register-box:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 20px 48px rgba(10,50,120,0.15);
+    }
 
-        /* glass form box */
-        .register-box {
-            max-width: 520px;
-            margin: 60px auto;
-            padding: 32px;
-            border-radius:18px;
-            background: linear-gradient(180deg, rgba(255,255,255,0.82), rgba(255,255,255,0.7));
-            box-shadow: 0 10px 34px rgba(10,50,120,0.08);
-            border: 1px solid rgba(11,105,255,0.12);
-            animation: fadeIn 0.7s ease;
-        }
+    @keyframes fadeIn {
+        0% { opacity:0; transform:translateY(20px); }
+        100% { opacity:1; transform:translateY(0); }
+    }
 
-        @keyframes fadeIn {
-            0% { opacity:0; transform:translateY(-20px); }
-            100% { opacity:1; transform:translateY(0); }
-        }
+    .title {
+        text-align:center;
+        font-size:26px; /* reduced size */
+        font-weight:800;
+        color:#042a52;
+        margin-bottom:4px;
+    }
 
-        .title {
-            text-align:center;
-            font-size:28px;
-            font-weight:800;
-            color:#042a52;
-            margin-bottom:8px;
-        }
+    .subtitle {
+        text-align:center;
+        color:#5a7184;
+        margin-bottom:18px; /* less space */
+        font-size:15px;
+    }
 
-        .subtitle {
-            text-align:center;
-            color:#5a7184;
-            margin-bottom:22px;
-            font-size:15px;
-        }
+   .label {
+        font-weight:600;
+        color:#042a52;
+        margin-bottom:2px; /* almost no gap */
+        display:block;
+        font-size:14px;
+    }
 
-        .label {
-            font-weight:600;
-            color:#042a52;
-        }
+    .ui-password-panel input {
+        height: 48px !important;
+        padding:14px 18px !important;
+        font-size:15px !important;
+    }
 
-        a {
-            color:#0b69ff;
-            font-weight:600;
-            text-decoration:none;
-        }
-        a:hover {
-            text-decoration:underline;
-        }
-    </style>
+        /* compact inputs */
+     .ui-inputfield {
+        border-radius:10px !important;
+        padding:14px 18px !important; /* taller input */
+        height: 48px !important;      /* increased height */
+        border:1px solid rgba(0,0,0,0.16) !important;
+        transition:0.25s ease;
+        width:100%;
+        background:#ffffffee !important;
+        margin-bottom:6px !important; /* reduced space below input */
+        font-size:15px !important;
+    }
+
+    .ui-inputfield:focus {
+        border-color:#0b69ff !important;
+        box-shadow:0 0 0 3px rgba(11,105,255,0.18) !important;
+    }
+
+    /* Compact button */
+    .p-button-primary {
+        background:#0b69ff !important;
+        border:none !important;
+        padding:10px 16px !important;
+        font-size:14px !important;
+        font-weight:600 !important;
+        border-radius:12px !important;
+        width:100%;
+        letter-spacing:0.3px;
+        transition: background 0.25s ease, transform 0.2s ease;
+    }
+
+    .p-button-primary:hover {
+        background:#005fe6 !important;
+        transform: translateY(-2px);
+    }
+
+    a {
+        color:#0b69ff;
+        font-weight:600;
+        text-decoration:none;
+    }
+    a:hover {
+        text-decoration:underline;
+    }
+</style>
+
+
 </h:head>
 
 <h:body>
@@ -116,7 +151,7 @@
                 <p:outputLabel for="email" value="Email" styleClass="label"/>
                 <p:inputText id="email" value="#{userManageBean.email}" placeholder="example@mail.com"
                              required="true" requiredMessage="Email is required." validatorMessage="Enter a valid email address">
-                    <f:validateRegex pattern="^[^@]+@[^@]+\\.[^@]+$"/>
+                    <f:validateRegex pattern="^[^@]+@[^@]+\.[^@]+$"/>
                 </p:inputText>
 
                 <p:outputLabel for="pass" value="Password" styleClass="label"/>

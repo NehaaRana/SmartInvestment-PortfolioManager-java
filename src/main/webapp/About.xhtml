@@ -17,44 +17,25 @@
             color: #05203a;
         }
 
-        /* Topbar */
-        .topbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 28px;
-            background: linear-gradient(90deg, rgba(255,255,255,0.7), rgba(255,255,255,0.5));
-            box-shadow: 0 6px 20px rgba(6,30,63,0.06);
-        }
-
-        .brand {
-            font-weight: 800;
-            font-size: 20px;
-            background: linear-gradient(90deg, #0b69ff, #00a8ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        /* HERO ABOUT SECTION */
         .hero-about {
-            padding: 70px 10%;
+            margin-top:50px;
+            padding: 20px 10%;
             text-align: center;
         }
         .hero-title {
             font-weight: 800;
-            font-size: 40px;
+            font-size: 42px;
             color: #042a52;
         }
         .hero-sub {
             color: #334e68;
             font-size: 18px;
-            max-width: 720px;
-            margin: 12px auto 0 auto;
+            max-width: 750px;
+            margin: 2px auto;
         }
 
-        /* Glass Info Card */
         .about-card {
-            margin: 40px auto;
+            margin: 30px auto;
             max-width: 880px;
             padding: 28px;
             border-radius: 18px;
@@ -62,18 +43,84 @@
             box-shadow: 0 12px 34px rgba(10,50,120,0.10);
             border: 1px solid rgba(11,105,255,0.12);
         }
-
         .section-title {
             font-size: 28px;
             font-weight: 700;
             color: #042a52;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
         }
-
         .about-text {
-            line-height: 1.6;
+            line-height: 1.7;
             font-size: 16px;
             color: #35506b;
+        }
+
+        /* Image Section */
+        .image-section {
+            width: 100%;
+            margin: 40px 0;
+            text-align: center;
+        }
+        .image-section img {
+            width: 70%;
+            max-width: 850px;
+            border-radius: 18px;
+            box-shadow: 0 10px 28px rgba(0,0,0,0.12);
+        }
+        .hero-img {
+            width: 100%;
+            max-width: 750px;
+            height: auto;
+            max-height: 420px;
+            object-fit: cover;
+            border-radius: 18px;
+            margin: 0 auto;
+            display: block;
+            box-shadow: 0 10px 28px rgba(0,0,0,0.12);
+        }
+        
+        /* SIDE-BY-SIDE SECTION */
+        .about-flex-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 40px;
+            width: 100%;
+            padding: 50px 10%;
+            flex-wrap: wrap;
+        }
+
+        .about-flex-section img {
+            width: 500px;              /* perfect professional size */
+            height: 500;
+            border-radius: 20px;
+            object-fit: cover;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+        }
+
+        .about-flex-content {
+            max-width: 520px;
+        }
+
+        .about-flex-content .section-title {
+            margin-bottom: 12px;
+            font-size: 28px;
+        }
+
+
+        /* Two-column section */
+        .two-col {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            padding: 40px 10%;
+        }
+        .col-box {
+            background: white;
+            padding: 22px;
+            border-radius: 18px;
+            border: 1px solid rgba(11,105,255,0.12);
+            box-shadow: 0 8px 22px rgba(10,50,120,0.06);
         }
 
         /* Features Grid */
@@ -82,9 +129,7 @@
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
             gap: 22px;
             padding: 30px 10%;
-            margin-top: 20px;
         }
-
         .feature-box {
             background: white;
             border-radius: 16px;
@@ -93,60 +138,132 @@
             box-shadow: 0 6px 20px rgba(10,50,120,0.06);
             text-align: center;
         }
-
         .feature-icon {
             font-size: 32px;
             color: #0b69ff;
             margin-bottom: 10px;
         }
 
+        /* ---------- FOOTER ---------- */
         .footer {
-            text-align: center;
-            padding: 18px;
-            color: #6b7b8a;
+            background:#0d1b2a;
+            padding:40px 60px;
+            color:#dbe2ef;
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+            gap:30px;
+        }
+        .footer-title {
+            font-size:17px;
+            font-weight:700;
+            margin-bottom:10px;
+        }
+        .footer a {
+            color:#bcd0e6;
+            font-size:14px;
+            text-decoration:none;
+            display:block;
+            margin-bottom:6px;
+        }
+        .footer a:hover { color:white; }
+        .footer-bottom {
+            text-align:center;
+            background:#0a1526;
+            padding:12px;
+            font-size:13px;
+            color:#8ba0b9;
         }
     </style>
-
 </h:head>
 
 
 <h:body>
 
-    <!-- NAV -->
-<ui:include src="/Navbar.xhtml"/>
-<!--    <div class="topbar">
-        <div class="brand">Portfolio SIP Manager</div>
-
-        <div style="display:flex; gap:14px; align-items:center;">
-            <a href="index.jsf" style="text-decoration:none; color:#05203a; font-weight:600;">Home</a>
-            <a href="User/ViewPlans.jsf" style="text-decoration:none; color:#05203a; font-weight:600;">SIP Plans</a>
-            <a href="About.jsf" style="text-decoration:none; color:#05203a; font-weight:600;">About</a>
-
-            <p:button value="Login" outcome="Login" icon="pi pi-sign-in"
-                      styleClass="p-button-text" />
-            <p:button value="Register" outcome="Register" icon="pi pi-user-plus"
-                      styleClass="p-button-outlined p-button-rounded" />
-        </div>
-    </div>-->
-
+<ui:include src="/Navbar.xhtml" />
 
     <!-- HERO SECTION -->
     <div class="hero-about">
         <div class="hero-title">About Portfolio SIP Manager</div>
-        <div class="hero-sub">A modern tool built to simplify your SIP investments with clarity, analytics and peace of mind.</div>
+        <div class="hero-sub">
+            A smart and intuitive platform crafted to simplify your investment journey through  
+            automation, analytics, and meaningful insights.
+        </div>
     </div>
 
 
-    <!-- GLASS CARD CONTENT -->
+    <!-- IMAGE + TEXT SIDE-BY-SIDE -->
+    <div class="about-flex-section">
+
+        <!-- LEFT SIDE IMAGE -->
+        <h:graphicImage library="images" name="about.jpg"
+                        alt="Portfolio Image"
+                        style="border-radius:20px;"/>
+
+        <!-- RIGHT SIDE TEXT -->
+        <div class="about-flex-content">
+            <div class="section-title">Smart Investment, Made Simple</div>
+
+            <div class="about-text">
+                Managing investments shouldn't feel overwhelming.  
+                Portfolio SIP Manager provides a clean, modern and intelligent way to track  
+                your SIPs, monitor your portfolio performance and stay consistent with your goals.
+                <br/><br/>
+                We believe that every investor—beginner or expert—deserves clarity, automation  
+                and meaningful insights that support confident financial decision-making.
+                <br/><br/>
+                Our platform simplifies your journey by combining analytics, discipline  
+                and visually rich dashboards into one seamless investment experience.
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!-- MISSION CARD -->
     <div class="about-card">
         <div class="section-title">Our Mission</div>
         <div class="about-text">
-            Portfolio SIP Manager helps investors track, plan and optimize their SIPs.  
-            We provide an intuitive platform with premium-grade UI, secure architecture  
-            and performance-focused analytics.  
+            Our mission is to empower individuals to invest with confidence.  
+            Financial planning should not be confusing, overwhelming, or limited to experts—  
+            everyone deserves tools that make investing simple, disciplined, and meaningful.
             <br/><br/>
-            Whether you are a student, new investor or long-term portfolio builder,  
-            we give you the tools to make smarter decisions with confidence.
+            Portfolio SIP Manager bridges this gap by offering a clean, interactive and  
+            highly secure investment tracking platform. Whether you’re building your first SIP  
+            or managing multiple funds, we help you stay disciplined and financially aware.
+        </div>
+    </div>
+
+
+    <!-- WHY INVESTMENT MATTERS -->
+    <div class="two-col">
+        <div class="col-box">
+            <div class="section-title">Why Investment Matters</div>
+            <div class="about-text">
+                Investing is the foundation of long-term wealth creation.  
+                SIPs (Systematic Investment Plans) encourage disciplined investing by  
+                allowing individuals to grow wealth steadily without timing the market.
+                <br/><br/>
+                With rising inflation and financial uncertainties, traditional savings  
+                are no longer enough. Smart investing helps you achieve life goals—  
+                education, home, retirement, or simply financial freedom.
+            </div>
+        </div>
+
+        <div class="col-box">
+            <div class="section-title">Importance of Portfolio Tracking</div>
+            <div class="about-text">
+                A portfolio is not just a collection of investments—it is your financial identity.
+                Tracking it regularly is essential to:
+                <ul>
+                    <li>Identify underperforming funds</li>
+                    <li>Maintain the right asset allocation</li>
+                    <li>Plan adjustments based on goals</li>
+                    <li>Monitor SIP consistency</li>
+                    <li>Stay on track for long-term returns</li>
+                </ul>
+                Our platform enables clear, easy-to-understand insights so you never lose control of your future.
+            </div>
         </div>
     </div>
 
@@ -157,31 +274,64 @@
         <div class="feature-box">
             <div class="feature-icon"><span class="pi pi-shield"></span></div>
             <h3>Secure and Private</h3>
-            <p>Your investment data is handled with strong encryption and secure session policies.</p>
+            <p>Your investment data is stored using strong encryption and best security practices.</p>
         </div>
 
         <div class="feature-box">
             <div class="feature-icon"><span class="pi pi-chart-line"></span></div>
-            <h3>Investment Analytics</h3>
-            <p>Track returns, performance trends and future projections easily.</p>
+            <h3>Financial Analytics</h3>
+            <p>Understand performance trends, projections, and SIP growth with ease.</p>
         </div>
 
         <div class="feature-box">
             <div class="feature-icon"><span class="pi pi-wallet"></span></div>
             <h3>Track SIPs</h3>
-            <p>Simple management interface for checking SIP contributions and valuations.</p>
+            <p>Manage multiple SIPs and view contribution cycles and valuations instantly.</p>
         </div>
 
         <div class="feature-box">
             <div class="feature-icon"><span class="pi pi-file-export"></span></div>
             <h3>Export Reports</h3>
-            <p>Download SIP statements, summaries and monthly performance charts.</p>
+            <p>Generate SIP summaries, statements, and custom reports anytime.</p>
         </div>
 
     </div>
 
+    <!-- FOOTER -->
+    <div class="footer">
+        <div>
+            <div class="footer-title">Smart Investment Portfolio</div>
+            <p>Track, analyse, and grow your wealth with confidence.</p>
+        </div>
 
-    <div class="footer">© 2025 Portfolio SIP Manager — All Rights Reserved</div>
+        <div>
+            <div class="footer-title">Quick Links</div>
+            <a href="index.jsf">Home</a>
+            <a href="/User/ViewPlans.jsf">SIP Plans</a>
+            <a href="/About.jsf">About</a>
+            <a href="/Login.jsf">Login</a>
+        </div>
+
+        <div>
+            <div class="footer-title">Support</div>
+            <a>Help Center</a>
+            <a>support@portfolio.com</a>
+            <a>Privacy Policy</a>
+            <a>Terms of Use</a>
+        </div>
+
+        <div>
+            <div class="footer-title">Follow Us</div>
+            <a><i class="pi pi-facebook"></i> Facebook</a>
+            <a><i class="pi pi-twitter"></i> Twitter</a>
+            <a><i class="pi pi-instagram"></i> Instagram</a>
+            <a><i class="pi pi-linkedin"></i> LinkedIn</a>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        © 2025 Smart Investment Portfolio — All Rights Reserved
+    </div>
 
 </h:body>
 </html>

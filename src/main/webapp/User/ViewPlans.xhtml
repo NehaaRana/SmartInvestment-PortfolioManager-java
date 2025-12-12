@@ -316,7 +316,37 @@
             background-color: #0e63ff !important;
             border-radius: 6px !important;
         }
-
+        
+        
+        /* ---------- FOOTER ---------- */
+        .footer {
+            background:#0d1b2a;
+            padding:40px 60px;
+            color:#dbe2ef;
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+            gap:30px;
+        }
+        .footer-title {
+            font-size:17px;
+            font-weight:700;
+            margin-bottom:10px;
+        }
+        .footer a {
+            color:#bcd0e6;
+            font-size:14px;
+            text-decoration:none;
+            display:block;
+            margin-bottom:6px;
+        }
+        .footer a:hover { color:white; }
+        .footer-bottom {
+            text-align:center;
+            background:#0a1526;
+            padding:12px;
+            font-size:13px;
+            color:#8ba0b9;
+        }
     </style>
 
 
@@ -542,8 +572,40 @@
 
     <p:divider />
 
-    <div style="text-align:center; padding:20px; color:#6b7b8a;">
-        © 2025 Portfolio SIP Manager — All Rights Reserved
+    <!-- FOOTER -->
+    <div class="footer">
+        <div>
+            <div class="footer-title">Smart Investment Portfolio</div>
+            <p>Track, analyse, and grow your wealth with confidence.</p>
+        </div>
+
+        <div>
+            <div class="footer-title">Quick Links</div>
+            <a href="index.jsf">Home</a>
+            <a href="/User/ViewPlans.jsf">SIP Plans</a>
+            <a href="/About.jsf">About</a>
+            <a href="/Login.jsf">Login</a>
+        </div>
+
+        <div>
+            <div class="footer-title">Support</div>
+            <a>Help Center</a>
+            <a>support@portfolio.com</a>
+            <a>Privacy Policy</a>
+            <a>Terms of Use</a>
+        </div>
+
+        <div>
+            <div class="footer-title">Follow Us</div>
+            <a><i class="pi pi-facebook"></i> Facebook</a>
+            <a><i class="pi pi-twitter"></i> Twitter</a>
+            <a><i class="pi pi-instagram"></i> Instagram</a>
+            <a><i class="pi pi-linkedin"></i> LinkedIn</a>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        © 2025 Smart Investment Portfolio — All Rights Reserved
     </div>
 
 </h:body>

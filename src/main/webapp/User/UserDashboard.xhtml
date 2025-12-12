@@ -82,18 +82,21 @@
     <!-- =============== SIDEBAR INCLUDE =============== -->
     <ui:include src="/Sidebar.xhtml"/>
 
+    <p:poll interval="10"
+        listener="#{userDashboardBean.calculateDashboard}"
+        update="dashboardPanel" />
 
     <!-- =============== MAIN CONTENT =============== -->
     <div id="main-content" class="main-content">
 
         <h2 style="font-weight:800; color:#083560;">Welcome, #{profileBean.fullName}</h2>
         <p style="color:#666; margin-bottom:25px;">Track your investments - portfolio progress.</p>
-
+        <h:panelGroup id="dashboardPanel">
         <!-- DASHBOARD CARDS -->
         <div class="cards">
             <div class="card">
                 <h3>Total Investment</h3>
-                <h2>₹ #{userDashboardBean.totalPortfolioValue}</h2>
+                <h2>₹ #{userDashboardBean.totalInvested}</h2>
             </div>
 
 <!--            <div class="card">
@@ -104,6 +107,11 @@
             <div class="card">
                 <h3>Profit Loss</h3>
                 <h2>₹ #{userDashboardBean.profitLoss}</h2>
+            </div>
+            
+            <div class="card">
+                <h3>Current Price</h3>
+                <h2>₹ #{userDashboardBean.totalPortfolioValue}</h2>
             </div>
 
             <div class="card">
@@ -121,7 +129,7 @@
                 <h2>#{userDashboardBean.completedOrders}</h2>
             </div>
         </div>
-
+        </h:panelGroup>
         <!-- CHART -->
         <div class="chart-box">
             <h3 style="margin-bottom:15px;">Portfolio Growth</h3>

@@ -278,7 +278,24 @@ public class UserDashboardBean implements  Serializable{
 //        }
 //    }
     
-    
+    private BigDecimal calculateTotalProfitLossFromPortfolio() {
+        BigDecimal totalPL = BigDecimal.ZERO;
+
+        try {
+            List<Portfolio> list = portfolioBean.getPortfolioList();
+
+            for (Portfolio p : list) {
+                BigDecimal pl = portfolioBean.profitLossAmount(p);
+                totalPL = totalPL.add(pl);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return totalPL;
+    }
+
     public void calculateDashboard() {
         try {
             List<Portfolio> list = portfolioBean.getPortfolioList();
@@ -304,7 +321,8 @@ public class UserDashboardBean implements  Serializable{
             this.totalInvested = totalInvested;
 
             // 3️⃣ Profit/Loss
-            this.profitLoss = totalValue.subtract(totalInvested);
+//            this.profitLoss = totalValue.subtract(totalInvested);
+            this.profitLoss = calculateTotalProfitLossFromPortfolio();
 
             // 4️⃣ Completed Orders Count
             completedOrders = ordersList.stream()

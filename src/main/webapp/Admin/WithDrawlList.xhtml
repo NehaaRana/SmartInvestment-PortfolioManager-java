@@ -83,6 +83,14 @@
                          onkeyup="PF('withdrawTable').filter()" />-->
 
             <br/><br/>
+            
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" closable="false">
+                <p:commandButton value="Yes" type="button"
+                                 styleClass="ui-confirmdialog-yes p-button-success" />
+                <p:commandButton value="No" type="button"
+                                 styleClass="ui-confirmdialog-no p-button-danger" />
+            </p:confirmDialog>
+
 
             <!-- WITHDRAWAL TABLE -->
             <p:dataTable id="withdrawTable"
@@ -130,6 +138,7 @@
                         #{r.status}
                     </span>
                 </p:column>
+                
 
                 <!-- ACTIONS -->
                <p:column headerText="Actions" style="width:170px;">
@@ -141,14 +150,23 @@
                                              styleClass="btn btn-success action-btn"
                                              update="@form msg"
                                              actionListener="#{redemptionBean.approve(r)}"
-                                             rendered="#{r.status eq 'PENDING'}"/>
+                                             rendered="#{r.status eq 'PENDING'}">
+                                <p:confirm header="Approve Confirmation"
+                                            message="Are you sure you want to approve this redemption?"
+                                            icon="pi pi-exclamation-triangle" />
+                            </p:commandButton>
 
                             <p:commandButton value="Reject"
                                              icon="pi pi-times"
                                              styleClass="btn btn-danger action-btn"
                                              update="@form msg"
                                              actionListener="#{redemptionBean.reject(r)}"
-                                             rendered="#{r.status eq 'PENDING'}"/>
+                                             rendered="#{r.status eq 'PENDING'}">
+                                
+                                <p:confirm header="Reject Confirmation"
+                                            message="Are you sure you want to reject this redemption?"
+                                            icon="pi pi-info-circle" />
+                            </p:commandButton>
 
                         </div>
 

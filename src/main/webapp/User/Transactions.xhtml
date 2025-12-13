@@ -110,7 +110,12 @@
                 </p:column>
 
                 <p:column headerText="Amount">
-                    #{t.amount}
+                    
+                    <h:outputText value="#{t.amount}">
+                        <f:convertNumber minFractionDigits="2"
+                                         maxFractionDigits="2"
+                                         groupingUsed="true"/>
+                    </h:outputText>
                 </p:column>
 
                 <p:column headerText="Type">

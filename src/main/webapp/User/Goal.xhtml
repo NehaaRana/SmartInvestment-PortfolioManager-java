@@ -139,11 +139,21 @@
             </p:column>
 
             <p:column headerText="Target Amount">
-                ₹ #{g.targetAmt}
+               
+                ₹<h:outputText value="#{g.targetAmt}">
+                        <f:convertNumber minFractionDigits="2"
+                                         maxFractionDigits="2"
+                                         groupingUsed="true"/>
+                    </h:outputText>
             </p:column>
 
             <p:column headerText="Current Amount">
-                ₹ #{g.currentAmt}
+               
+                ₹<h:outputText value="#{g.currentAmt}">
+                        <f:convertNumber minFractionDigits="2"
+                                         maxFractionDigits="2"
+                                         groupingUsed="true"/>
+                    </h:outputText>
             </p:column>
 
 

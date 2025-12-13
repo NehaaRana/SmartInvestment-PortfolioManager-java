@@ -135,14 +135,14 @@
                     <div>
                         <label>Symbol Image:</label>
 
-                        <h:inputFile id="symbolFile" value="#{assetManagedBean.symbolImage}" onchange="previewImage(event)" />
+                    <div class="image-preview-box">
+                        <!-- Plain HTML IMG for live preview -->
+                        <img id="previewImg"
+                             src="#{request.contextPath}/resources/assets/#{assetManagedBean.symbol}"
+                             style="max-width:150px; max-height:150px;"
+                             alt="Asset Preview" />
+                    </div>
 
-                            <div class="image-preview-box">
-                                <img id="previewImg"
-                                     src="#{request.contextPath}/resources/assets/#{assetManagedBean.symbol}"
-                                     alt="Asset Preview" 
-                                     style="max-width:150px; max-height:150px;"/>
-                            </div>
                     </div>
 
                     <!-- ASSET NAME -->

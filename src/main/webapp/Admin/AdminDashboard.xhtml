@@ -2,7 +2,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="jakarta.faces.facelets"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core">
     
 <ui:composition template="/Admin/AdminLayout.xhtml">
 
@@ -131,7 +133,13 @@
                 <i class="pi pi-chart-line"></i>
             </div>
             <h3>Total Invested</h3>
-            <div class="value">#{adminDashboardBean.totalInvestmentAmount}</div>
+            <div class="value">
+                <h:outputText value="#{adminDashboardBean.totalInvestmentAmount}">
+                        <f:convertNumber minFractionDigits="2"
+                                         maxFractionDigits="2"
+                                         groupingUsed="true"/>
+                </h:outputText>
+            </div>
         </div>
 
         <div class="card">
@@ -139,7 +147,14 @@
                 <i class="pi pi-wallet"></i>
             </div>
             <h3>Total Payouts</h3>
-            <div class="value">#{adminDashboardBean.totalPayouts}</div>
+            <div class="value">
+                <!--#{adminDashboardBean.totalPayouts}-->
+                <h:outputText value="#{adminDashboardBean.totalPayouts}">
+                        <f:convertNumber minFractionDigits="2"
+                                         maxFractionDigits="2"
+                                         groupingUsed="true"/>
+                    </h:outputText>
+            </div>
         </div>
     </div>
 

@@ -365,7 +365,7 @@
     </div>
     
     <h:form id="viewPlansForm">
-       <p:poll interval="60"
+       <p:poll interval="30"
             listener="#{assetManagedBean.loadAssetsForPlans}"
             update="planGrid"
             autoStart="true"
@@ -470,7 +470,12 @@
 
         <!-- Price -->
         <p class="plan-price">
-            ₹#{asset.currentPrice} / unit
+            
+             ₹<h:outputText value="#{asset.currentPrice}">
+                               <f:convertNumber minFractionDigits="2"
+                                                maxFractionDigits="2"
+                                                groupingUsed="true"/>
+                           </h:outputText>/ unit
         </p>    
         
         <!-- STATUS BADGE -->
@@ -538,6 +543,7 @@
                              value="#{orderBean.amount}"
                              disabled="true"
                              styleClass="input-full"/>
+                
             </div>
 
             <p:commandButton value="Place Order"

@@ -100,7 +100,11 @@
 
                 <!-- AMOUNT -->
                 <p:column headerText="Amount" sortBy="#{t.amount}">
-                    ₹ #{t.amount}
+                    ₹<h:outputText value="#{t.amount}">
+                        <f:convertNumber minFractionDigits="2"
+                                         maxFractionDigits="2"
+                                         groupingUsed="true"/>
+                    </h:outputText>
                 </p:column>
 
                 <!-- TYPE -->

@@ -31,7 +31,8 @@ public class PriceUpdaterService {
     }
 
     // Runs every 1 minute
-    @Schedule(hour="*", minute="*/1", persistent=false)
+//        @Schedule(hour="*", minute="*/1", persistent=false)
+    @Schedule(hour="*", minute="*", second="*/30", persistent=false)
     public void updatePrices() {
         
          System.out.println(" Scheduler running...");

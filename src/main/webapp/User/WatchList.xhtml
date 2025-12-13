@@ -136,7 +136,12 @@
 
                 </p:column>
                 <p:column headerText="Current Price">
-                    #{item.aid.currentPrice}
+                    
+                    ₹<h:outputText value="#{item.aid.currentPrice}">
+                               <f:convertNumber minFractionDigits="2"
+                                                maxFractionDigits="2"
+                                                groupingUsed="true"/>
+                           </h:outputText>
                 </p:column>
                 <p:column headerText="Actions">
                     <p:commandButton value="Remove"

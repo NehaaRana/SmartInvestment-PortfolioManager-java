@@ -103,13 +103,18 @@
                     </p:column>
 
                     <p:column headerText="Amount">
-                        ₹ #{p.amount}
+                       
+                         ₹<h:outputText value="#{p.amount}">
+                               <f:convertNumber minFractionDigits="2"
+                                                maxFractionDigits="2"
+                                                groupingUsed="true"/>
+                           </h:outputText>
                     </p:column>
                      <p:column headerText="Assets">
                           #{p.rid.aid.name}
                     </p:column>
                      <p:column headerText="Units">
-                          #{p.rid.units}
+                          #{p.rid.units.intValue()}
                     </p:column>
 
                     <p:column headerText="Status">

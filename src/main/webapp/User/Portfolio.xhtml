@@ -141,7 +141,7 @@
         <div class="portfolio-card"  style="padding: 10px;">
             <h:form id="portfolioForm">
                  <!-- AUTO REFRESH PORTFOLIO -->
-                <p:poll interval="10"
+                <p:poll interval="2"
                         listener="#{portfolioBean.loadPortfolio}"
                         update=":portfolioForm"
                         autoStart="true"
@@ -162,24 +162,39 @@
 
                         <h:column>
                             <f:facet name="header">Units</f:facet>
-                            #{p.units}
-                           <h:outputText value="(#{portfolioBean.pendingRedemptionUnits(p)} pending)" 
+                            #{p.units.intValue()}
+                           <h:outputText value="(#{portfolioBean.pendingRedemptionUnits(p).intValue()} pending)" 
                       rendered="#{portfolioBean.hasPendingUnits(p)}" />
                         </h:column>
 
                         <h:column>
                             <f:facet name="header">Purchase Price</f:facet>
-                            #{p.avgPrice}
+                           
+                            <h:outputText value="#{p.avgPrice}">
+                        <f:convertNumber minFractionDigits="2"
+                                         maxFractionDigits="2"
+                                         groupingUsed="true"/>
+                    </h:outputText>
                         </h:column>
 
                         <h:column>
                             <f:facet name="header">Current Price</f:facet>
-                            ₹ #{p.aid.currentPrice}
+                           
+                            <h:outputText value="#{p.aid.currentPrice}">
+                        <f:convertNumber minFractionDigits="2"
+                                         maxFractionDigits="2"
+                                         groupingUsed="true"/>
+                    </h:outputText>
                         </h:column>
 
                         <h:column>
                             <f:facet name="header">Current Value</f:facet>
-                                 ₹ #{portfolioBean.calculateCurrentValue(p)}
+                            <!--₹ #{portfolioBean.calculateCurrentValue(p)}  q comment --> 
+                                 <h:outputText value="#{portfolioBean.calculateCurrentValue(p)}">
+                        <f:convertNumber minFractionDigits="2"
+                                         maxFractionDigits="2"
+                                         groupingUsed="true"/>
+                    </h:outputText>
                                  <br/><br/>
                                 <p:tag severity="#{portfolioBean.inProfit(p) ? 'success' : 'danger'}">
                                    <h:outputText value="Profit: ₹ #{portfolioBean.profitLossAmount(p)}"
@@ -190,9 +205,14 @@
                                 </p:tag>
                         </h:column>
 
-                        <h:column>
+<!--                        <h:column>
                             <f:facet name="header">Pending Redemption</f:facet>
                             <h:outputText value="#{portfolioBean.pendingRedemptionUnits(p)}" />
+                        </h:column>-->
+
+                        <h:column>
+                            <f:facet name="header">Pending Redemption</f:facet>
+                            #{portfolioBean.pendingRedemptionUnits(p).intValue()}
                         </h:column>
 
                         <h:column>

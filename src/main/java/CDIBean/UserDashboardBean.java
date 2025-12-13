@@ -54,15 +54,14 @@ public class UserDashboardBean implements  Serializable{
     // Dashboard Summary Fields
     private BigDecimal totalPortfolioValue= BigDecimal.ZERO;
     private BigDecimal profitLoss = BigDecimal.ZERO;
-    private BigDecimal todayChange = BigDecimal.ZERO;
     private long completedOrders;
     private BigDecimal totalInvested;
     private LineChartModel portfolioChart;
 
     public LineChartModel getPortfolioChart() {
-        if (portfolioChart == null) {   // <-- FIX: Lazy initialize if null
-            createPortfolioChart();
-        }
+//        if (portfolioChart == null) {   // <-- FIX: Lazy initialize if null
+//            createPortfolioChart();
+//        }
         return portfolioChart;
     }
 
@@ -104,15 +103,7 @@ public class UserDashboardBean implements  Serializable{
         this.profitLoss = profitLoss;
     }
 
-    public BigDecimal getTodayChange() {
-        return todayChange;
-    }
-
-    public void setTodayChange(BigDecimal todayChange) {
-        this.todayChange = todayChange;
-    }
-
-    public BigDecimal getTotalReturns() {
+      public BigDecimal getTotalReturns() {
         if (payoutBean != null) {
             totalReturns = payoutBean.getTotalReturns();
         }
@@ -150,30 +141,6 @@ public class UserDashboardBean implements  Serializable{
         // Returns the current logged-in user's ID
         return keepRecord.getUid();
     }
-
-//    @PostConstruct
-//    public void init(){
-//        try{
-//            System.out.println("INIT START");
-//            userClient = new UserClient(keepRecord.getToken());
-//            String token = keepRecord.getToken();
-//            String uid = keepRecord.getUid();
-//            
-//            System.out.println("Token= " + token);
-//            System.out.println("UID= " + uid);
-//            
-////            UserClient uc = new UserClient(token);
-//            
-//            Users u = userClient.getProfile(Users.class, uid);
-//            
-//            this.profile = u; // set to dashboard
-//            System.out.println("User loaded: " + u.getFullName());
-//            
-//        }catch(Exception e){
-//            System.out.println("ERROR IN init(): " + e.getMessage());
-//            e.printStackTrace();
-//        }
-//    }
     
     @PostConstruct
     public void init() {
@@ -182,12 +149,12 @@ public class UserDashboardBean implements  Serializable{
             Users u = userClient.getProfile(Users.class, keepRecord.getUid());
             this.profile = u;
 
-            calculateDashboard(); // <-- calculate totals from portfolioBean
+            calculateDashboard(); //calculate totals from portfolioBean
             createPortfolioChart(); 
             
             if (keepRecord.getUid() != null) {
                 int uidInt = Integer.parseInt(keepRecord.getUid());
-                payoutBean.loadUserPayouts(uidInt); // ensure payouts are loaded
+                payoutBean.loadUserPayouts(uidInt); //payouts are loaded
             }
 
         
@@ -196,88 +163,7 @@ public class UserDashboardBean implements  Serializable{
             e.printStackTrace();
         }
     }
-    
-    
-//    public void calculateDashboard() {
-//        try {
-//            List<Portfolio> list = portfolioBean.getPortfolioList();
-//            List<Orders> ordersList = portfolioBean.getPortfolioOrders();
-//
-//            BigDecimal totalValue = BigDecimal.ZERO;
-//            BigDecimal totalInvested = BigDecimal.ZERO;
-//
-//            for (Portfolio p : list) {
-//                if (p.getCurrentValue() != null) {
-//                    totalValue = totalValue.add(p.getCurrentValue());
-//                }
-//
-//                if (p.getAvgPrice() != null && p.getUnits() != null) {
-//                    totalInvested = totalInvested.add(
-//                        p.getAvgPrice().multiply(p.getUnits())
-//                    );
-//                }
-//            }
-//
-//            totalPortfolioValue = totalValue;
-//            // PROFIT LOSS = total current value − total invested
-//
-//            profitLoss = totalValue.subtract(totalInvested);
-//
-//            // Completed Orders
-//            completedOrders = ordersList.stream()
-//                .filter(o -> "PAID".equalsIgnoreCase(o.getStatus()))
-//                .count();
-//
-//            // Dummy Today PL
-//            todayChange = profitLoss.divide(BigDecimal.valueOf(10), 2, BigDecimal.ROUND_HALF_UP);
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-    
-    
-//    public void calculateDashboard() {
-//        try {
-//            List<Portfolio> list = portfolioBean.getPortfolioList();
-//            List<Orders> ordersList = portfolioBean.getPortfolioOrders();
-//
-//            BigDecimal totalValue = BigDecimal.ZERO;
-//            BigDecimal totalInvested = BigDecimal.ZERO;
-//
-//            for (Portfolio p : list) {
-//
-//                // total current value = units × live price
-//                BigDecimal units = p.getUnits();
-//                BigDecimal currentPrice = p.getAid().getCurrentPrice();
-//                BigDecimal currentValue = units.multiply(currentPrice);
-//
-//                totalValue = totalValue.add(currentValue);
-//
-//                // total invested = DB current_value column
-//                if (p.getCurrentValue() != null) {
-//                    totalInvested = totalInvested.add(p.getCurrentValue());
-//                }
-//            }
-//
-//            this.totalPortfolioValue = totalValue;
-//            this.totalInvested = totalInvested;
-//
-//            // Profit Loss
-//            profitLoss = totalValue.subtract(totalInvested);
-//
-//            // Completed orders
-//            completedOrders = ordersList.stream()
-//                    .filter(o -> "PAID".equalsIgnoreCase(o.getStatus()))
-//                    .count();
-//
-//            todayChange = profitLoss.divide(BigDecimal.valueOf(10), 2, BigDecimal.ROUND_HALF_UP);
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-    
+       
     private BigDecimal calculateTotalProfitLossFromPortfolio() {
         BigDecimal totalPL = BigDecimal.ZERO;
 
@@ -304,13 +190,13 @@ public class UserDashboardBean implements  Serializable{
             BigDecimal totalValue = BigDecimal.ZERO;      // current value
             BigDecimal totalInvested = BigDecimal.ZERO;   // actual money user paid
 
-            // 1️⃣ Total Current Value
+            // total current value
             for (Portfolio p : list) {
                 BigDecimal currentVal = p.getUnits().multiply(p.getAid().getCurrentPrice());
                 totalValue = totalValue.add(currentVal);
             }
 
-            // 2️⃣ Total Invested (from Orders table)
+            // total invested from order table
             for (Orders o : ordersList) {
                 if ("PAID".equalsIgnoreCase(o.getStatus())) {
                     totalInvested = totalInvested.add(o.getAmount());
@@ -320,56 +206,21 @@ public class UserDashboardBean implements  Serializable{
             this.totalPortfolioValue = totalValue;
             this.totalInvested = totalInvested;
 
-            // 3️⃣ Profit/Loss
+            //profit-loss
 //            this.profitLoss = totalValue.subtract(totalInvested);
             this.profitLoss = calculateTotalProfitLossFromPortfolio();
 
-            // 4️⃣ Completed Orders Count
+            // ️completed orders
             completedOrders = ordersList.stream()
                 .filter(o -> "PAID".equalsIgnoreCase(o.getStatus()))
                 .count();
-
-            // 5️⃣ Dummy today change
-            todayChange = profitLoss.divide(BigDecimal.valueOf(10), 2, BigDecimal.ROUND_HALF_UP);
-
+            
+             createPortfolioChart(); 
+             
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
-
-
-    
-//    public void calculateTotalReturns() {
-//        try {
-//            totalReturns = BigDecimal.ZERO;
-//
-//            Collection<Payouts> payouts = payoutBean.getUserPayoutList();
-//
-//            if (payouts != null) {
-//                for (Payouts p : payouts) {
-//
-//                    // Only count PAID payouts
-//                    if ("PAID".equalsIgnoreCase(p.getStatus())) {
-//
-//                        if (p.getAmount() != null) {
-//                            totalReturns = totalReturns.add(p.getAmount());
-//                        }
-//                    }
-//                }
-//            }
-//
-//            System.out.println("Total Returns Calculated = " + totalReturns);
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-
-    
-    
-    
-    
     
     public void loadDashboardData() {
         try {
@@ -410,15 +261,9 @@ public class UserDashboardBean implements  Serializable{
                     profitLoss = totalPortfolioValue.subtract(investedAmt);
                 }
 
-                // Today PL
-                Object tpl = map.get("todayPL");
-                if (tpl != null) {
-                    todayChange = new BigDecimal(tpl.toString());
-                }
             } else {
                 System.out.println("Portfolio is not a map → " + portfolio.getClass());
             }
-
 
             // ==============================
             //   SAFE HANDLING FOR ORDERS
@@ -444,7 +289,6 @@ public class UserDashboardBean implements  Serializable{
             e.printStackTrace();
         }
     }
-
 
     public void createPortfolioChart() {
 
@@ -534,10 +378,6 @@ public class UserDashboardBean implements  Serializable{
 
         portfolioChart.setData(data);
     }
-
-
-
-    
     
     public Object getProfile() {
         return profile;

@@ -84,7 +84,7 @@
 
     <p:poll interval="10"
         listener="#{userDashboardBean.calculateDashboard}"
-        update="dashboardPanel" />
+        update="dashboardPanel portfolioChart" />
 
     <!-- =============== MAIN CONTENT =============== -->
     <div id="main-content" class="main-content">
@@ -99,11 +99,6 @@
                 <h2>₹ #{userDashboardBean.totalInvested}</h2>
             </div>
 
-<!--            <div class="card">
-                <h3>Active SIP</h3>
-                <h2>10 Plans</h2>
-            </div>-->
-
             <div class="card">
                 <h3>Profit Loss</h3>
                 <h2>₹ #{userDashboardBean.profitLoss}</h2>
@@ -115,31 +110,27 @@
             </div>
 
             <div class="card">
-                <h3>Total Return</h3>
+                <h3>Total Redemption</h3>
                 <h2>₹ #{userDashboardBean.totalReturns}</h2>
             </div>
-            
-<!--            <div class="card">
-                <h3>Today’s Change</h3>
-                <h2>₹ #{userDashboardBean.todayChange}</h2>
-            </div>-->
 
             <div class="card">
                 <h3>Completed Orders</h3>
                 <h2>#{userDashboardBean.completedOrders}</h2>
             </div>
         </div>
-        </h:panelGroup>
+      </h:panelGroup>
         <!-- CHART -->
         <div class="chart-box">
             <h3 style="margin-bottom:15px;">Portfolio Growth</h3>
             <p:lineChart 
+                id="portfolioChart"
                 model="#{userDashboardBean.portfolioChart}"
                 style="width:100%; height:400px;"
             />
 
         </div>
-
+  
     </div>
 
 </h:body>

@@ -43,10 +43,10 @@ public class ProfileBean {
 
             String token = keepRecord.getToken();
 
-            // 2️⃣ Pass token into UserClient
+            // pass token into userclient
             UserClient uc = new UserClient(token);
 
-            // 3️⃣ Call API
+            // call API
             Users u = uc.getProfile(Users.class, keepRecord.getUid() + "");
             this.fullName = u.getFullName();
             this.email = u.getEmail();

@@ -19,7 +19,7 @@
 
         .page-container {
             margin-top: 90px;
-            margin-left: 260px;   /* space for sidebar */
+            margin-left: 260px;
             padding: 25px;
             transition: margin-left 0.3s;
         }
@@ -106,7 +106,11 @@
      <!-- =============== SIDEBAR INCLUDE =============== -->
     <ui:include src="/Sidebar.xhtml"/>
     
-       <!-- MAIN CONTENT AREA -->
+    <p:poll interval="15"
+        listener="#{watchListBean.refreshWatchlist}"
+        update="watchlistForm:watchTable" />
+    
+    <!-- MAIN CONTENT AREA -->
     <div class="page-container">
 
       <div class="page-title">My Watchlist</div>
@@ -120,7 +124,7 @@
 
         <!-- Watchlist Table -->
         <h:panelGroup rendered="#{not empty watchListBean.watchlist}">
-            <p:dataTable value="#{watchListBean.watchlist}" var="item" styleClass="watchlist-table">
+            <p:dataTable id="watchTable" value="#{watchListBean.watchlist}" var="item" styleClass="watchlist-table">
                 <p:column headerText="Asset Name">
                     #{item.aid.name}
                 </p:column>

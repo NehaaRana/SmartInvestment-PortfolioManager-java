@@ -60,7 +60,7 @@ public class TransactionBean implements Serializable {
             System.out.println("UID FROM SESSION: " + uid);
 
             if (uid == null || uid.isEmpty()) {
-                System.out.println("❌ UID NULL - USER NOT LOGGED IN");
+                System.out.println("UID NULL - USER NOT LOGGED IN");
                 return;
             }
 

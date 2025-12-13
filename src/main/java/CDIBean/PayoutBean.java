@@ -49,17 +49,6 @@ public class PayoutBean implements Serializable {
     public void setUserPayoutList(Collection<Payouts> userPayoutList) {
         this.userPayoutList = userPayoutList;
     }
-//    @PostConstruct
-//    public void init() {
-//        try {
-//            String token = keepRecord.getToken();
-//            adminClient = new AdminClient(token);
-//            loadPayouts();
-//        } catch (Exception e) {
-//            FacesContext.getCurrentInstance().addMessage(null,
-//                new FacesMessage("Error initializing PayoutBean: " + e.getMessage()));
-//        }
-//    }
     
     @PostConstruct
     public void init() {

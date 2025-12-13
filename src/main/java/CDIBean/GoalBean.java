@@ -32,22 +32,17 @@ public class GoalBean implements Serializable {
 
     private UserClient userClient;
 
-    private Collection<Goals> goalList;  // All goals for the logged-in user
+    private Collection<Goals> goalList;  
 
     private String goalName;
     private String targetAmt;
-//    private String targetDate;
     private LocalDate targetDate;
 
 
     private String updateAmt;
     
     private Map<Integer, String> updateAmounts = new HashMap<>();
-
-    
-
-    
-    
+  
     @PostConstruct
     public void init() {
         try {
@@ -100,23 +95,7 @@ public class GoalBean implements Serializable {
         }
     }
 
-    // Update amount added to goal
-//    public void updateProgress(String goalId) {
-//        try {
-//            String amount = updateAmounts.get(goalId);
-//            userClient.updateGoalProgress(goalId.toString(), amount);
-//            loadGoals();
-//
-//            FacesContext.getCurrentInstance().addMessage(null,
-//                new FacesMessage(FacesMessage.SEVERITY_INFO,
-//                        "Progress Updated!", null));
-//
-//        } catch (Exception e) {
-//            FacesContext.getCurrentInstance().addMessage(null,
-//                new FacesMessage("Error updating progress: " + e.getMessage()));
-//        }
-//    }
-    public void updateProgress(Integer goalId) {
+     public void updateProgress(Integer goalId) {
         try {
             Goals selectedGoal = null;
 
@@ -149,7 +128,7 @@ public class GoalBean implements Serializable {
 
             java.math.BigDecimal remaining = target.subtract(current);
 
-            // ❌ BLOCK if exceeding target
+            //BLOCK if exceeding target
             if (addAmt.compareTo(remaining) > 0) {
                 FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(
@@ -161,7 +140,7 @@ public class GoalBean implements Serializable {
                 return;
             }
 
-            // ✅ Allow update
+            //Allow update
             userClient.updateGoalProgress(goalId.toString(), addAmt.toPlainString());
             loadGoals();
 
@@ -175,14 +154,6 @@ public class GoalBean implements Serializable {
                 new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", e.getMessage()));
         }
     }
-
-
-
-    // Calculate progress percentage
-//    public int calculateProgress(Goals g) {
-//        if (g.getCurrentAmt() == null || g.getTargetAmt() == null) return 0;
-//        return (int) ((g.getCurrentAmt().doubleValue() / g.getTargetAmt().doubleValue()) * 100);
-//    }
     
     public int calculateProgress(Goals g) {
         if (g.getCurrentAmt() == null || g.getTargetAmt() == null) return 0;

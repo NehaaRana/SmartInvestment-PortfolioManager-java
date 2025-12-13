@@ -90,6 +90,14 @@ public class WatchListBean implements Serializable {
         }
     }
 
+    public void refreshWatchlist() {
+        try {
+            // simply reload from DB so currentPrice is fetched again
+            loadWatchlist();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 
     // Add asset to watchlist

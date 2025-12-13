@@ -20,8 +20,8 @@
         }
 
         .main-content {
-            margin-top: 80px;   /* space below navbar */
-            margin-left: 260px; /* space beside sidebar */
+            margin-top: 80px; 
+            margin-left: 260px;
             padding: 20px;
             transition: margin-left 0.3s;
         }
@@ -102,8 +102,7 @@
 
     <!-- Create Goal Form -->
     <h:form id="goalForm">
-        
-        
+     
         <p:panelGrid columns="2" styleClass="goal-form-grid" style="width:50%">
             <p:outputLabel value="Goal Name:" />
             <p:inputText value="#{goalBean.goalName}" required="true" requiredMessage="Goal Name is required"/>
@@ -123,7 +122,6 @@
        <p:growl id="goalMessages" showDetail="true" life="3000"/>
        
     </h:form>
-
     
     </div>
     <!-- Display Goals -->
@@ -161,28 +159,23 @@
                             styleClass="progress-done"/>
             </p:column>
 
-
-
             <p:column headerText="Target Date">
                 <h:outputText value="#{g.targetDate}">
                    <f:convertDateTime pattern="dd-MM-yyyy"/>
                 </h:outputText>            
             </p:column>
-                 <p:column headerText="Add Money">
+            
+            <p:column headerText="Add Money">
                     <p:inputText value="#{goalBean.updateAmounts[g.goalId]}" style="width:70px"/>
 
                     <p:commandButton value="Add"
                         action="#{goalBean.updateProgress(g.goalId)}"
                         update=":goalTableForm :goalForm"
                         disabled="#{goalBean.calculateProgress(g) == 100}" />
-
-                </p:column>
-
-
-            
+            </p:column>
         </p:dataTable>
     </h:form>
-    
+   
     </div>
 
     </div>

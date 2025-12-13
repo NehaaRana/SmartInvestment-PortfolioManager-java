@@ -36,7 +36,6 @@ public class PriceUpdaterService {
         
          System.out.println(" Scheduler running...");
 
-        //  FORCE DB SYNC BEFORE READ
         em.flush();
         em.clear();
         List<Object[]> list = em.createNativeQuery(
@@ -57,7 +56,6 @@ public class PriceUpdaterService {
              .executeUpdate();
         }
         
-        //✅ FORCE DB WRITE
         em.flush();
         em.clear();
 
@@ -66,9 +64,9 @@ public class PriceUpdaterService {
             "UPDATE portfolio p JOIN assets a ON p.aid=a.aid " +
             "SET p.current_value = p.units * a.current_price"
         ).executeUpdate();
-        // ✅ HARD JPA CACHE RESET
+        //HARD JPA CACHE RESET
          em.getEntityManagerFactory().getCache().evictAll();
-        System.out.println("✅ Asset prices auto updated.");
+        System.out.println("Asset prices auto updated.");
     }
 
     private BigDecimal generatePrice(String type, BigDecimal oldPrice) {

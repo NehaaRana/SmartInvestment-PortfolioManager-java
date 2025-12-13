@@ -38,7 +38,6 @@ public class UserListBean implements Serializable {
         this.originalList = originalList;
     }
 
-    // ===== Getter =====
     public Collection<Users> getUserList() {
         return userList;
     }

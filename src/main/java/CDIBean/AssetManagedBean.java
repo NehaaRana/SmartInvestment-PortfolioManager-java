@@ -267,15 +267,15 @@ public class AssetManagedBean implements Serializable {
 //            System.out.println("Error in loadAssets(): " + e.getMessage());
 //            e.printStackTrace();
 //        }finally {
-//            if (ac != null) ac.close();   // ✅ VERY IMPORTANT
+//            if (ac != null) ac.close();   //VERY IMPORTANT
 //        }
 //    }
     
     public void loadAssets() {
         
-        System.out.println("🔥 POLL TRIGGERED loadAssets()");
+        System.out.println("POLL TRIGGERED loadAssets()");
 
-        AdminClient ac = null;   // ✅ Declare first
+        AdminClient ac = null;   //Declare first
 
         try {
             System.out.println("=== Loading Assets ===");
@@ -294,7 +294,7 @@ public class AssetManagedBean implements Serializable {
             e.printStackTrace();
         } finally {
             if (ac != null) {
-                ac.close();    // ✅ Now this works
+                ac.close();    //Now this works
             }
         }
     }

@@ -21,6 +21,7 @@ import org.primefaces.model.charts.bar.BarChartDataSet;
 import org.primefaces.model.charts.bar.BarChartModel;
 import org.primefaces.model.charts.pie.PieChartDataSet;
 import org.primefaces.model.charts.pie.PieChartModel;
+import org.primefaces.model.charts.pie.PieChartOptions;
 import record.keepRecord;
 
 /**
@@ -84,11 +85,16 @@ public class AdminDashboardBean implements Serializable  {
         dataSet.setBackgroundColor(Arrays.asList(
                 "#42A5F5", "#66BB6A", "#FFA726", "#FF6384"
         ));
-
+        
+        
         data.addChartDataSet(dataSet);
         data.setLabels(Arrays.asList("Users", "Assets", "Investment", "Payouts"));
 
         pieModel.setData(data);
+         // DONUT CONFIG 
+        PieChartOptions options = new PieChartOptions();
+        options.setCutout("65%");   //this makes it a DONUT
+        pieModel.setOptions(options);
     }
 
     

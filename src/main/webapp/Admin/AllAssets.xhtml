@@ -75,13 +75,17 @@
 
         <br/><br/>
 
-<!--         SEARCH BAR 
-        <p:inputText id="globalFilter"
-                     placeholder="Search assets..."
-                     styleClass="search-input"
-                     onkeyup="PF('assetTable').filter()" />-->
+
 
         <br/><br/>
+        <p:confirmDialog global="true">
+            <p:commandButton value="Yes"
+                             type="button"
+                             styleClass="ui-confirmdialog-yes p-button-success" />
+            <p:commandButton value="No"
+                             type="button"
+                             styleClass="ui-confirmdialog-no p-button-danger" />
+        </p:confirmDialog>
 
         <!-- PRIMEFACES DATATABLE -->
         <p:dataTable id="assetTable"
@@ -153,8 +157,12 @@
                     <p:commandButton value="Delete"
                                      icon="pi pi-trash"
                                      action="#{assetManagedBean.deleteAsset(a.aid)}"
-                                     onclick="return confirm('Delete this asset?')"
-                                     styleClass="btn btn-danger action-btn"/>
+                                     styleClass="btn btn-danger action-btn">
+                        <p:confirm header="Confirm Delete"
+                                message="Are you sure you want to delete this asset?"
+                                icon="pi pi-exclamation-triangle" />
+
+                 </p:commandButton>
                </div>
             </p:column>
 

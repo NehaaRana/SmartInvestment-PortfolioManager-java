@@ -16,12 +16,11 @@
          body {
             background: #f5f7fa;
            font-family: "Inter", "Poppins", sans-serif;
-
         }
          
         .main-content {
-            margin-top: 80px;   /* space below navbar */
-            margin-left: 260px; /* space beside sidebar */
+            margin-top: 80px;  
+            margin-left: 260px;
             padding: 20px;
             transition: margin-left 0.3s;
         }
@@ -83,133 +82,116 @@
     <ui:include src="/Navbar.xhtml"/>
     <!-- =============== SIDEBAR INCLUDE =============== -->
     <ui:include src="/Sidebar.xhtml"/>
-<p:growl id="globalMsg" showDetail="true" life="3000" />
-<div  id="main-content" class="main-content">
-
-<div class="mb-4">
-            <span class="header-title">My Orders</span>
-            <p class="text-muted">Overview of all your orders</p>
-</div>
-<p:messages  />
-<h:form id="ordersForm">
-
-<p:dataTable value="#{orderBean.ordersList}" var="o"
-             paginator="true" rows="8" 
-             emptyMessage="No Orders Found">
-
-    <p:column headerText="Order ID">
-        <h:outputText value="#{o.oid}" />
-    </p:column>
-
-    <p:column headerText="Asset Name">
-        <h:outputText value="#{o.aid.name}" />
-    </p:column>
-
-    <p:column headerText="Order Type">
-        <h:outputText value="#{o.orderType}" />
-    </p:column>
-
-    <p:column headerText="Units">
-        <h:outputText value="#{o.units}" />
-    </p:column>
-
-    <p:column headerText="Amount">
-        <h:outputText value="#{o.amount}" />
-    </p:column>
-
-    <p:column headerText="Date">
-        <h:outputText value="#{o.createdAt}" />
-    </p:column>
-    <p:column headerText="Status">
-        <h:panelGroup styleClass="status-badge 
-              #{o.status eq 'PENDING' ? 'pending' :
-                o.status eq 'PAID' ? 'completed' :
-                o.status eq 'COMPLETED' ? 'completed' :
-                'cancelled'}">
-            #{o.status}
-        </h:panelGroup>
-    </p:column>
     
+    <p:poll interval="10"
+        listener="#{orderBean.refreshOrders}"
+        update="ordersForm:ordersTable" />
     
-    <p:column headerText="Action">
-        <h:panelGroup>
-            
-<!--               Pay button ONLY after admin approval 
-                <p:commandButton value="Pay Now"
-                                 icon="pi pi-credit-card"
-                                 update="paymentDialog ordersForm"
-                                 oncomplete="PF('paymentDlg').show()"
-                                 rendered="#{o.status eq 'COMPLETED'}"
-                                 actionListener="#{orderBean.preparePayment(o)}" />-->
-                 <!-- Pay button for all NOT PAID orders -->
-                <p:commandButton value="Pay Now"
-                                 icon="pi pi-credit-card"
-                                 update="paymentDialog ordersForm"
-                                 oncomplete="PF('paymentDlg').show()"
-                                 rendered="#{o.status ne 'PAID'}"
-                                 actionListener="#{orderBean.preparePayment(o)}" />
-                <!-- Show payment success only if paid -->
-                <h:outputText value="Payment Success"
-                              style="color:green; font-weight:bold;"
-                              rendered="#{o.status eq 'PAID'}" />
+    <p:growl id="globalMsg" showDetail="true" life="3000" />
+    <div  id="main-content" class="main-content">
 
-<!--             Show Pay Button only when NOT PAID 
+        <div class="mb-4">
+                    <span class="header-title">My Orders</span>
+                    <p class="text-muted">Overview of all your orders</p>
+        </div>
+        <p:messages  />
+        <h:form id="ordersForm">
+
+            <p:dataTable id="ordersTable" value="#{orderBean.ordersList}" var="o"
+                         paginator="true" rows="8" 
+                         emptyMessage="No Orders Found">
+
+                <p:column headerText="Order ID">
+                    <h:outputText value="#{o.oid}" />
+                </p:column>
+
+                <p:column headerText="Asset Name">
+                    <h:outputText value="#{o.aid.name}" />
+                </p:column>
+
+                <p:column headerText="Order Type">
+                    <h:outputText value="#{o.orderType}" />
+                </p:column>
+
+                <p:column headerText="Units">
+                    <h:outputText value="#{o.units.intValue()}" />
+                </p:column>
+
+                <p:column headerText="Amount">
+                    
+                    ₹<h:outputText value="#{o.amount}">
+                        <f:convertNumber minFractionDigits="2"
+                                         maxFractionDigits="2"
+                                         groupingUsed="true"/>
+                    </h:outputText>
+                </p:column>
+
+               <p:column headerText="Date">
+                   <h:outputText value="#{o.createdAt}">
+                            <f:convertDateTime pattern="dd-MM-yyyy hh:mm a"/>
+                        </h:outputText>
+                </p:column>
+                <p:column headerText="Status">
+                    <h:panelGroup styleClass="status-badge 
+                          #{o.status eq 'PENDING' ? 'pending' :
+                            o.status eq 'PAID' ? 'completed' :
+                            o.status eq 'COMPLETED' ? 'completed' :
+                            'cancelled'}">
+                        #{o.status}
+                    </h:panelGroup>
+                </p:column>
+
+                <p:column headerText="Action">
+                    <h:panelGroup>
+                             <!-- Pay button for all NOT PAID orders -->
+                            <p:commandButton value="Pay Now"
+                                             icon="pi pi-credit-card"
+                                             update="paymentDialog ordersForm"
+                                             oncomplete="PF('paymentDlg').show()"
+                                             rendered="#{o.status ne 'PAID'}"
+                                             actionListener="#{orderBean.preparePayment(o)}" />
+                            <!-- Show payment success only if paid -->
+                            <h:outputText value="Payment Success"
+                                          style="color:green; font-weight:bold;"
+                                          rendered="#{o.status eq 'PAID'}" />
+
+                    </h:panelGroup>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </div>
+    <!-- Payment Dialog -->
+    <p:dialog id="paymentDialog" widgetVar="paymentDlg"
+              header="Make Payment" modal="true" resizable="false">
+
+        <h:form id="paymentForm">
+
+
+            <h:panelGrid columns="2" cellpadding="5">
+
+                <h:outputLabel value="Payment Method:" for="method"/>
+                <p:selectOneMenu id="method" value="#{orderBean.paymentMethod}" required="true">
+                    <f:selectItem itemLabel="--Select--" itemValue="" />
+                    <f:selectItem itemLabel="Credit Card" itemValue="Credit Card" />
+                    <f:selectItem itemLabel="Debit Card" itemValue="Debit Card" />
+                    <f:selectItem itemLabel="UPI" itemValue="UPI" />
+                    <f:selectItem itemLabel="Net Banking" itemValue="Net Banking" />
+                </p:selectOneMenu>
+
+                <h:outputLabel value="Reference No:" for="ref"/>
+                <p:inputText id="ref" value="#{orderBean.referenceNo}" required="true"/>
+            </h:panelGrid>
+
             <p:commandButton value="Pay Now"
                              icon="pi pi-credit-card"
-                             update="paymentDialog ordersForm"
-                             oncomplete="PF('paymentDlg').show()"
-                             rendered="#{o.status ne 'PAID' and o.status ne 'COMPLETED'}"
-                             actionListener="#{orderBean.preparePayment(o)}" />
+                             actionListener="#{orderBean.makePayment}"
+                             update="paymentForm :globalMsg"
+                             oncomplete="PF('paymentDlg').hide();" />
+        </h:form>
 
-             Show Success message when order is PAID 
-            <h:outputText value="Payment Success"
-                          style="color:green; font-weight:bold;"
-                         rendered="#{o.status eq 'PAID' or o.status eq 'COMPLETED'}"
-                         />-->
+    </p:dialog>
 
-        </h:panelGroup>
-    </p:column>
-
-
-
-
-</p:dataTable>
-</h:form>
-</div>
-<!-- Payment Dialog -->
-<!-- Payment Dialog -->
-<p:dialog id="paymentDialog" widgetVar="paymentDlg"
-          header="Make Payment" modal="true" resizable="false">
-
-    <h:form id="paymentForm">
-
-
-        <h:panelGrid columns="2" cellpadding="5">
-
-            <h:outputLabel value="Payment Method:" for="method"/>
-            <p:selectOneMenu id="method" value="#{orderBean.paymentMethod}" required="true">
-                <f:selectItem itemLabel="--Select--" itemValue="" />
-                <f:selectItem itemLabel="Credit Card" itemValue="Credit Card" />
-                <f:selectItem itemLabel="Debit Card" itemValue="Debit Card" />
-                <f:selectItem itemLabel="UPI" itemValue="UPI" />
-                <f:selectItem itemLabel="Net Banking" itemValue="Net Banking" />
-            </p:selectOneMenu>
-
-            <h:outputLabel value="Reference No:" for="ref"/>
-            <p:inputText id="ref" value="#{orderBean.referenceNo}" required="true"/>
-        </h:panelGrid>
-
-        <p:commandButton value="Pay Now"
-                         icon="pi pi-credit-card"
-                         actionListener="#{orderBean.makePayment}"
-                         update="paymentForm :globalMsg"
-                         oncomplete="PF('paymentDlg').hide();" />
-    </h:form>
-
-</p:dialog>
-
-
-<p:growl id="msgs" showDetail="true" life="3000" />
+    <p:growl id="msgs" showDetail="true" life="3000" />
 
 </h:body>
 </html>

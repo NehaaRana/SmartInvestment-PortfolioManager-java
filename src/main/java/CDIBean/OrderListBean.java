@@ -49,7 +49,7 @@ public class OrderListBean implements Serializable {
 
     public void loadOrders() {
         try {
-            System.out.println("=== Loading Orders ===");
+            System.out.println(" Loading Orders ");
 
             AdminClient ac = new AdminClient(keepRecord.getToken());
             orderList = ac.getAllOrders();
@@ -79,45 +79,6 @@ public class OrderListBean implements Serializable {
         }
 }
 
-    
-//    public String updateStatus(int oid, String status) {
-//        try {
-//            AdminClient ac = new AdminClient(keepRecord.getToken());
-//
-//            // convert int → string before calling your client
-//            ac.updateOrderStatus(String.valueOf(oid), status);
-//
-//            loadOrders();
-//            FacesContext.getCurrentInstance().addMessage(null,
-//                new FacesMessage("Status Updated to " + status));
-//
-//            return null;
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return null;
-//        }
-//    }
+   
 
-
-
-
-
-//    public String deleteOrder(String oid) {
-//        try {
-//            AdminClient ac = new AdminClient(keepRecord.getToken());
-//            ac.deleteOrder(oid);
-//
-//            loadOrders();
-//
-//            return "Order.xhtml?faces-redirect=true";
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return null;
-//        }
-//    }
-
-    public String viewOrder(String oid) {
-        return "/Admin/OrderDetails.xhtml?faces-redirect=true&amp;oid=" + oid;
-    }
 }

@@ -44,11 +44,23 @@
             border-radius: 6px;
             color: white;
             font-weight: bold;
+            display: inline-block;
+            min-width: 80px;
+            text-align: center;
         }
 
-        .pending { background: orange; }
-        .completed { background: green; }
-        .cancelled { background: red; }
+        .pending {
+            background: orange;
+        }
+
+        .paid {
+            background: #0b76d1; /* blue */
+        }
+
+        .cancelled {
+            background: red;
+        }
+
 
         .action-btn {
             margin-right: 8px;
@@ -66,11 +78,7 @@
             </span>
         </div>
 
-        <!-- SEARCH BAR -->
-<!--        <p:inputText id="globalFilter"
-                     placeholder="Search orders..."
-                     styleClass="search-input"
-                     onkeyup="PF('orderTable').filter()" />-->
+
 
         <br/><br/>
 
@@ -108,19 +116,23 @@
 
             <!-- UNITS -->
             <p:column headerText="Units" sortBy="#{o.units}">
-                #{o.units}
+                #{o.units.intValue()}
             </p:column>
 
             <!-- AMOUNT -->
             <p:column headerText="Price" sortBy="#{o.amount}">
-                #{o.amount}
+                ₹<h:outputText value="#{o.amount}">
+                        <f:convertNumber minFractionDigits="2"
+                                         maxFractionDigits="2"
+                                         groupingUsed="true"/>
+                    </h:outputText>
             </p:column>
 
             <!-- STATUS -->
             <p:column headerText="Status" filterBy="#{o.status}">
                 <span class="status-badge 
                       #{o.status eq 'PENDING' ? 'pending' :
-                        o.status eq 'COMPLETED' ? 'completed' :
+                        o.status eq 'PAID' ? 'paid' :
                         o.status eq 'CANCELLED' ? 'cancelled' : ''}">
                     #{o.status}
                 </span>
@@ -133,17 +145,6 @@
                 </h:outputText>
             </p:column>
 
-            <!-- ACTIONS -->
-            <p:column headerText="Actions" style="width:150px;">
-
-                <p:commandButton value="Delete"
-                                 icon="pi pi-trash"
-                                 action="#{orderManagedBean.deleteOrder(o.orderId)}"
-                                 update="@form"
-                                 onclick="return confirm('Delete this order?')"
-                                 styleClass="btn btn-danger action-btn"/>
-
-            </p:column>
 
         </p:dataTable>
 

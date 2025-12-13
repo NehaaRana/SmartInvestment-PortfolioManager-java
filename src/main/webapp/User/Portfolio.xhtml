@@ -106,21 +106,21 @@
 
     </style>
     <script>
-    function adjustContent() {
-        const sidebar = document.getElementById("sidebar");
-        const content = document.getElementById("main-content");
+        function adjustContent() {
+            const sidebar = document.getElementById("sidebar");
+            const content = document.getElementById("main-content");
 
-        if (sidebar.classList.contains("collapsed")) {
-            content.classList.add("collapsed-main");
-        } else {
-            content.classList.remove("collapsed-main");
+            if (sidebar.classList.contains("collapsed")) {
+                content.classList.add("collapsed-main");
+            } else {
+                content.classList.remove("collapsed-main");
+            }
         }
-    }
 
-    document.addEventListener("DOMContentLoaded", () => {
-        setInterval(adjustContent, 200);
-    });
-</script>
+        document.addEventListener("DOMContentLoaded", () => {
+            setInterval(adjustContent, 200);
+        });
+    </script>
 
 </h:head>
 
@@ -130,150 +130,164 @@
     <ui:include src="/Sidebar.xhtml"/>
  
 
-<div  id="main-content" class="main-content">
+    <div  id="main-content" class="main-content">
     
-   
-    
-    <!-- PAGE HEADER -->
-    <div class="mb-4">
-        <span class="header-title"> Your Portfolio</span>
-        <p class="text-muted">Overview of your current holdings</p>
-    </div>
-
-    <div class="portfolio-card"  style="padding: 10px;">
-        <h:form id="portfolioForm">
-             <!-- AUTO REFRESH PORTFOLIO -->
-            <p:poll interval="10"
-                    listener="#{portfolioBean.loadPortfolio}"
-                    update=":portfolioForm"
-                    autoStart="true"
-                    async="true"
-                    global="false" />
-            <p:growl id="globalMsg" showDetail="true" life="3000" />
-            <!-- Portfolio Table -->
-           <div class="table-responsive">
-
-            <h:dataTable value="#{portfolioBean.portfolioList}" var="p"
-                 styleClass="table table-bordered table-hover">
-
-                <h:column>
-                    <f:facet name="header">Asset</f:facet>
-                    <strong>#{p.aid.name}</strong><br/>
-                    <span class="badge bg-primary">#{p.aid.type}</span>
-                </h:column>
-
-                <h:column>
-                    <f:facet name="header">Units</f:facet>
-                    #{p.units}
-                   <h:outputText value="(#{portfolioBean.pendingRedemptionUnits(p)} pending)" 
-              rendered="#{portfolioBean.hasPendingUnits(p)}" />
-
-                </h:column>
-
-                <h:column>
-                    <f:facet name="header">Current Price</f:facet>
-                    ₹ #{p.aid.currentPrice}
-                </h:column>
-
-                <h:column>
-                    <f:facet name="header">Current Value</f:facet>
-                         ₹ #{portfolioBean.calculateCurrentValue(p)}
-                         <br/><br/>
-                        <p:tag severity="#{portfolioBean.inProfit(p) ? 'success' : 'danger'}">
-                           <h:outputText value="Profit: ₹ #{portfolioBean.profitLossAmount(p)}"
-                                         rendered="#{portfolioBean.inProfit(p)}" />
-
-                           <h:outputText value="Loss: ₹ #{portfolioBean.profitLossAmount(p).abs()}"
-                                         rendered="#{not portfolioBean.inProfit(p)}" />
-                        </p:tag>
-
-
-                <!--    <p:tag 
-                        value="#{portfolioBean.inProfit(p) ? 'Profit' : 'Loss'}"
-                        severity="#{portfolioBean.inProfit(p) ? 'success' : 'danger'}" />-->
-                </h:column>
-
-                <h:column>
-                    <f:facet name="header">Pending Redemption</f:facet>
-                    <h:outputText value="#{portfolioBean.pendingRedemptionUnits(p)}" />
-                </h:column>
-
-                <h:column>
-                    <f:facet name="header">Updated</f:facet>
-                    <h:outputText value="#{p.updatedAt}">
-                        <f:convertDateTime pattern="dd MMM yyyy"/>
-                    </h:outputText>
-                </h:column>
-
-                <h:column>
-                    <f:facet name="header">Action</f:facet>
-                    <p:commandButton value="Redeem"
-                                     icon="pi pi-minus-circle"
-                                     actionListener="#{portfolioBean.openRedeemDialog(p)}"
-                                     update=":redeemForm"
-                                     oncomplete="PF('redeemModal').show()"
-                                     styleClass="p-button-danger p-button-rounded p-button-sm"/>
-                </h:column>
-
-            </h:dataTable>
-               </div>
-
-        </h:form>
-
-
-        <!-- No Data Message -->
-        <h:panelGroup rendered="#{empty portfolioBean.portfolioOrders}">
-            <div class="alert alert-info text-center mt-3">
-                No portfolio records found.
-            </div>
-        </h:panelGroup>
-
-    </div>
-</div>
-    
- <p:dialog id="redeemDialog"
-          widgetVar="redeemModal"
-          header="Redeem Units"
-          modal="true"
-          closable="true"
-          resizable="false"
-          width="420"
-          styleClass="redeem-dialog">
-
-    <h:form id="redeemForm">
-
-        <div class="dialog-content">
-
-            <div class="form-row">
-                <label>Asset:</label>
-                <span class="value-text">
-                    #{portfolioBean.selectedPortfolio.aid.name}
-                </span>
-            </div>
-
-            <div class="form-row">
-                <label>Available Units:</label>
-                <span class="value-text">
-                    #{portfolioBean.selectedPortfolio.units}
-                </span>
-            </div>
-
-            <div class="form-row">
-                <label>Units to Redeem:</label>
-                <p:inputText value="#{portfolioBean.redemUnits}" styleClass="input-full" />
-            </div>
-
-            <p:commandButton value="Confirm Redemption"
-                             action="#{portfolioBean.submitRedemption}"
-                             update="@form :globalMsg :portfolioForm"
-                             oncomplete="PF('redeemModal').hide()"
-                             styleClass="redeem-btn" />
-
+        <!-- PAGE HEADER -->
+        <div class="mb-4">
+            <span class="header-title"> Your Portfolio</span>
+            <p class="text-muted">Overview of your current holdings</p>
         </div>
 
-    </h:form>
-</p:dialog>
+        <div class="portfolio-card"  style="padding: 10px;">
+            <h:form id="portfolioForm">
+                 <!-- AUTO REFRESH PORTFOLIO -->
+                <p:poll interval="2"
+                        listener="#{portfolioBean.loadPortfolio}"
+                        update=":portfolioForm"
+                        autoStart="true"
+                        async="true"
+                        global="false" />
+                <p:growl id="globalMsg" showDetail="true" life="3000" />
+                <!-- Portfolio Table -->
+                <div class="table-responsive">
+
+                    <h:dataTable value="#{portfolioBean.portfolioList}" var="p"
+                         styleClass="table table-bordered table-hover">
+
+                        <h:column>
+                            <f:facet name="header">Asset</f:facet>
+                            <strong>#{p.aid.name}</strong><br/>
+                            <span class="badge bg-primary">#{p.aid.type}</span>
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">Units</f:facet>
+                            #{p.units.intValue()}
+                           <h:outputText value="(#{portfolioBean.pendingRedemptionUnits(p).intValue()} pending)" 
+                      rendered="#{portfolioBean.hasPendingUnits(p)}" />
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">Purchase Price</f:facet>
+                           
+                            <h:outputText value="#{p.avgPrice}">
+                        <f:convertNumber minFractionDigits="2"
+                                         maxFractionDigits="2"
+                                         groupingUsed="true"/>
+                    </h:outputText>
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">Current Price</f:facet>
+                           
+                            <h:outputText value="#{p.aid.currentPrice}">
+                        <f:convertNumber minFractionDigits="2"
+                                         maxFractionDigits="2"
+                                         groupingUsed="true"/>
+                    </h:outputText>
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">Current Value</f:facet>
+                            <!--₹ #{portfolioBean.calculateCurrentValue(p)}  q comment --> 
+                                 <h:outputText value="#{portfolioBean.calculateCurrentValue(p)}">
+                        <f:convertNumber minFractionDigits="2"
+                                         maxFractionDigits="2"
+                                         groupingUsed="true"/>
+                    </h:outputText>
+                                 <br/><br/>
+                                <p:tag severity="#{portfolioBean.inProfit(p) ? 'success' : 'danger'}">
+                                   <h:outputText value="Profit: ₹ #{portfolioBean.profitLossAmount(p)}"
+                                                 rendered="#{portfolioBean.inProfit(p)}" />
+
+                                   <h:outputText value="Loss: ₹ #{portfolioBean.profitLossAmount(p).abs()}"
+                                                 rendered="#{not portfolioBean.inProfit(p)}" />
+                                </p:tag>
+                        </h:column>
+
+<!--                        <h:column>
+                            <f:facet name="header">Pending Redemption</f:facet>
+                            <h:outputText value="#{portfolioBean.pendingRedemptionUnits(p)}" />
+                        </h:column>-->
+
+                        <h:column>
+                            <f:facet name="header">Pending Redemption</f:facet>
+                            #{portfolioBean.pendingRedemptionUnits(p).intValue()}
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">Updated</f:facet>
+                            <h:outputText value="#{p.updatedAt}">
+                                <f:convertDateTime pattern="dd MMM yyyy"/>
+                            </h:outputText>
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">Action</f:facet>
+                            <p:commandButton value="Redeem"
+                                             icon="pi pi-minus-circle"
+                                             actionListener="#{portfolioBean.openRedeemDialog(p)}"
+                                             update=":redeemForm"
+                                             oncomplete="PF('redeemModal').show()"
+                                             styleClass="p-button-danger p-button-rounded p-button-sm"/>
+                        </h:column>
+
+                    </h:dataTable>
+                </div>
+            </h:form>
 
 
+            <!-- No Data Message -->
+            <h:panelGroup rendered="#{empty portfolioBean.portfolioOrders}">
+                <div class="alert alert-info text-center mt-3">
+                    No portfolio records found.
+                </div>
+            </h:panelGroup>
+
+        </div>
+    </div>
+    
+    <p:dialog id="redeemDialog"
+             widgetVar="redeemModal"
+             header="Redeem Units"
+             modal="true"
+             closable="true"
+             resizable="false"
+             width="420"
+             styleClass="redeem-dialog">
+
+        <h:form id="redeemForm">
+
+            <div class="dialog-content">
+
+                <div class="form-row">
+                    <label>Asset:</label>
+                    <span class="value-text">
+                        #{portfolioBean.selectedPortfolio.aid.name}
+                    </span>
+                </div>
+
+                <div class="form-row">
+                    <label>Available Units:</label>
+                    <span class="value-text">
+                        #{portfolioBean.selectedPortfolio.units}
+                    </span>
+                </div>
+
+                <div class="form-row">
+                    <label>Units to Redeem:</label>
+                    <p:inputText value="#{portfolioBean.redemUnits}" styleClass="input-full" />
+                </div>
+
+                <p:commandButton value="Confirm Redemption"
+                                 action="#{portfolioBean.submitRedemption}"
+                                 update="@form :globalMsg :portfolioForm"
+                                 oncomplete="PF('redeemModal').hide()"
+                                 styleClass="redeem-btn" />
+
+            </div>
+
+        </h:form>
+    </p:dialog>
 </h:body>
 </html>

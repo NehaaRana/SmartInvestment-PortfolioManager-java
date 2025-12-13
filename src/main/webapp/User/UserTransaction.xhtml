@@ -139,8 +139,15 @@
                         <p:column headerText="Type" style="width: 120px;">
                             <span class="type-badge">BUY</span>
                         </p:column>
-                        <p:column headerText="Units"> #{o.units} </p:column>
-                        <p:column headerText="Amount"> ₹#{o.amount} </p:column>
+                        <p:column headerText="Units"> #{o.units.intValue()} </p:column>
+                        <p:column headerText="Amount">  
+                            ₹<h:outputText value="#{o.amount}">
+                               <f:convertNumber minFractionDigits="2"
+                                                maxFractionDigits="2"
+                                                groupingUsed="true"/>
+                           </h:outputText>
+                        
+                        </p:column>
                         <p:column headerText="Status"> #{o.status} </p:column>
                         <p:column headerText="Date">
                             <h:outputText value="#{o.createdAt}">
@@ -160,8 +167,14 @@
                         <p:column headerText="Type" style="width: 120px;">
                             <span class="type-badge-sell">SELL</span>
                         </p:column>
-                        <p:column headerText="Units"> #{r.units} </p:column>
-                        <p:column headerText="Amount"> ₹#{r.redemptionAmount} </p:column>
+                        <p:column headerText="Units"> #{r.units.intValue()} </p:column>
+                        <p:column headerText="Amount">
+                            ₹<h:outputText value="#{r.redemptionAmount}">
+                               <f:convertNumber minFractionDigits="2"
+                                                maxFractionDigits="2"
+                                                groupingUsed="true"/>
+                           </h:outputText>
+                        </p:column>
                         <p:column headerText="Status"> #{r.status} </p:column>
                         <p:column headerText="Date">
                             <h:outputText value="#{r.requestedAt}">

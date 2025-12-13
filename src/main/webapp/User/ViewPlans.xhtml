@@ -364,8 +364,8 @@
         <p>Choose the perfect SIP or one-time plan to start your investment journey.</p>
     </div>
     
-   <h:form id="viewPlansForm">
-       <p:poll interval="60"
+    <h:form id="viewPlansForm">
+       <p:poll interval="30"
             listener="#{assetManagedBean.loadAssetsForPlans}"
             update="planGrid"
             autoStart="true"
@@ -374,57 +374,57 @@
 
        
        <!-- FILTER BAR -->
-<h:panelGroup id="filterBar" class="filter-bar" layout="block">
+    <h:panelGroup id="filterBar" class="filter-bar" layout="block">
 
-    <h:commandLink action="#{assetManagedBean.filterByType('ALL')}"
-                   styleClass="#{assetManagedBean.selectedType eq 'ALL' 
-                                ? 'filter-btn filter-btn-active' 
-                                : 'filter-btn'}">
-        All
-        <f:ajax execute="@this" render=":viewPlansForm:planGrid :viewPlansForm:filterBar" />
-    </h:commandLink>
+        <h:commandLink action="#{assetManagedBean.filterByType('ALL')}"
+                       styleClass="#{assetManagedBean.selectedType eq 'ALL' 
+                                    ? 'filter-btn filter-btn-active' 
+                                    : 'filter-btn'}">
+            All
+            <f:ajax execute="@this" render=":viewPlansForm:planGrid :viewPlansForm:filterBar" />
+        </h:commandLink>
 
-    <h:commandLink action="#{assetManagedBean.filterByType('STOCK')}"
-                   styleClass="#{assetManagedBean.selectedType eq 'STOCK' 
-                                ? 'filter-btn filter-btn-active' 
-                                : 'filter-btn'}">
-        Stock
-        <f:ajax execute="@this" render=":viewPlansForm:planGrid :viewPlansForm:filterBar" />
-    </h:commandLink>
+        <h:commandLink action="#{assetManagedBean.filterByType('STOCK')}"
+                       styleClass="#{assetManagedBean.selectedType eq 'STOCK' 
+                                    ? 'filter-btn filter-btn-active' 
+                                    : 'filter-btn'}">
+            Stock
+            <f:ajax execute="@this" render=":viewPlansForm:planGrid :viewPlansForm:filterBar" />
+        </h:commandLink>
 
-    <h:commandLink action="#{assetManagedBean.filterByType('MUTUAL')}"
-                   styleClass="#{assetManagedBean.selectedType eq 'MUTUAL' 
-                                ? 'filter-btn filter-btn-active' 
-                                : 'filter-btn'}">
-        Mutual Fund
-        <f:ajax execute="@this" render=":viewPlansForm:planGrid :viewPlansForm:filterBar" />
-    </h:commandLink>
+        <h:commandLink action="#{assetManagedBean.filterByType('MUTUAL')}"
+                       styleClass="#{assetManagedBean.selectedType eq 'MUTUAL' 
+                                    ? 'filter-btn filter-btn-active' 
+                                    : 'filter-btn'}">
+            Mutual Fund
+            <f:ajax execute="@this" render=":viewPlansForm:planGrid :viewPlansForm:filterBar" />
+        </h:commandLink>
 
-    <h:commandLink action="#{assetManagedBean.filterByType('COMMODITY')}"
-                   styleClass="#{assetManagedBean.selectedType eq 'COMMODITY' 
-                                ? 'filter-btn filter-btn-active' 
-                                : 'filter-btn'}">
-        Commodity
-        <f:ajax execute="@this" render=":viewPlansForm:planGrid :viewPlansForm:filterBar" />
-    </h:commandLink>
+        <h:commandLink action="#{assetManagedBean.filterByType('COMMODITY')}"
+                       styleClass="#{assetManagedBean.selectedType eq 'COMMODITY' 
+                                    ? 'filter-btn filter-btn-active' 
+                                    : 'filter-btn'}">
+            Commodity
+            <f:ajax execute="@this" render=":viewPlansForm:planGrid :viewPlansForm:filterBar" />
+        </h:commandLink>
 
-    <h:commandLink action="#{assetManagedBean.filterByType('BOND')}"
-                   styleClass="#{assetManagedBean.selectedType eq 'BOND' 
-                                ? 'filter-btn filter-btn-active' 
-                                : 'filter-btn'}">
-        Bond
-        <f:ajax execute="@this" render=":viewPlansForm:planGrid :viewPlansForm:filterBar" />
-    </h:commandLink>
+        <h:commandLink action="#{assetManagedBean.filterByType('BOND')}"
+                       styleClass="#{assetManagedBean.selectedType eq 'BOND' 
+                                    ? 'filter-btn filter-btn-active' 
+                                    : 'filter-btn'}">
+            Bond
+            <f:ajax execute="@this" render=":viewPlansForm:planGrid :viewPlansForm:filterBar" />
+        </h:commandLink>
 
-    <h:commandLink action="#{assetManagedBean.filterByType('CRYPTO')}"
-                   styleClass="#{assetManagedBean.selectedType eq 'CRYPTO' 
-                                ? 'filter-btn filter-btn-active' 
-                                : 'filter-btn'}">
-        Cryptocurrency
-        <f:ajax execute="@this" render=":viewPlansForm:planGrid :viewPlansForm:filterBar" />
-    </h:commandLink>
+        <h:commandLink action="#{assetManagedBean.filterByType('CRYPTO')}"
+                       styleClass="#{assetManagedBean.selectedType eq 'CRYPTO' 
+                                    ? 'filter-btn filter-btn-active' 
+                                    : 'filter-btn'}">
+            Cryptocurrency
+            <f:ajax execute="@this" render=":viewPlansForm:planGrid :viewPlansForm:filterBar" />
+        </h:commandLink>
 
-</h:panelGroup>
+    </h:panelGroup>
 
     <!-- SEARCH BAR -->
      <div  class="search-bar" style="text-align:center; margin-bottom:20px;">
@@ -440,10 +440,7 @@
    
     <h:panelGroup id="planGrid" class="plan-grid" layout="block" styleClass="plan-grid">
         
-        <ui:repeat value="#{assetManagedBean.assetsList}" var="asset">
-<!--            <p style="color:red; font-weight:bold;">
-                #{asset.status == 'INACTIVE' ? 'Currently Unavailable' : '' }
-            </p>-->
+    <ui:repeat value="#{assetManagedBean.assetsList}" var="asset">
 
     <div class="plan-card">
 
@@ -473,27 +470,19 @@
 
         <!-- Price -->
         <p class="plan-price">
-            ₹#{asset.currentPrice} / unit
+            
+             ₹<h:outputText value="#{asset.currentPrice}">
+                               <f:convertNumber minFractionDigits="2"
+                                                maxFractionDigits="2"
+                                                groupingUsed="true"/>
+                           </h:outputText>/ unit
         </p>    
         
         <!-- STATUS BADGE -->
         <span class="status-badge #{asset.status == 'ACTIVE' ? 'status-active' : 'status-inactive'}">
             #{asset.status}
         </span>
-
-<!--         Details 
-        <p style="font-size:14px; margin:6px 0;">Type: #{asset.type}</p>
-        <p style="font-size:14px; margin:0;">Risk: #{asset.risk}</p>
-
-        <ul>
-            <li>Status: #{asset.status}</li>
-            <li>Created:
-                <h:outputText value="#{asset.createdAt}">
-                    <f:convertDateTime pattern="yyyy-MM-dd" />
-                </h:outputText>
-            </li>
-        </ul>-->
-        
+      
 
         <!-- DETAILS -->
            <p class="plan-details">
@@ -554,6 +543,7 @@
                              value="#{orderBean.amount}"
                              disabled="true"
                              styleClass="input-full"/>
+                
             </div>
 
             <p:commandButton value="Place Order"

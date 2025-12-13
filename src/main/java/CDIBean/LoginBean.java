@@ -41,8 +41,6 @@ public class LoginBean {
         keepRecord.setEmail(email);
         keepRecord.setPassword(password);
         keepRecord.setErrorStatus("");
-        // return a dummy string
-        // actual authentication happens in HttpAuthenticationMechanism
 //        return "AllAssets.xhtml?faces-redirect=true";
         return null;
     }

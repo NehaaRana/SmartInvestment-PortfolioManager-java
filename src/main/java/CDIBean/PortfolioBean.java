@@ -116,7 +116,7 @@ public class PortfolioBean implements Serializable{
     public void loadPortfolio() {
 
         try {
-            System.out.println("🔥 POLL TRIGGERED: reloading portfolio");
+            System.out.println(" POLL TRIGGERED: reloading portfolio");
 
             UserClient client = new UserClient(keepRecord.getToken());
             String uid = keepRecord.getUid();
@@ -135,7 +135,7 @@ public class PortfolioBean implements Serializable{
                     new jakarta.ws.rs.core.GenericType<List<Redemptions>>() {}, uid
             );
 
-            client.close();   // ✅ VERY IMPORTANT
+            client.close();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -197,7 +197,7 @@ public class PortfolioBean implements Serializable{
                     "PENDING"
             );
 
-            // 🔥 REFRESH ORDERS AFTER REDEMPTION
+            // REFRESH ORDERS AFTER REDEMPTION
         Orders[] orderArray = client.getUserOrders(Orders[].class, keepRecord.getUid());
         portfolioOrders = new ArrayList<>();
         if (orderArray != null) {
@@ -235,47 +235,23 @@ public class PortfolioBean implements Serializable{
         return currentVal.subtract(invested);   // Can be +ve or -ve
     }
 
-    // Returns number of units pending redemption for a portfolio item
-//    public BigDecimal pendingRedemptionUnits(Portfolio p) {
-//        if (portfolioOrders == null || portfolioOrders.isEmpty()) {
-//            return BigDecimal.ZERO;
-//        }
-//
-//        BigDecimal pendingUnits = BigDecimal.ZERO;
-//
-//        for (Orders o : portfolioOrders) {
-//            // Check if order is a redemption and status is pending
-//            if ("REDEMPTION".equalsIgnoreCase(o.getOrderType()) &&
-//                "PENDING".equalsIgnoreCase(o.getStatus()) &&
-//                o.getAid().getAid().equals(p.getAid().getAid())) {
-//
-//                pendingUnits = pendingUnits.add(o.getUnits());
-//            }
-//        }
-//
-//        return pendingUnits;
-//    }
-    /**
- * Returns the number of units currently pending redemption for a given portfolio item.
- * Handles Long, Integer, BigDecimal, and other numeric types safely.
- */
     
     public boolean hasPendingUnits(Portfolio p) {
-    return pendingRedemptionUnits(p).compareTo(BigDecimal.ZERO) > 0;
-}
-
-public BigDecimal pendingRedemptionUnits(Portfolio p) {
-    if (redemptionList == null) {
-        return BigDecimal.ZERO;
+        return pendingRedemptionUnits(p).compareTo(BigDecimal.ZERO) > 0;
     }
 
-    return redemptionList.stream()
-            .filter(r->r.getAid().getAid() == p.getAid().getAid())
-            .filter(r->r.getStatus().equalsIgnoreCase("PENDING"))
-            .map(Redemptions::getUnits)
-            .reduce(BigDecimal.ZERO, BigDecimal::add);
-            
-}
+    public BigDecimal pendingRedemptionUnits(Portfolio p) {
+        if (redemptionList == null) {
+            return BigDecimal.ZERO;
+        }
+
+        return redemptionList.stream()
+                .filter(r->r.getAid().getAid() == p.getAid().getAid())
+                .filter(r->r.getStatus().equalsIgnoreCase("PENDING"))
+                .map(Redemptions::getUnits)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+    }
 
     public List<Redemptions> getRedemptionList() {
         return redemptionList;

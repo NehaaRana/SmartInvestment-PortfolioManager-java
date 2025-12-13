@@ -40,8 +40,5 @@ public class MyFilter implements ClientRequestFilter  {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
         System.out.println(" In form Auth Client Filter " + mytoken);
         requestContext.getHeaders().add(HttpHeaders.AUTHORIZATION ,"Bearer " + mytoken);
-    }
-    
-   
-    
+    }  
 }

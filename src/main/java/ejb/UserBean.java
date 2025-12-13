@@ -283,7 +283,7 @@ public class UserBean implements UserBeanLocal {
         t.setCreatedAt(new Date());
 
         em.persist(t);
-        em.flush();   // ⭐ VERY IMPORTANT → ensures TID is generated
+        em.flush();   //  VERY IMPORTANT  ensures TID is generated
 
         return t;
     }
@@ -548,8 +548,8 @@ public void addOrUpdatePortfolio(int uid, int aid, BigDecimal units, BigDecimal 
 
     } else {
         Portfolio p = new Portfolio();
-        p.setUid(user);   // Here entity is correct
-        p.setAid(asset);  // Here entity is correct
+        p.setUid(user);  
+        p.setAid(asset);  
         p.setUnits(units);
         p.setAvgPrice(pricePerUnit);
         p.setCurrentValue(pricePerUnit);

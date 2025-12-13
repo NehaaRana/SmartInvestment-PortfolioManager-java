@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="jakarta.faces.html"
       xmlns:ui="jakarta.faces.facelets"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="jakarta.faces.core">
     <ui:composition template="/Admin/AdminLayout.xhtml">
     <ui:define name="title">
         WithDrawl List
@@ -38,15 +39,26 @@
             }
 
            .status-badge {
-                    padding: 4px 10px;
-                    border-radius: 6px;
-                    color: #fff;
-                    font-weight: 600;
-                    font-size: 13px;       /* bigger text */
-                    white-space: nowrap;
-                    display: inline-block;
-                }
+                padding: 4px 10px;
+                border-radius: 6px;
+                color: #fff;
+                font-weight: 600;
+                font-size: 13px;
+                white-space: nowrap;
+                display: inline-block;
+            }
 
+            .pending {
+                background: orange;
+            }
+
+            .approved, .paid {
+                background: #28a745; /* green */
+            }
+
+            .rejected {
+                background: #d9534f; /* red */
+            }
                 .action-container {
                     display: flex;
                     gap: 2px;              /* spacing between buttons */
@@ -57,10 +69,7 @@
                     font-size: 10px !important;
                     font-weight:600;
                 }
-            .pending { background: orange; }
-            .approved { background: #28a745; }
-            .rejected { background: #d9534f; }
-
+            
            
         </style>
 
@@ -76,13 +85,16 @@
                 </span>
             </div>
 
-            <!-- SEARCH BAR -->
-<!--            <p:inputText id="globalFilter"
-                         placeholder="Search withdrawals..."
-                         styleClass="search-input"
-                         onkeyup="PF('withdrawTable').filter()" />-->
 
             <br/><br/>
+            
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" closable="false">
+                <p:commandButton value="Yes" type="button"
+                                 styleClass="ui-confirmdialog-yes p-button-success" />
+                <p:commandButton value="No" type="button"
+                                 styleClass="ui-confirmdialog-no p-button-danger" />
+            </p:confirmDialog>
+
 
             <!-- WITHDRAWAL TABLE -->
             <p:dataTable id="withdrawTable"
@@ -113,23 +125,29 @@
 
                 <!-- UNITS -->
                 <p:column headerText="Units" sortBy="#{r.units}">
-                    #{r.units}
+                    #{r.units.intValue()}
                 </p:column>
 
                 <!-- AMOUNT -->
                 <p:column headerText="Amount" sortBy="#{r.redemptionAmount}">
-                    ₹ #{r.redemptionAmount}
+                    ₹ <h:outputText value="#{r.redemptionAmount}">
+                        <f:convertNumber minFractionDigits="2"
+                                         maxFractionDigits="2"
+                                         groupingUsed="true"/>
+                    </h:outputText>
                 </p:column>
 
                 <!-- STATUS -->
                 <p:column headerText="Status" filterBy="#{r.status}">
                     <span class="status-badge
                            #{r.status eq 'PENDING' ? 'pending' :
-                             r.status eq 'APPROVED' ? 'approved' :
-                             'rejected'}">
+                            r.status eq 'APPROVED' ? 'approved' :
+                            r.status eq 'PAID' ? 'paid' :
+                            r.status eq 'REJECTED' ? 'rejected' : ''}">
                         #{r.status}
                     </span>
                 </p:column>
+                
 
                 <!-- ACTIONS -->
                <p:column headerText="Actions" style="width:170px;">
@@ -141,14 +159,23 @@
                                              styleClass="btn btn-success action-btn"
                                              update="@form msg"
                                              actionListener="#{redemptionBean.approve(r)}"
-                                             rendered="#{r.status eq 'PENDING'}"/>
+                                             rendered="#{r.status eq 'PENDING'}">
+                                <p:confirm header="Approve Confirmation"
+                                            message="Are you sure you want to approve this redemption?"
+                                            icon="pi pi-exclamation-triangle" />
+                            </p:commandButton>
 
                             <p:commandButton value="Reject"
                                              icon="pi pi-times"
                                              styleClass="btn btn-danger action-btn"
                                              update="@form msg"
                                              actionListener="#{redemptionBean.reject(r)}"
-                                             rendered="#{r.status eq 'PENDING'}"/>
+                                             rendered="#{r.status eq 'PENDING'}">
+                                
+                                <p:confirm header="Reject Confirmation"
+                                            message="Are you sure you want to reject this redemption?"
+                                            icon="pi pi-info-circle" />
+                            </p:commandButton>
 
                         </div>
 

@@ -104,7 +104,14 @@
             <p:column headerText="Method">
                 #{p.method}
             </p:column>
-
+            <p:column headerText="Amount">
+                    
+                ₹<h:outputText value="#{p.tid.amount}">
+                        <f:convertNumber minFractionDigits="2"
+                                         maxFractionDigits="2"
+                                         groupingUsed="true"/>
+                    </h:outputText>
+                </p:column>
             <p:column headerText="Reference No">
                 #{p.referenceNo}
             </p:column>

@@ -131,7 +131,7 @@ public class OrderBean implements Serializable {
 
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null,
-                new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Failed to place order ❌"));
+                new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Failed to place order "));
             System.out.println("Error placing order: " + e.getMessage());
         }
     }
@@ -158,45 +158,6 @@ public class OrderBean implements Serializable {
         this.referenceNo = null;
     }
     
-     // Make Payment
-    // Make Payment
-//    public void makePayment() {
-//        try {
-//            int uid = selectedOrder.getUid().getUid(); // user id
-//            int oid = selectedOrder.getOid();
-//            BigDecimal amount = selectedOrder.getAmount();
-//
-//            // Step 1: Record Transaction
-//            userclient.recordTransaction(
-//                    String.valueOf(oid),
-//                    String.valueOf(uid),
-//                    String.valueOf(amount),
-//                    "ORDER_PAYMENT",
-//                    "PENDING"
-//            );
-//
-//            // Step 2: Make Payment
-//            // For simplicity, using same tid as oid (if you have proper txn id, replace here)
-//            userclient.makePayment(
-//                    String.valueOf(uid),
-//                    String.valueOf(oid), // Use real transaction id if available
-//                    paymentMethod,
-//                    referenceNo,
-//                    "SUCCESS"
-//            );
-//
-//            FacesContext.getCurrentInstance().addMessage(null,
-//                    new FacesMessage(FacesMessage.SEVERITY_INFO, "Payment Successful", null));
-//
-//            // Reload orders to update status
-//            loadUserOrders();
-//
-//        } catch (Exception e) {
-//            FacesContext.getCurrentInstance().addMessage(null,
-//                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Payment Failed: " + e.getMessage(), null));
-//            e.printStackTrace();
-//        }
-//    }
     
     public void makePayment() {
         try {
@@ -204,7 +165,7 @@ public class OrderBean implements Serializable {
             int oid = selectedOrder.getOid();
             BigDecimal amount = selectedOrder.getAmount();
 
-            // STEP 1 → Record Transaction and get back TID
+            //Record Transaction and get back TID
             Transactions txn = userclient.recordTransaction(
                     Transactions.class,
                     String.valueOf(oid),
@@ -214,9 +175,9 @@ public class OrderBean implements Serializable {
                     "SUCCESS"
             );
 
-            int tid = txn.getTid(); // ⭐ REAL TID HERE
+            int tid = txn.getTid(); 
 
-            // STEP 2 → Make Payment using correct TID
+            // Make Payment using TID
             userclient.makePayment(
                     String.valueOf(uid),
                     String.valueOf(tid),
@@ -225,7 +186,7 @@ public class OrderBean implements Serializable {
                     "SUCCESS"
             );
 
-             // STEP 3 → Update Order Status to PAID
+             // Update Order Status to PAID
             boolean updated = userclient.updateOrderStatus(
                     String.valueOf(oid),
                     "PAID"
@@ -246,20 +207,7 @@ public class OrderBean implements Serializable {
             );
             System.out.println("Portfolio method executed");
 
-
-//            userclient.addOrUpdatePortfolio(
-//                    String.valueOf(uid),
-//                    String.valueOf(selectedOrder.getAid().getAid()),
-//                    selectedOrder.getUnits().toString(),
-//                    selectedOrder.getAmount().toString()  // Use unit price if stored
-//                    
-//                    // OR selectedOrder.getAmount().toString() if amount is single unit price
-//            );
-            System.out.println("Portfolio method executed");
-
-
-
-            // ⭐ STEP 4 → Refresh table
+            // Refresh table
             loadUserOrders();
             
             FacesContext.getCurrentInstance().addMessage(
@@ -279,21 +227,15 @@ public class OrderBean implements Serializable {
             e.printStackTrace();
         }
     }
-
-
-
-//    private void recordTransaction(int oid, int uid, BigDecimal amount, String txnType, String status) {
-//        userclient.recordTransaction(
-//            String.valueOf(oid),
-//            String.valueOf(uid),
-//            String.valueOf(amount),
-//            txnType,
-//            status
-//        );
-//    }
-
-   
     
+    public void refreshOrders() {
+        try {
+            loadUserOrders();   // reload orders from DB
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public int getUnits() {
         return units;
     }
@@ -326,8 +268,6 @@ public class OrderBean implements Serializable {
         this.ordersList = ordersList;
     }
     
-    
-   
     public OrderBean() {
         userclient = new UserClient();
     }

@@ -53,13 +53,23 @@
             </span>
         </div>
 
-<!--         SEARCH BAR 
-        <p:inputText id="globalFilter"
-                     placeholder="Search users..."
-                     styleClass="search-input"
-                     onkeyup="PF('userTable').filter()" />-->
+
 
         <br/><br/>
+        <p:confirmDialog global="true"
+                 showEffect="fade"
+                 hideEffect="fade"
+                 closable="false">
+
+            <p:commandButton value="Yes"
+                             type="button"
+                             styleClass="ui-confirmdialog-yes p-button-success" />
+
+            <p:commandButton value="No"
+                             type="button"
+                             styleClass="ui-confirmdialog-no p-button-danger" />
+
+        </p:confirmDialog>
 
         <!-- PRIMEFACES DATATABLE -->
         <p:dataTable id="userTable"
@@ -96,18 +106,18 @@
 
             <!-- Actions -->
             <p:column headerText="Action" style="width:180px;">
-<!--                <p:commandButton value="View"
-                                 icon="pi pi-eye"
-                                 action="#{userManagedBean.viewUser(u.uid)}"
-                                 styleClass="btn btn-primary"
-                                 update="@form" />-->
 
                 <p:commandButton value="Delete"
                                  icon="pi pi-trash"
                                  action="#{userManagedBean.deleteUser(u.uid)}"
                                  update="@form"
                                  styleClass="btn btn-danger"
-                                 onclick="return confirm('Delete this user?')"/>
+                                 >
+                                <p:confirm header="Delete Confirmation"
+                              message="Are you sure you want to delete this user?"
+                              icon="pi pi-exclamation-triangle" />
+
+               </p:commandButton>
             </p:column>
 
         </p:dataTable>

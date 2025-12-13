@@ -317,6 +317,7 @@ public class AssetManagedBean implements Serializable {
         // 1. Save in PROJECT folder
         // ------------------------------------------------
         String projectPath = "D:/java-ENTERPRISE/ICT-1-Project/PortfolioManager/src/main/webapp/resources/assets/";
+
         File projectFolder = new File(projectPath);
         if (!projectFolder.exists()) projectFolder.mkdirs();
 
@@ -327,7 +328,7 @@ public class AssetManagedBean implements Serializable {
             StandardOpenOption.TRUNCATE_EXISTING
         );
 
-        System.out.println("✔ Saved to PROJECT: " + projectPath + fileName);
+        System.out.println(" Saved to PROJECT: " + projectPath + fileName);
 
 
         // ------------------------------------------------
@@ -349,10 +350,10 @@ public class AssetManagedBean implements Serializable {
                 StandardOpenOption.TRUNCATE_EXISTING
             );
 
-            System.out.println("✔ Saved to DEPLOYED: " + deployedDir + fileName);
+            System.out.println(" Saved to DEPLOYED: " + deployedDir + fileName);
 
         } else {
-            System.out.println("⚠ deployedDir = null (running from IDE, not WAR)");
+            System.out.println("deployedDir = null (running from IDE, not WAR)");
         }
     }
 
@@ -363,27 +364,6 @@ public class AssetManagedBean implements Serializable {
             try {
                 AdminClient ac = new AdminClient(keepRecord.getToken());
 
-//                if (symbolImage != null) {
-//
-//                    String fileName = Paths.get(symbolImage.getSubmittedFileName())
-//                                           .getFileName().toString();
-//
-//                       String uploadDir = "D:/java-ENTERPRISE/ICT-1-Project/PortfolioManager/src/main/webapp/resources/assets";
-//                    System.out.println("UPLOAD FOLDER = " + uploadDir);
-//
-//                    File folder = new File(uploadDir);
-//                    if (!folder.exists()) {
-//                        folder.mkdirs();
-//                    }
-//
-//                    Files.copy(
-//                        symbolImage.getInputStream(),
-//                        Paths.get(uploadDir + fileName),
-//                        StandardCopyOption.REPLACE_EXISTING
-//                    );
-//
-//                    this.symbol = fileName;
-//                }
                 if (symbolImage != null) {
 
                     String fileName = Paths.get(symbolImage.getSubmittedFileName())
@@ -423,7 +403,6 @@ public class AssetManagedBean implements Serializable {
         this.risk = asset.getRisk();
         return "/Admin/EditAsset.xhtml?faces-redirect=true&amp;aid=" + aid;
 
-//        return "/Admin/EditAsset?faces-redirect=false";
     }
 
 
@@ -434,24 +413,7 @@ public class AssetManagedBean implements Serializable {
         try {
             AdminClient ac = new AdminClient(keepRecord.getToken());
 
-//            // Check if a new file was uploaded
-//            if (symbolImage != null && symbolImage.getSize() > 0) {
-//                String fileName = Paths.get(symbolImage.getSubmittedFileName()).getFileName().toString();
-//
-//                // Upload directory
-//                String uploadDir = "D:/java-ENTERPRISE/ICT-1-Project/PortfolioManager/src/main/webapp/resources/assets/";
-//                File folder = new File(uploadDir);
-//                if (!folder.exists()) folder.mkdirs();
-//
-//                // Copy file
-//                Files.copy(
-//                    symbolImage.getInputStream(),
-//                    Paths.get(uploadDir + fileName),
-//                    StandardCopyOption.REPLACE_EXISTING
-//                );
-//
-//                this.symbol = fileName;  // update symbol field
-//            }
+
             if (symbolImage != null && symbolImage.getSize() > 0) {
 
                 String fileName = Paths.get(symbolImage.getSubmittedFileName())

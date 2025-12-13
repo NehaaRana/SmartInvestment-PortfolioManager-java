@@ -62,8 +62,7 @@ public class AdminDashboardBean implements Serializable  {
         ac = new AdminClient(keepRecord.getToken());
         createPieChart();
         createBarChart();
-//        createDonutModel();
-//        createBarModel();
+
     }
     
      // ================= PIE CHART ====================

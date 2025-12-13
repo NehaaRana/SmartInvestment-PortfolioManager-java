@@ -39,22 +39,54 @@
                 width: 260px;
             }
 
+            /* Common badge */
             .status-badge {
-                padding: 6px 12px;
+                padding: 4px 8px;
                 border-radius: 6px;
                 color: #fff;
                 font-weight: bold;
-                white-space: nowrap;     /* ⬅ prevents breaking into 2 lines */
-                display: inline-block;   /* ⬅ ensures proper auto-width */
+                white-space: nowrap;
+                display: inline-block;
+                font-size: 12px;
+            }
+
+            /* Payment method colors */
+            .credit-card {
+                background: #0d6efd; /* blue */
+            }
+
+            .debit-card {
+                background: #dc3545; /* red */
+            }
+
+            .upi {
+                background: #6f42c1; /* purple */
+            }
+
+            .net-banking {
+                background: #20c997; /* teal */
+            }
+
+            .success {
+                background: #28a745; /* green */
+            }
+
+            .pending {
+                background: orange;
+            }
+
+            .failed {
+                background: red;
+            }
+
+            .canceled {
+                background: #6c757d; /* grey */
             }
 
 
-            .credit { background: #28a745; }
-            .debit { background: #d9534f; }
+            
 
-            .completed { background: green; }
-            .pending { background: orange; }
-            .failed { background: red; }
+            
 
         </style>
 
@@ -109,7 +141,10 @@
 
                 <!-- TYPE -->
                 <p:column headerText="Type" filterBy="#{t.txnType}">
-                    <span class="status-badge #{t.txnType eq 'CREDIT' ? 'credit' : 'debit'}">
+                    <span class="status-badge   #{t.txnType eq 'CREDIT CARD' ? 'credit-card' :
+                                t.txnType eq 'DEBIT CARD' ? 'debit-card' :
+                                t.txnType eq 'UPI' ? 'upi' :
+                                t.txnType eq 'NET BANKING' ? 'net-banking' : ''}">
                         #{t.txnType.toUpperCase()}
                     </span>
                 </p:column>
@@ -117,9 +152,10 @@
                 <!-- STATUS -->
                 <p:column headerText="Status" filterBy="#{t.status}">
                     <span class="status-badge 
-                          #{t.status eq 'COMPLETED' ? 'completed' :
+                          #{t.status eq 'SUCCESS' ? 'success' :
                             t.status eq 'PENDING' ? 'pending' :
-                            t.status eq 'FAILED' ? 'failed' : ''}">
+                            t.status eq 'FAILED' ? 'failed' :
+                            t.status eq 'CANCELED' ? 'canceled' : ''}">
                         #{t.status}
                     </span>
                 </p:column>

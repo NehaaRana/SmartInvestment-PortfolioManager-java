@@ -118,8 +118,8 @@
                 </p:column>
 
                 <p:column headerText="Amount">
-                    <!--<h:outputText value="#{o.amount}" />-->
-                    <h:outputText value="#{o.amount}">
+                    
+                    ₹<h:outputText value="#{o.amount}">
                         <f:convertNumber minFractionDigits="2"
                                          maxFractionDigits="2"
                                          groupingUsed="true"/>

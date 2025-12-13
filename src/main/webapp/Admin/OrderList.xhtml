@@ -44,11 +44,23 @@
             border-radius: 6px;
             color: white;
             font-weight: bold;
+            display: inline-block;
+            min-width: 80px;
+            text-align: center;
         }
 
-        .pending { background: orange; }
-        .completed { background: green; }
-        .cancelled { background: red; }
+        .pending {
+            background: orange;
+        }
+
+        .paid {
+            background: #0b76d1; /* blue */
+        }
+
+        .cancelled {
+            background: red;
+        }
+
 
         .action-btn {
             margin-right: 8px;
@@ -120,7 +132,7 @@
             <p:column headerText="Status" filterBy="#{o.status}">
                 <span class="status-badge 
                       #{o.status eq 'PENDING' ? 'pending' :
-                        o.status eq 'COMPLETED' ? 'completed' :
+                        o.status eq 'PAID' ? 'paid' :
                         o.status eq 'CANCELLED' ? 'cancelled' : ''}">
                     #{o.status}
                 </span>

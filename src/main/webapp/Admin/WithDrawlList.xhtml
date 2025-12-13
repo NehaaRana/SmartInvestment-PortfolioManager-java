@@ -39,15 +39,26 @@
             }
 
            .status-badge {
-                    padding: 4px 10px;
-                    border-radius: 6px;
-                    color: #fff;
-                    font-weight: 600;
-                    font-size: 13px;       /* bigger text */
-                    white-space: nowrap;
-                    display: inline-block;
-                }
+                padding: 4px 10px;
+                border-radius: 6px;
+                color: #fff;
+                font-weight: 600;
+                font-size: 13px;
+                white-space: nowrap;
+                display: inline-block;
+            }
 
+            .pending {
+                background: orange;
+            }
+
+            .approved, .paid {
+                background: #28a745; /* green */
+            }
+
+            .rejected {
+                background: #d9534f; /* red */
+            }
                 .action-container {
                     display: flex;
                     gap: 2px;              /* spacing between buttons */
@@ -58,10 +69,7 @@
                     font-size: 10px !important;
                     font-weight:600;
                 }
-            .pending { background: orange; }
-            .approved { background: #28a745; }
-            .rejected { background: #d9534f; }
-
+            
            
         </style>
 
@@ -133,8 +141,9 @@
                 <p:column headerText="Status" filterBy="#{r.status}">
                     <span class="status-badge
                            #{r.status eq 'PENDING' ? 'pending' :
-                             r.status eq 'APPROVED' ? 'approved' :
-                             'rejected'}">
+                            r.status eq 'APPROVED' ? 'approved' :
+                            r.status eq 'PAID' ? 'paid' :
+                            r.status eq 'REJECTED' ? 'rejected' : ''}">
                         #{r.status}
                     </span>
                 </p:column>

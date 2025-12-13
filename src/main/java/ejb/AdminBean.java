@@ -127,7 +127,7 @@ public class AdminBean implements AdminBeanLocal {
     @RolesAllowed("ADMIN")
     public Collection<Assets> getAllAssets() {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-        em.flush();   // ✅ push pending changes
+        em.flush();   //push pending changes
 
         em.clear();  
         em.getEntityManagerFactory().getCache().evictAll();  // ✅ remove all JPA cache
@@ -219,11 +219,11 @@ public class AdminBean implements AdminBeanLocal {
                 .getSingleResult();
 
             if(p != null) {
-                // 3️⃣ Subtract units
+                // subtract unit value
                 BigDecimal newUnits = p.getUnits().subtract(r.getUnits());
                 p.setUnits(newUnits);
 
-                // 4️⃣ If units become zero, remove portfolio record
+                // if units become zero remove portfolio value
                 if(newUnits.compareTo(BigDecimal.ZERO) == 0) {
                     em.remove(p);
                 } else {

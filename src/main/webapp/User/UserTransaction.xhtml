@@ -91,6 +91,23 @@
         .p-datatable {
             margin-bottom: 20px;
         }
+        
+        .status-paid {
+            color: #1976d2 !important; /* Blue */
+            font-weight: 700 !important;
+        }
+
+        .status-rejected {
+            color: #f44336 !important; /* Red */
+            font-weight: 700 !important;
+        }
+        .status-pending {
+            color: #ff9800 !important; /* Orange */
+            font-weight: 700 !important;
+        }
+
+        
+
     </style>
 
       <script>
@@ -121,7 +138,14 @@
         <!-- ========== TITLE ========== -->
         <h1 class="page-title">Transaction History (Asset-wise)</h1>
         <h:form>
+            
+            <p:poll interval="2"
+                listener="#{orderHistoryBean.loadData}"
+                update="historyPanel" />
+        <h:panelGroup id="historyPanel">
+
         <!-- ============ ASSET-WISE TRANSACTIONS ============= -->
+
         <div class="card-box">
         <!-- Original UI: asset-wise repeat tables -->
             <ui:repeat value="#{orderHistoryBean.uniqueAssets}" var="asset" varStatus="loop">
@@ -148,7 +172,14 @@
                            </h:outputText>
                         
                         </p:column>
-                        <p:column headerText="Status"> #{o.status} </p:column>
+                        <!--<p:column headerText="Status"> #{o.status} </p:column>-->
+                        <p:column headerText="Status">
+                            <h:outputText value="#{o.status}"
+                                styleClass="#{o.status eq 'PAID' ? 'status-paid' : 
+                                             o.status eq 'REJECTED' ? 'status-rejected' : 
+                                             'status-default'}"/>
+                        </p:column>
+
                         <p:column headerText="Date">
                             <h:outputText value="#{o.createdAt}">
                                 <f:convertDateTime pattern="dd MMM yyyy, HH:mm"/>
@@ -175,7 +206,15 @@
                                                 groupingUsed="true"/>
                            </h:outputText>
                         </p:column>
-                        <p:column headerText="Status"> #{r.status} </p:column>
+                        <!--<p:column headerText="Status"> #{r.status} </p:column>-->
+                        
+                        <p:column headerText="Status">
+                            <h:outputText value="#{r.status}"
+                                styleClass="#{r.status eq 'PAID' ? 'status-paid' :
+                                             r.status eq 'REJECTED' ? 'status-rejected' :
+                                               r.status eq 'PENDING' ? 'status-pending' :
+                                             ''}"/>
+                        </p:column>
                         <p:column headerText="Date">
                             <h:outputText value="#{r.requestedAt}">
                                 <f:convertDateTime pattern="dd MMM yyyy, HH:mm"/>
@@ -188,7 +227,7 @@
 
             </ui:repeat>
          </div>
-
+        </h:panelGroup>
         </h:form>
     </div>
 </h:body>

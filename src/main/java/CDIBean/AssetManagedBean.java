@@ -316,8 +316,8 @@ public class AssetManagedBean implements Serializable {
         // ------------------------------------------------
         // 1. Save in PROJECT folder
         // ------------------------------------------------
-//        String projectPath = "D:/java-ENTERPRISE/ICT-1-Project/PortfolioManager/src/main/webapp/resources/assets/";
-          String projectPath = "E:/PortfolioManager/src/main/webapp/resources/assets/";
+        String projectPath = "D:/java-ENTERPRISE/ICT-1-Project/PortfolioManager/src/main/webapp/resources/assets/";
+//          String projectPath = "E:/PortfolioManager/src/main/webapp/resources/assets/";
 //        String projectPath = "D:/java-ENTERPRISE/ICT-1-Project/PortfolioManager/src/main/webapp/resources/assets/";
 
         File projectFolder = new File(projectPath);
